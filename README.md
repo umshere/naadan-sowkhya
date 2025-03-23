@@ -113,3 +113,82 @@ npm run build
 - TypeScript
 - Tailwind CSS
 - React 18
+
+## Content Update Guide for Developers
+
+### Updating Products
+
+1. Navigate to `src/data/products.json`
+2. Add/modify product entries following this structure:
+
+```json
+{
+  "id": "unique-product-id",
+  "name": "Product Name",
+  "description": "Product description",
+  "price": "₹XX",
+  "category": "AYURVEDIC/GLITTER/WELLNESS",
+  "image": "/images/products/product-image.jpg"
+}
+```
+
+3. Add product images to `public/images/products/`
+4. Product categories can be updated in `src/data/categories.json`
+
+### Updating Gallery
+
+1. Add new gallery images to `public/images/gallery/`
+2. Update `src/data/gallery.json`:
+
+```json
+{
+  "images": [
+    {
+      "src": "/images/gallery/image-name.jpg",
+      "alt": "Image description",
+      "category": "events/manufacturing/team/product-display"
+    }
+  ]
+}
+```
+
+### Updating Testimonials
+
+1. Add testimonial images to `public/images/testimonials/`
+2. Update `src/data/testimonial-images.json`:
+
+```json
+{
+  "testimonials": [
+    {
+      "image": "/images/testimonials/testimonial-1.jpeg",
+      "alt": "Customer testimonial"
+    }
+  ]
+}
+```
+
+### Image Guidelines
+
+- Product images: 800x800px recommended, JPG/PNG format
+- Gallery images: 1200x800px recommended, JPG/PNG format
+- Testimonial images: 800x600px recommended, JPG/PNG format
+- Compress images before uploading to maintain performance
+- Use meaningful file names (e.g., `black-seed-oil-30ml.jpg`)
+
+### After Updates
+
+1. Test locally:
+
+```bash
+npm run dev
+```
+
+2. Verify changes at http://localhost:3000
+3. Commit and push changes:
+
+```bash
+git add .
+git commit -m "Update content: [describe changes]"
+git push
+```
