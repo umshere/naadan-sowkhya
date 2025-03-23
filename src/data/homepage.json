@@ -98,27 +98,19 @@
         {
             "id": 1,
             "image": "/images/certifications/IMG_5007.jpeg",
-            "link": "#"
+            "link": "#",
+            "title": "Professional Certification 1"
         },
         {
             "id": 2,
             "image": "/images/certifications/IMG_6071.jpeg",
-            "link": "#"
+            "link": "#",
+            "title": "Professional Certification 2"
         }
     ],
     "gallery": {
         "title": "Our Gallery",
         "images": [
-            {
-                "id": 1,
-                "src": "/images/slider/traditional5.jpg",
-                "alt": "Naadan Sowkhya Product Display"
-            },
-            {
-                "id": 2,
-                "src": "/images/slider/traditional7-new-1-1.jpg",
-                "alt": "Naadan Sowkhya Natural Products"
-            },
             {
                 "id": 3,
                 "src": "/images/products/black-seed-oil-30ml.jpg",
@@ -148,6 +140,16 @@
                 "id": 8,
                 "src": "/images/products/virgin-coconut-oil-100ml.jpg",
                 "alt": "Virgin Coconut Oil"
+            },
+            {
+                "id": 1,
+                "src": "/images/slider/traditional5.jpg",
+                "alt": "Naadan Sowkhya Product Display"
+            },
+            {
+                "id": 2,
+                "src": "/images/slider/traditional7-new-1-1.jpg",
+                "alt": "Naadan Sowkhya Natural Products"
             }
         ]
     }
