@@ -21,9 +21,40 @@ export default function ScrollRevealContainer({
   className = '',
   once = false,
   easing = 'ease-in-out',
-  offset = 100,
+  offset = 50,  // Reduced default offset
 }: ScrollRevealProps) {
   const elementRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.setAttribute('data-aos-animate', '');
+            if (once) {
+              observer.unobserve(entry.target);
+            }
+          } else if (!once) {
+            entry.target.removeAttribute('data-aos-animate');
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '50px 0px -10% 0px' // Trigger earlier and maintain visibility longer
+      }
+    );
+
+    if (elementRef.current) {
+      observer.observe(elementRef.current);
+    }
+
+    return () => {
+      if (elementRef.current) {
+        observer.unobserve(elementRef.current);
+      }
+    };
+  }, [once]);
 
   return (
     <div

@@ -17,18 +17,18 @@ interface TestimonialsSectionProps {
 export default function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Scroll-based animations
+  // Adjusted scroll-based animations with more generous thresholds
   const { scrollYProgress } = useScroll({
     target: sectionRef,
-    offset: ["start end", "end start"]
+    offset: ["start end", "end start"],
   });
 
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [100, 0, 0, -100]);
-  const scale = useTransform(scrollYProgress, [0, 0.2], [0.8, 1]);
-  const waveOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 0.3]);
+  // Adjusted transform ranges for better visibility
+  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [50, 0, 0, -50]);
+  const scale = useTransform(scrollYProgress, [0, 0.1], [0.95, 1]);
+  const waveOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 0.3]);
 
-  // Wave animation variants
   const waveVariants = {
     animate: {
       x: [0, -1200],
@@ -77,7 +77,7 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
           className="section-title text-center text-3xl md:text-4xl font-bold"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
+          viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
         >
           Customer Reviews
@@ -94,7 +94,7 @@ export default function TestimonialsSection({ testimonials }: TestimonialsSectio
             className="text-center mt-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ delay: 0.3, duration: 0.6 }}
           >
             <motion.a

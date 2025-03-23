@@ -8,6 +8,7 @@ interface Certification {
   id: number;
   image: string;
   link: string;
+  title: string;
 }
 
 interface CertificationsSectionProps {
@@ -21,6 +22,7 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
   const sectionRef = useRef<HTMLElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
+  // Updated Intersection Observer with lower threshold and rootMargin
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -31,6 +33,7 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
       },
       {
         threshold: 0.1,
+        rootMargin: '50px 0px'  // Trigger earlier
       }
     );
 
@@ -40,7 +43,7 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
 
     return () => observer.disconnect();
   }, []);
-  
+
   // Create a larger pool of certifications for the carousel
   const allCertifications = [...certifications, ...certifications, ...certifications];
   
@@ -56,23 +59,22 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
     );
   };
 
-  // Auto-advance carousel every 5 seconds
+  // Auto-advance carousel every 5 seconds when visible
   useEffect(() => {
+    if (!isVisible) return;
+    
     const interval = setInterval(() => {
-      if (isVisible) {
-        goToNext();
-      }
+      goToNext();
     }, 5000);
     
     return () => clearInterval(interval);
   }, [isVisible]);
 
-  // Calculate which items to display (current + 2 on each side for larger screens)
+  // Calculate which items to display
   const getVisibleCertifications = () => {
     const result = [];
     const itemCount = allCertifications.length;
     
-    // Add current item and surrounding items
     for (let i = -2; i <= 2; i++) {
       const index = (currentIndex + i + itemCount) % itemCount;
       result.push({
@@ -86,7 +88,7 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
 
   // Handle certification click
   const handleCertificationClick = (cert: Certification, e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent default navigation
+    e.preventDefault();
     setSelectedCertification(cert);
   };
 
@@ -233,7 +235,6 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
                   quality={100}
                 />
               </div>
-            
             </motion.div>
           </motion.div>
         )}
