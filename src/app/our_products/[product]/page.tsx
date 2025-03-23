@@ -1,13 +1,17 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react'; // Add React import
 
 // Import data
 import productsData from '@/data/products.json';
 import categoriesData from '@/data/categories.json';
 
-interface ProductParams {
-  product: string;
+// Define the expected props for the page
+interface PageProps {
+  params: {
+    product: string;
+  };
 }
 
 export function generateStaticParams() {
@@ -16,7 +20,7 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function ProductPage({ params }: { params: ProductParams }) {
+export default async function ProductPage({ params }: PageProps): Promise<React.ReactElement> {
   const { product } = params;
   
   // Find the product
