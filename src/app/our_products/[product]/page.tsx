@@ -10,6 +10,7 @@ interface ProductPageProps {
   params: {
     product: string;
   };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 export function generateStaticParams() {
