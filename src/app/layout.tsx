@@ -24,6 +24,10 @@ export const metadata: Metadata = {
   authors: [{ name: "Ahmed Bin Hamza" }],
   creator: "Naadan Sowkhya",
   publisher: "Naadan Sowkhya",
+  icons: [
+    { rel: "icon", url: "/images/brandname_white.png" },
+    { rel: "apple-touch-icon", url: "/images/brandname_white.png" }
+  ],
 };
 
 export default function RootLayout({

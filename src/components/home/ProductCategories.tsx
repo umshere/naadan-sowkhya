@@ -71,7 +71,7 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
 
         {/* Categories Grid - Improved responsive layout with more columns */}
         <div 
-          className={`grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 max-w-6xl mx-auto transition-all duration-1000 ease-out ${
+          className={`grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 xs:gap-4 md:gap-5 max-w-6xl mx-auto transition-all duration-1000 ease-out ${
             isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -90,33 +90,33 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
               {/* More compact card design */}
               <div 
                 className="flex flex-col items-center h-full bg-white rounded-lg shadow-sm
-                         border border-[var(--tertiary-color)]/10 p-4 md:p-5 text-center
+                         border border-[var(--tertiary-color)]/10 p-3 xs:p-4 md:p-5 text-center
                          transition-all duration-300 ease-out
                          hover:shadow-md hover:translate-y-[-2px] hover:border-[var(--tertiary-color)]/30"
               >
                 {/* Smaller image container */}
-                <div className="w-16 h-16 mb-3 relative flex items-center justify-center">
+                <div className="w-12 h-12 xs:w-14 xs:h-14 md:w-16 md:h-16 mb-2 xs:mb-3 relative flex items-center justify-center">
                   <div className="absolute inset-0 rounded-full bg-[var(--primary-light)] opacity-10 
                                transition-transform duration-300 group-hover:scale-110"></div>
-                  <div className="relative w-14 h-14 transition-transform duration-300 group-hover:scale-110">
+                  <div className="relative w-10 h-10 xs:w-12 xs:h-12 md:w-14 md:h-14 transition-transform duration-300 group-hover:scale-110">
                     <OptimizedImage
                       src={category.image}
                       alt={category.name}
                       fill
                       className="object-contain"
-                      sizes="56px"
+                      sizes="(max-width: 480px) 40px, (max-width: 768px) 48px, 56px"
                     />
                   </div>
                 </div>
                 
                 {/* More compact title styling */}
-                <h3 className="text-base font-serif font-semibold text-[var(--primary-color)] mb-1
+                <h3 className="text-sm xs:text-base font-serif font-semibold text-[var(--primary-color)] mb-1
                              transition-colors duration-300 group-hover:text-[var(--secondary-color)]">
                   {category.name}
                 </h3>
                 
                 {/* Animated underline */}
-                <div className="relative h-0.5 w-10 mx-auto mt-1 mb-2 overflow-hidden">
+                <div className="relative h-0.5 w-8 xs:w-10 mx-auto mt-1 mb-1 xs:mb-2 overflow-hidden">
                   <span 
                     className="absolute inset-0 bg-[var(--tertiary-color)] transform scale-x-0 group-hover:scale-x-100
                              transition-transform duration-300 origin-left"
@@ -124,12 +124,12 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
                 </div>
                 
                 {/* Shorter description with ellipsis for overflow */}
-                <p className="text-xs text-[var(--text-dark)]/70 leading-relaxed line-clamp-2">
+                <p className="text-xs text-[var(--text-dark)]/70 leading-relaxed line-clamp-2 hidden xs:block">
                   {category.description}
                 </p>
                 
                 {/* Compact view indicator */}
-                <div className="mt-3 flex items-center text-[var(--tertiary-color)] text-xs font-medium">
+                <div className="mt-2 xs:mt-3 flex items-center text-[var(--tertiary-color)] text-xs font-medium">
                   <span className="mr-1">View</span>
                   <svg className="w-3 h-3 transform transition-transform duration-300 group-hover:translate-x-1" 
                        fill="none" viewBox="0 0 24 24" stroke="currentColor">

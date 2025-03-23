@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import TopBar from './TopBar'; // Changed from import { TopBar } to import TopBar
 import { DesktopMenu } from './navigation/DesktopMenu';
 import { MobileMenu } from './navigation/MobileMenu';
 import { menuItems } from '@/data/menuItems';
+import { px } from 'framer-motion';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -58,9 +60,14 @@ export const Header = () => {
           <nav className="flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="relative flex items-center">
-              <h1 className="text-xl font-bold text-white">
-                NAADAN SOWKHYA
-              </h1>
+              <Image 
+                src="/images/brandname_black.png"
+                alt="Naadan Sowkhya"
+                width={400}
+                height={78}
+                className="w-[200px] sm:w-[300px] md:w-[400px] h-auto object-contain"
+                priority
+              />
             </Link>
 
             {/* Desktop Navigation */}
