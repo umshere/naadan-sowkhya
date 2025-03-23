@@ -19,7 +19,7 @@ export function generateStaticParams() {
   }));
 }
 
-export default function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({ params }: ProductPageProps) {
   const { product } = params;
   
   // Find the product
