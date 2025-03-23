@@ -63,41 +63,124 @@ Modern Next.js implementation of the Naadan Sowkhya e-commerce website, migrated
 - Easy-to-maintain testimonials system
 - Organized media assets
 
-## Local Development
+## Guide for Administrators (Non-Technical)
 
-### Prerequisites
+### First-Time Setup (One-Time Process)
 
-- Node.js 18+
-- npm or yarn
+1. Install Required Software (Windows):
 
-### Setup Instructions
+   - Download and install Git for Windows: https://git-scm.com/download/win
+     - During installation, click "Next" for all options (use default settings)
+   - Download and install Visual Studio Code: https://code.visualstudio.com/
+     - During installation, make sure "Add to PATH" is checked
+   - Download and install Node.js: https://nodejs.org/ (Click on "LTS" version)
+     - During installation, check "Automatically install necessary tools"
+   - After installation, restart your computer
 
-1. Clone the repository
+2. Get the Website Files (Windows):
+   - Create a new folder on your desktop named "naadan-website"
+   - Right-click on the folder and select "Open with Code"
+   - In Visual Studio Code, press Ctrl+` (the key above Tab) to open terminal
+   - If you see "Select Default Profile", choose "Git Bash"
+   - Copy and paste these commands one by one:
+     ```
+     git clone https://github.com/umshere/naadan-sowkhya.git .
+     ```
+     ```
+     npm install
+     ```
+   - Wait for installation to complete (this may take a few minutes)
 
-```bash
-git clone [repository-url]
-cd naadan-sowkhya
-```
+### Running the Website Locally (Windows)
 
-2. Install dependencies
+1. Opening the Website:
 
-```bash
-npm install
-```
+   - Double-click the "naadan-website" folder on your Desktop
+   - Right-click inside the folder and select "Open with Code"
+   - If you don't see "Open with Code", reinstall Visual Studio Code and restart your computer
 
-3. Start development server
+2. Starting the Website:
 
-```bash
-npm run dev
-```
+   - Press Ctrl+` (key above Tab) to open terminal
+   - If terminal shows "PowerShell", click the dropdown (▼) next to the + icon and select "Git Bash"
+   - Type this command and press Enter:
+     ```
+     npm run dev
+     ```
+   - Wait until you see "Ready" in green text
+   - Open your web browser and go to: http://localhost:3000
 
-4. Open [http://localhost:3000](http://localhost:3000)
+3. Stopping the Website:
+   - Go back to Visual Studio Code
+   - Click inside the terminal
+   - Press Ctrl+C
+   - Type 'y' and press Enter if asked to terminate
 
-### Build
+### Making Content Updates (Windows)
 
-```bash
-npm run build
-```
+1. Finding Content Files:
+
+   - In Visual Studio Code, look at the left sidebar
+   - Click on the "Explorer" icon (first icon)
+   - Open the "src" folder, then "data" folder
+   - Choose the file to edit:
+     - `products.json` - For products
+     - `gallery.json` - For gallery
+     - `testimonial-images.json` - For testimonials
+
+2. Adding New Images:
+
+   - Open Windows Explorer to your "naadan-website" folder
+   - Go to the "public" folder, then "images"
+   - Choose the right folder:
+     - "products" - For product images
+     - "gallery" - For gallery images
+     - "testimonials" - For testimonial images
+   - Copy your new images into the correct folder
+   - Use simple names without spaces (example: black-seed-oil.jpg)
+
+3. Saving Changes:
+   - After editing any file, press Ctrl+S to save
+   - Check your changes on the website (http://localhost:3000)
+   - If the page shows errors:
+     - Make sure all commas and quotes are in the right places
+     - Check that image filenames exactly match what's in your JSON files
+     - Try stopping and restarting the website
+
+### Common Issues & Solutions (Windows)
+
+1. "Command not found" Error:
+
+   - Close Visual Studio Code completely
+   - Restart your computer
+   - Try opening the folder and running commands again
+
+2. Terminal Shows PowerShell Instead of Git Bash:
+
+   - Click the dropdown (▼) next to + in terminal
+   - Select "Git Bash"
+   - If Git Bash is not listed, reinstall Git for Windows
+
+3. Changes Not Showing Up:
+
+   - Press Ctrl+S to save all files
+   - Refresh your browser page
+   - If still not working, stop and restart the website
+
+4. Images Not Loading:
+   - Check image filenames for exact spelling and case
+   - Make sure images are in the correct folders
+   - Verify image formats are .jpg, .jpeg, or .png
+
+### When to Ask for Help
+
+Contact the development team when:
+
+- You see error messages you don't understand
+- The website won't start after following all steps
+- You need to make design changes
+- You need to add new features or sections
+- Your changes aren't showing up after trying the solutions above
 
 ## Project Structure
 
