@@ -8,9 +8,6 @@ import contactData from '@/data/contact.json';
 import homepageData from '@/data/homepage.json';
 
 const Footer = () => {
-  // Get the first 4 gallery images for the footer preview
-  const galleryPreviewImages = homepageData.gallery.images.slice(0, 4);
-
   return (
     <footer className="bg-[#f0f7ff] text-gray-800 pt-16 pb-0 relative overflow-hidden">
       {/* Wave Background */}
@@ -34,109 +31,10 @@ const Footer = () => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {/* NAADAN SOWKHYA Section */}
-          <div>
-            <h3 className="text-xl font-bold text-primary-color mb-4 pb-2 border-b border-tertiary-color">
-              NAADAN SOWKHYA
-            </h3> 
-            <p className="mb-6 text-gray-700">
-              Natural products free from preservatives and artificial colours or chemicals that may be harmful to human health.
-            </p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-xl font-bold text-primary-color mb-4 pb-2 border-b border-tertiary-color">
-              Quick Links
-            </h3>
-            <ul className="space-y-2">
-              <li>
-                <Link href="/" className="text-gray-700 hover:text-primary-color transition-colors flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-tertiary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/about-us" className="text-gray-700 hover:text-primary-color transition-colors flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-tertiary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                  About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/product_category/natural-hair-care" className="text-gray-700 hover:text-primary-color transition-colors flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-tertiary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                  Natural Hair Care
-                </Link>
-              </li>
-              <li>
-                <Link href="/product_category/food-products" className="text-gray-700 hover:text-primary-color transition-colors flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-tertiary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                  Food Products
-                </Link>
-              </li>
-              <li>
-                <Link href="/product_category/natural-cosmetics" className="text-gray-700 hover:text-primary-color transition-colors flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-tertiary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                  Cosmetics & Herbal Products
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="text-gray-700 hover:text-primary-color transition-colors flex items-center">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-tertiary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                  Contact
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact Us with Map */}
-          <div>
-            <h3 className="text-xl font-bold text-primary-color mb-4 pb-2 border-b border-tertiary-color">
-              Contact Us
-            </h3> 
-            <div className="mb-4 space-y-3">
-              <div className="flex items-start">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3 mt-1 text-primary-color flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span className="text-gray-700">
-                  {contactData.address}
-                </span>
-              </div>
-              <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3 text-primary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
-                <a href={`tel:${contactData.phone}`} className="text-gray-700 hover:text-primary-color transition-colors">
-                  {contactData.phone}
-                </a>
-              </div>
-              <div className="flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-3 text-primary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                </svg>
-                <a href={`mailto:${contactData.email}`} className="text-gray-700 hover:text-primary-color transition-colors">
-                  {contactData.email}
-                </a>
-              </div>
-            </div>
-            
-            {/* Map */}
-            <div className="h-40 rounded-md overflow-hidden border border-gray-200 shadow-sm">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
+          {/* Map Section - Now on the left */}
+          <div className="lg:col-span-5">
+            <div className="h-[300px] rounded-lg overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
               <iframe
                 src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15683.573383045079!2d76.0028145!3d10.665386!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba795eba226e445%3A0x5634d2cdac72799a!2sSowkhya%20100%25%20Natural%20%26%20Herbal%20Products!5e0!3m2!1sen!2ssa!4v1710173945018!5m2!1sen!2ssa"
                 width="100%"
@@ -152,31 +50,98 @@ const Footer = () => {
                 href="https://www.google.com/maps/place/Sowkhya%20100%25%20Natural%20%26%20Herbal%20Products/@10.665386,76.0028145,17z/data=!3m1!4b1" 
                 target="_blank" 
                 rel="noopener noreferrer" 
-                className="text-[var(--primary-color)] hover:underline"
+                className="text-primary-color hover:underline"
               >
                 View larger map
               </a>
             </div>
           </div>
 
-          {/* Gallery */}
-          <div>
-            <h3 className="text-xl font-bold text-primary-color mb-4 pb-2 border-b border-tertiary-color">
-              Gallery
-            </h3>
-            <div className="grid grid-cols-2 gap-2">
-              {galleryPreviewImages.map((image) => (
-                <Link href="/gallery" key={image.id} className="block relative h-20 rounded-md overflow-hidden group">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-primary-color bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300"></div>
-                </Link>
-              ))}
+          {/* Quick Links and Contact - Now on the right */}
+          <div className="lg:col-span-7 grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* Quick Links */}
+            <div>
+              <h3 className="text-xl font-bold text-primary-color mb-4 pb-2 border-b border-tertiary-color">
+                Quick Links
+              </h3>
+              <ul className="grid grid-cols-1 gap-3">
+                <li>
+                  <Link href="/" className="text-gray-700 hover:text-primary-color transition-colors flex items-center group">
+                    <span className="w-1.5 h-1.5 bg-tertiary-color rounded-full mr-2 group-hover:w-2 transition-all duration-200"></span>
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about-us" className="text-gray-700 hover:text-primary-color transition-colors flex items-center group">
+                    <span className="w-1.5 h-1.5 bg-tertiary-color rounded-full mr-2 group-hover:w-2 transition-all duration-200"></span>
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/product_category/natural-hair-care" className="text-gray-700 hover:text-primary-color transition-colors flex items-center group">
+                    <span className="w-1.5 h-1.5 bg-tertiary-color rounded-full mr-2 group-hover:w-2 transition-all duration-200"></span>
+                    Natural Hair Care
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/product_category/food-products" className="text-gray-700 hover:text-primary-color transition-colors flex items-center group">
+                    <span className="w-1.5 h-1.5 bg-tertiary-color rounded-full mr-2 group-hover:w-2 transition-all duration-200"></span>
+                    Food Products
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/product_category/natural-cosmetics" className="text-gray-700 hover:text-primary-color transition-colors flex items-center group">
+                    <span className="w-1.5 h-1.5 bg-tertiary-color rounded-full mr-2 group-hover:w-2 transition-all duration-200"></span>
+                    Cosmetics & Herbal Products
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="text-gray-700 hover:text-primary-color transition-colors flex items-center group">
+                    <span className="w-1.5 h-1.5 bg-tertiary-color rounded-full mr-2 group-hover:w-2 transition-all duration-200"></span>
+                    Contact
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact Info */}
+            <div>
+              <h3 className="text-xl font-bold text-primary-color mb-4 pb-2 border-b border-tertiary-color">
+                Contact Us
+              </h3>
+              <div className="space-y-4">
+                <div className="flex items-start group">
+                  <div className="w-10 h-10 rounded-full bg-primary-color/10 flex items-center justify-center flex-shrink-0 mr-3 group-hover:bg-primary-color/20 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <span className="text-gray-700 pt-2">
+                    {contactData.address}
+                  </span>
+                </div>
+                <div className="flex items-center group">
+                  <div className="w-10 h-10 rounded-full bg-primary-color/10 flex items-center justify-center flex-shrink-0 mr-3 group-hover:bg-primary-color/20 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                    </svg>
+                  </div>
+                  <a href={`tel:${contactData.phone}`} className="text-gray-700 hover:text-primary-color transition-colors">
+                    {contactData.phone}
+                  </a>
+                </div>
+                <div className="flex items-center group">
+                  <div className="w-10 h-10 rounded-full bg-primary-color/10 flex items-center justify-center flex-shrink-0 mr-3 group-hover:bg-primary-color/20 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-primary-color" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </div>
+                  <a href={`mailto:${contactData.email}`} className="text-gray-700 hover:text-primary-color transition-colors">
+                    {contactData.email}
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -193,7 +158,6 @@ const Footer = () => {
       </div>
       
       {/* WhatsApp floating button */}
-      {/* Single WhatsApp floating button in bottom right corner */}
       <a 
         href={contactData.whatsappLink} 
         target="_blank" 
