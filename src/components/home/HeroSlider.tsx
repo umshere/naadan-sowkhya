@@ -29,40 +29,32 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
   const parallaxY = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0.3]);
 
+  const goToSlide = (index: number) => {
+    if (isAnimating || index === currentSlide) return;
+    setPreviousSlide(currentSlide);
+    setCurrentSlide(index);
+  };
+
+  const goToNextSlide = () => {
+    if (isAnimating) return;
+    setPreviousSlide(currentSlide);
+    setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
+  };
+
+  const goToPrevSlide = () => {
+    if (isAnimating) return;
+    setPreviousSlide(currentSlide);
+    setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+  };
+
   // Auto-rotate slides
   useEffect(() => {
     const interval = setInterval(() => {
       goToNextSlide();
     }, 6000);
+    
     return () => clearInterval(interval);
-  }, [slides.length]);
-
-  const goToNextSlide = () => {
-    if (!isAnimating) {
-      setIsAnimating(true);
-      setPreviousSlide(currentSlide);
-      setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
-      setTimeout(() => setIsAnimating(false), 1000);
-    }
-  };
-
-  const goToPrevSlide = () => {
-    if (!isAnimating) {
-      setIsAnimating(true);
-      setPreviousSlide(currentSlide);
-      setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
-      setTimeout(() => setIsAnimating(false), 1000);
-    }
-  };
-
-  const goToSlide = (index: number) => {
-    if (!isAnimating && index !== currentSlide) {
-      setIsAnimating(true);
-      setPreviousSlide(currentSlide);
-      setCurrentSlide(index);
-      setTimeout(() => setIsAnimating(false), 1000);
-    }
-  };
+  }, [currentSlide, isAnimating]);
 
   const slideVariants = {
     enter: {
@@ -91,7 +83,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
     <motion.div
       ref={slideRef}
       style={{ y: parallaxY }}
-      className="relative h-[650px] overflow-hidden bg-[var(--primary-light)]"
+      className="relative h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)]"
     >
       <AnimatePresence mode="wait">
         {slides.map((slide, index) => (
@@ -115,24 +107,24 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
                   quality={90}
                 />
                 <motion.div 
-                  className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70"
+                  className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70"
                   style={{ opacity }}
                 />
                 
                 {/* Content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-white">
+                <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
                   <motion.div 
-                    className="max-w-4xl mx-auto text-center"
+                    className="max-w-5xl mx-auto text-center"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.3, duration: 0.6 }}
                   >
-                    {/* NAADAN SOWKHYA Label */}
+                    {/* Brand Label */}
                     <motion.p
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.4, duration: 0.6 }}
-                      className="text-base md:text-lg font-semibold tracking-wider uppercase mb-2 text-white drop-shadow-sm"
+                      className="text-base md:text-lg lg:text-xl font-semibold tracking-wider uppercase mb-4 text-white/90 drop-shadow-lg"
                     >
                       NAADAN SOWKHYA
                     </motion.p>
@@ -142,7 +134,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.5, duration: 0.6 }}
-                      className="heading-1 !text-white font-serif font-bold text-3xl md:text-5xl xl:text-6xl mb-6 tracking-wider drop-shadow-sm"
+                      className="font-serif font-bold text-3xl md:text-5xl lg:text-6xl xl:text-7xl mb-6 tracking-wider drop-shadow-lg text-white"
                     >
                       <span className="relative inline-block">
                         {slide.title}
@@ -156,12 +148,12 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
                       </span>
                     </motion.h1>
 
-                    {/* Subheading */}
+                    {/* Subtitle */}
                     <motion.p
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.6, duration: 0.6 }}
-                      className="body-large !text-white text-sm md:text-lg xl:text-xl mb-10 max-w-2xl mx-auto leading-relaxed drop-shadow-sm"
+                      className="text-white/90 text-base md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg"
                     >
                       {slide.subtitle}
                     </motion.p>
@@ -174,10 +166,10 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
                     >
                       <Link
                         href={slide.buttonLink}
-                        className="btn-elegant group relative inline-flex items-center justify-center px-8 py-3.5 rounded-md text-lg font-semibold text-white"
+                        className="btn-elegant group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-[var(--primary-color)] rounded-lg hover:bg-[var(--primary-color)]/90 transition-all duration-300"
                       >
                         <span className="relative z-10">{slide.buttonText}</span>
-                        <span className="absolute inset-0 overflow-hidden rounded-md">
+                        <span className="absolute inset-0 overflow-hidden rounded-lg">
                           <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
                         </span>
                         <span className="absolute bottom-0 left-0 h-[2px] w-full bg-[var(--tertiary-color)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
@@ -193,7 +185,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
 
       {/* Navigation Dots */}
       <motion.div 
-        className="absolute bottom-6 left-0 right-0 z-30"
+        className="absolute bottom-8 left-0 right-0 z-30"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.6 }}
@@ -214,9 +206,9 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
         </div>
       </motion.div>
 
-      {/* Left/Right Navigation Arrows */}
+      {/* Navigation Arrows */}
       <motion.div 
-        className="absolute left-0 right-0 top-1/2 -translate-y-1/2 z-30 flex justify-between px-4 md:px-8"
+        className="absolute left-4 right-4 top-1/2 -translate-y-1/2 z-30 flex justify-between md:left-8 md:right-8 lg:left-12 lg:right-12"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}

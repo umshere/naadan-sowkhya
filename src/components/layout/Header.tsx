@@ -3,18 +3,16 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import TopBar from './TopBar'; // Changed from import { TopBar } to import TopBar
+import TopBar from './TopBar';
 import { DesktopMenu } from './navigation/DesktopMenu';
 import { MobileMenu } from './navigation/MobileMenu';
 import { menuItems } from '@/data/menuItems';
-import { px } from 'framer-motion';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -24,14 +22,12 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle body scroll lock when menu is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
-    
     return () => {
       document.body.style.overflow = '';
     };
@@ -40,7 +36,6 @@ export const Header = () => {
   const toggleMenu = () => {
     if (isMenuOpen) {
       setIsAnimating(true);
-      // Delay the actual closing to allow for animation
       setTimeout(() => {
         setIsMenuOpen(false);
         setIsAnimating(false);
@@ -51,31 +46,39 @@ export const Header = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
+    <div className="fixed top-0 left-0 right-0 z-50">
       <TopBar />
       
-      {/* Black Navigation Bar */}
-      <header className={`bg-black py-4 transition-all duration-300 ${isScrolled ? 'py-3' : ''}`}>
-        <div className="container mx-auto px-4">
+      <header className={`bg-black transition-all duration-300 ${
+        isScrolled ? 'py-2' : 'py-4'
+      }`}>
+        <div className="container mx-auto px-4 max-w-7xl">
           <nav className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="relative flex items-center">
+            <Link 
+              href="/" 
+              className={`relative flex items-center transition-transform duration-300 ${
+                isScrolled ? 'scale-90' : 'scale-100'
+              }`}
+            >
               <Image 
                 src="/images/brandname_black.png"
                 alt="Naadan Sowkhya"
                 width={400}
                 height={78}
-                className="w-[200px] sm:w-[300px] md:w-[400px] h-auto object-contain"
+                className="w-[180px] sm:w-[220px] md:w-[280px] h-auto object-contain"
                 priority
               />
             </Link>
 
             {/* Desktop Navigation */}
-            <DesktopMenu menuItems={menuItems} />
+            <div className="hidden lg:flex items-center space-x-12">
+              <DesktopMenu menuItems={menuItems} />
+            </div>
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2 rounded-md focus:outline-none"
+              className="lg:hidden p-2 rounded-md hover:bg-white/10 transition-colors"
               onClick={toggleMenu}
               aria-label="Toggle menu"
             >
