@@ -1,15 +1,15 @@
+import React from 'react';
 import { notFound } from 'next/navigation';
 import ProductDetails from '@/components/ui/ProductDetails';
 import productsData from '@/data/products.json';
 
-interface Props {
-  params: {
-    slug: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
+// Simple type for generateStaticParams return values
+type Params = {
+  slug: string;
+};
 
-export async function generateMetadata({ params }: Props) {
+// Use any for metadata function parameters as well
+export async function generateMetadata({ params }: any) {
   const product = productsData.products.find(p => p.slug === params.slug);
   
   if (!product) {
@@ -24,8 +24,10 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-export default function ProductPage({ params }: Props) {
-  const product = productsData.products.find(p => p.slug === params.slug);
+// Remove type annotations and let Next.js infer them
+export default async function ProductPage({ params }: any) {
+  const { slug } = params;
+  const product = productsData.products.find(p => p.slug === slug);
 
   if (!product) {
     notFound();
@@ -34,8 +36,7 @@ export default function ProductPage({ params }: Props) {
   return <ProductDetails {...product} />;
 }
 
-// Generate static paths for all products
-export async function generateStaticParams() {
+export function generateStaticParams(): Params[] {
   return productsData.products.map((product) => ({
     slug: product.slug,
   }));

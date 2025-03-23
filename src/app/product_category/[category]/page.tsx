@@ -1,3 +1,4 @@
+import React from 'react';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import ProductCard from '@/components/ui/ProductCard';
@@ -8,24 +9,23 @@ import AnimatedProductCard from '@/components/ui/AnimatedProductCard';
 import categoriesData from '@/data/categories.json';
 import productsData from '@/data/products.json';
 
-interface CategoryPageProps {
-  params: {
-    category: string;
-  };
-  searchParams: { [key: string]: string | string[] | undefined };
-}
+// Simple type for generateStaticParams return values
+type Params = {
+  category: string;
+};
 
-export function generateStaticParams() {
+export function generateStaticParams(): Params[] {
   return categoriesData.categories.map((category) => ({
     category: category.slug,
   }));
 }
 
-export default async function CategoryPage({ params, searchParams }: CategoryPageProps) {
-  const category = (await Promise.resolve(params)).category;
-  // Properly await searchParams before using it
-  const searchParamsResolved = await Promise.resolve(searchParams);
-  const sortBy = searchParamsResolved.sort as string | undefined;
+// Remove type annotations and let Next.js infer them
+export default async function CategoryPage({ params, searchParams }: any) {
+  const { category } = params;
+  
+  // Use searchParams directly as it's now properly passed in
+  const sortBy = searchParams?.sort as string | undefined;
 
   // Find the category
   const categoryData = categoriesData.categories.find(

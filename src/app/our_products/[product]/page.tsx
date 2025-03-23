@@ -1,26 +1,25 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import React from 'react'; // Add React import
+import React from 'react';
 
 // Import data
 import productsData from '@/data/products.json';
 import categoriesData from '@/data/categories.json';
 
-// Define the expected props for the page
-interface PageProps {
-  params: {
-    product: string;
-  };
-}
+// Simple type for generateStaticParams return values
+type Params = {
+  product: string;
+};
 
-export function generateStaticParams() {
+export function generateStaticParams(): Params[] {
   return productsData.products.map((product) => ({
     product: product.slug,
   }));
 }
 
-export default async function ProductPage({ params }: PageProps): Promise<React.ReactElement> {
+// Remove type annotations and let Next.js infer them
+export default async function ProductPage({ params }: any) {
   const { product } = params;
   
   // Find the product
