@@ -6,11 +6,8 @@ import Link from 'next/link';
 import productsData from '@/data/products.json';
 import categoriesData from '@/data/categories.json';
 
-interface ProductPageProps {
-  params: {
-    product: string;
-  };
-  searchParams?: { [key: string]: string | string[] | undefined };
+interface ProductParams {
+  product: string;
 }
 
 export function generateStaticParams() {
@@ -19,7 +16,7 @@ export function generateStaticParams() {
   }));
 }
 
-export default async function ProductPage({ params }: ProductPageProps) {
+export default async function ProductPage({ params }: { params: ProductParams }) {
   const { product } = params;
   
   // Find the product
