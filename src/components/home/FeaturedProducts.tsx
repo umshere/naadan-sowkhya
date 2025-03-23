@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import ProductCard from '@/components/ui/ProductCard';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
-
+import { motion, useScroll, useTransform } from 'framer-motion';
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -31,8 +31,18 @@ interface FeaturedProductsProps {
 
 const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: FeaturedProductsProps) => {
   const [visibleProducts, setVisibleProducts] = useState<number>(4);
-  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Scroll-based animations
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const y = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [100, 0, 0, -100]);
+  const scale = useTransform(scrollYProgress, [0, 0.2], [0.8, 1]);
+  const waveOpacity = useTransform(scrollYProgress, [0, 0.5], [0, 0.3]);
 
   // Filter products based on the featured product IDs
   const featuredProducts = allProducts.filter(product => productIds.includes(product.id));
@@ -50,68 +60,77 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
         setVisibleProducts(4);
       }
     };
-
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Intersection Observer for animations
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
+  // Wave animation variants
+  const waveVariants = {
+    animate: {
+      x: [0, -1200],
+      transition: {
+        x: {
+          repeat: Infinity,
+          repeatType: "loop",
+          duration: 20,
+          ease: "linear",
+        },
       },
-      {
-        threshold: 0.1,
-      }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
+    },
+  };
 
   return (
     <section ref={sectionRef} className="relative py-16 bg-[var(--natural-light)]">
-      {/* Decorative elements */}
-      <div className="absolute left-0 w-full overflow-hidden h-16 -top-1 z-10 opacity-30">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-full">
-          <path 
-            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" 
+      {/* Top decorative wave */}
+      <motion.div 
+        className="absolute left-0 w-full overflow-hidden h-16 -top-1 z-10"
+        style={{ opacity: waveOpacity }}
+      >
+        <motion.svg 
+          viewBox="0 0 2400 120" 
+          preserveAspectRatio="none" 
+          className="w-full h-full"
+          variants={waveVariants}
+          animate="animate"
+        >
+          <motion.path 
+            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H2400V95.8C2332.19,118.92,2255.71,111.31,2185.66,92.83Z" 
             fill="var(--primary-color)"
             opacity="0.2"
-          ></path>
-        </svg>
-      </div>
+          />
+        </motion.svg>
+      </motion.div>
 
-      <div className="container mx-auto px-4 relative z-20">
-        <h2 
-          className={`section-title transition-all duration-1000 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
+      <motion.div 
+        className="container mx-auto px-4 relative z-20"
+        style={{ y, opacity }}
+      >
+        <motion.h2 
+          className="section-title"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
         >
           {title}
-        </h2>
+        </motion.h2>
+
         {subtitle && (
-          <p 
-            className={`text-center text-[var(--natural-dark)] max-w-2xl mx-auto mb-12 transition-all duration-1000 delay-200 ${
-              isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-            }`}
+          <motion.p 
+            className="text-center text-[var(--natural-dark)] max-w-2xl mx-auto mb-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
           >
             {subtitle}
-          </p>
+          </motion.p>
         )}
 
-        <div 
-          className={`relative transition-all duration-1000 delay-400 pb-12 ${
-            isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`}
+        <motion.div 
+          className="relative pb-12"
+          style={{ scale }}
         >
           <Swiper
             modules={[Navigation, Pagination, Autoplay]}
@@ -127,33 +146,41 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
           >
             {featuredProducts.map((product, index) => (
               <SwiperSlide key={product.id} className="h-full">
-                <div 
+                <motion.div 
                   className="px-3 h-full flex flex-col"
-                  style={{ 
-                    transitionDelay: `${(index + 3) * 100}ms`,
-                    opacity: isVisible ? 1 : 0,
-                    transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-                    transition: 'opacity 0.5s ease-out, transform 0.5s ease-out'
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ 
+                    duration: 0.6,
+                    delay: index * 0.1 + 0.3
                   }}
                 >
-                  <ProductCard
-                    id={product.id}
-                    name={product.name}
-                    slug={product.slug}
-                    image={product.image}
-                    price={product.price}
-                    currency={product.currency}
-                    whatsappLink={product.whatsappLink}
-                    category={product.category}
-                    className="flex-1"
-                  />
-                </div>
+                  <motion.div
+                    whileHover={{ 
+                      y: -8,
+                      transition: { duration: 0.2 }
+                    }}
+                  >
+                    <ProductCard
+                      id={product.id}
+                      name={product.name}
+                      slug={product.slug}
+                      image={product.image}
+                      price={product.price}
+                      currency={product.currency}
+                      whatsappLink={product.whatsappLink}
+                      category={product.category}
+                      className="flex-1"
+                    />
+                  </motion.div>
+                </motion.div>
               </SwiperSlide>
             ))}
           </Swiper>
-        </div>
+        </motion.div>
         
-        {/* Custom navigation styles - add after the Swiper component */}
+        {/* Custom navigation styles */}
         <style jsx global>{`
           .swiper-button-next,
           .swiper-button-prev {
@@ -163,6 +190,7 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
             height: 40px !important;
             border-radius: 50%;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
           }
           
           .swiper-button-next:after,
@@ -174,6 +202,7 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
           .swiper-button-next:hover,
           .swiper-button-prev:hover {
             background: rgba(255, 255, 255, 0.9);
+            transform: scale(1.1);
           }
           
           .swiper-pagination-bullet {
@@ -181,6 +210,7 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
             height: 10px;
             background: var(--tertiary-color);
             opacity: 0.5;
+            transition: all 0.3s ease;
           }
           
           .swiper-pagination-bullet-active {
@@ -189,18 +219,27 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
             transform: scale(1.2);
           }
         `}</style>
-      </div>
+      </motion.div>
       
       {/* Bottom decorative wave */}
-      <div className="absolute left-0 w-full overflow-hidden h-16 -bottom-1 z-10 opacity-30 transform rotate-180">
-        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" className="w-full h-full">
-          <path 
-            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" 
+      <motion.div 
+        className="absolute left-0 w-full overflow-hidden h-16 -bottom-1 z-10 transform rotate-180"
+        style={{ opacity: waveOpacity }}
+      >
+        <motion.svg 
+          viewBox="0 0 2400 120" 
+          preserveAspectRatio="none" 
+          className="w-full h-full"
+          variants={waveVariants}
+          animate="animate"
+        >
+          <motion.path 
+            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H2400V95.8C2332.19,118.92,2255.71,111.31,2185.66,92.83Z" 
             fill="var(--primary-color)"
             opacity="0.2"
-          ></path>
-        </svg>
-      </div>
+          />
+        </motion.svg>
+      </motion.div>
     </section>
   );
 };

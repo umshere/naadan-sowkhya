@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FaWhatsapp } from 'react-icons/fa';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface ProductCardProps {
   id: string;
@@ -28,6 +29,7 @@ export default function ProductCard({
   category,
 }: ProductCardProps) {
   const [imageError, setImageError] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   
   // Format the price properly, handling both string and number types
   const formatPrice = (price: number | string): string => {
@@ -81,57 +83,129 @@ export default function ProductCard({
   const processedImagePath = getImagePath(image);
 
   return (
-    <div className="group relative flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-md hover:shadow-xl transition-all duration-300 min-h-[400px] w-full">
+    <motion.div 
+      className="relative flex flex-col h-full overflow-hidden bg-white rounded-lg shadow-md w-full min-h-[400px]"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      whileHover={{ 
+        y: -8,
+        transition: { duration: 0.2 }
+      }}
+    >
       {/* Product image with aspect ratio */}
       <div className="relative w-full pt-[100%] overflow-hidden bg-gray-100">
         <Link href={`/products/${slug}`} className="block absolute inset-0">
-          <div className="relative w-full h-full">
-            {/* Fixed image styling to prevent black overlay */}
+          <motion.div 
+            className="relative w-full h-full"
+            whileHover={{ scale: 1.05 }}
+            transition={{ duration: 0.6 }}
+          >
             <Image
               src={imageError ? fallbackImage : processedImagePath}
               alt={name}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
+              className="object-cover object-center"
               priority
               onError={handleImageError}
               style={{ maxWidth: '100%', maxHeight: '100%' }}
             />
-          </div>
+          </motion.div>
         </Link>
 
-        {/* Category badge - adjusted z-index to ensure visibility */}
-        <div className="absolute top-3 left-3 z-10">
-          <span className="inline-block bg-primary-color bg-opacity-80 text-white text-xs px-2 py-1 rounded-full">
+        {/* Category badge */}
+        <motion.div 
+          className="absolute top-3 left-3 z-10"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <motion.span 
+            className="inline-block bg-primary-color bg-opacity-80 text-white text-xs px-2 py-1 rounded-full"
+            whileHover={{ scale: 1.05 }}
+            animate={isHovered ? { y: [0, -2, 0], transition: { duration: 0.5 } } : {}}
+          >
             {categoryLabel}
-          </span>
-        </div>
+          </motion.span>
+        </motion.div>
+
+        {/* Hover overlay with animation */}
+        <motion.div
+          className="absolute inset-0 bg-black pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 0.1 : 0 }}
+          transition={{ duration: 0.3 }}
+        />
       </div>
       
       {/* Product info */}
-      <div className="flex flex-col flex-grow p-4 h-[180px] justify-between">
+      <motion.div 
+        className="flex flex-col flex-grow p-4 h-[180px] justify-between"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
         <Link href={`/products/${slug}`} className="block mb-auto">
-          <h4 className="text-lg font-medium text-gray-800 mb-3 line-clamp-2 group-hover:text-primary-color transition-colors">
+          <motion.h4 
+            className="text-lg font-medium text-gray-800 mb-3 line-clamp-2"
+            whileHover={{ color: 'var(--primary-color)' }}
+          >
             {name}
-          </h4>
+          </motion.h4>
         </Link>
         
-        <div className="mt-auto flex items-center justify-between">
-          <p className="font-bold text-gray-900">
+        <motion.div 
+          className="mt-auto flex items-center justify-between"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <motion.p 
+            className="font-bold text-gray-900"
+            animate={isHovered ? { scale: 1.05 } : { scale: 1 }}
+          >
             {currency} {formatPrice(price)}
-          </p>
+          </motion.p>
           
-          <a
+          <motion.a
             href={whatsappLink || `https://wa.me/?text=I'm interested in ${name}`}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center justify-center w-10 h-10 rounded-full bg-green-500 text-white hover:bg-green-600 transition-colors"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
             aria-label="Contact on WhatsApp"
           >
-            <FaWhatsapp size={20} />
-          </a>
-        </div>
-      </div>
-    </div>
+            <motion.div
+              animate={isHovered ? { 
+                rotate: [0, -10, 10, -10, 10, 0],
+                transition: { duration: 0.5 }
+              } : {}}
+            >
+              <FaWhatsapp size={20} />
+            </motion.div>
+          </motion.a>
+        </motion.div>
+      </motion.div>
+
+      {/* Corner decoration */}
+      <motion.div
+        className="absolute top-0 right-0 w-16 h-16 overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
+        <motion.div
+          className="absolute top-0 right-0 w-2 h-16 bg-primary-color transform rotate-45 origin-top-right"
+          initial={{ scaleY: 0 }}
+          animate={isHovered ? { scaleY: 1 } : { scaleY: 0 }}
+          transition={{ duration: 0.3 }}
+        />
+      </motion.div>
+    </motion.div>
   );
 }

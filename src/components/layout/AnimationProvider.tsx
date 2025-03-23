@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { AnimatePresence } from 'framer-motion';
 
 export default function AnimationProvider({
   children,
@@ -15,9 +16,13 @@ export default function AnimationProvider({
       once: false,
       easing: 'ease-in-out',
       offset: 100,
-      disable: true, // Disable AOS since we're using our own animations
+      disable: false, // Enable AOS for scroll animations
     });
   }, []);
-
-  return <>{children}</>;
+  
+  return (
+    <AnimatePresence mode="wait">
+      {children}
+    </AnimatePresence>
+  );
 }

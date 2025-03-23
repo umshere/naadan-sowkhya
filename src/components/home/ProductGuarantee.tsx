@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const guarantees = [
   {
@@ -56,43 +57,55 @@ const ProductGuarantee = () => {
         threshold: 0.1,
       }
     );
-
     const element = document.getElementById('product-guarantee');
     if (element) observer.observe(element);
-
     return () => observer.disconnect();
   }, []);
 
   return (
-    <section id="product-guarantee" className="py-16 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <h2 className={`text-3xl font-bold text-center text-primary-color mb-12 transition-all duration-1000 ${
-          isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-        }`}>
+    <section 
+      id="product-guarantee" 
+      className="relative py-16 bg-[var(--natural-light)] leaf-bg-pattern"
+    >
+      {/* Background texture */}
+      <div className="absolute inset-0 pointer-events-none opacity-10 organic-texture"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        <motion.h2 
+          className="text-3xl font-bold text-center text-[var(--primary-color)] mb-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6 }}
+        >
           Our Product Guarantee
-        </h2>
+        </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {guarantees.map((guarantee, index) => (
-            <div
+            <motion.div
               key={guarantee.title}
-              className={`bg-white p-6 rounded-lg shadow-lg text-center transition-all duration-1000 ${
-                isVisible
-                  ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-8'
-              }`}
-              style={{ transitionDelay: `${index * 200}ms` }}
+              className="bg-white p-6 rounded-lg shadow-md text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ 
+                duration: 0.6,
+                delay: index * 0.2
+              }}
             >
-              <div className="text-primary-color mb-4 flex justify-center">
+              <motion.div 
+                className="text-[var(--primary-color)] mb-4 flex justify-center"
+                whileHover={{ scale: 1.1 }}
+                transition={{ duration: 0.2 }}
+              >
                 {guarantee.icon}
-              </div>
-              <h3 className="text-xl font-semibold mb-2 text-gray-800">
+              </motion.div>
+              <h3 className="text-xl font-semibold mb-2 text-[var(--primary-dark)]">
                 {guarantee.title}
               </h3>
-              <p className="text-gray-600">
+              <p className="text-[var(--text-dark)]">
                 {guarantee.description}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>
