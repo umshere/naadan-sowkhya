@@ -1,0 +1,118 @@
+{
+    "images": [
+        {
+            "id": 1,
+            "src": "/images/gallery/product-display-1.jpg",
+            "alt": "Product display showcase",
+            "category": "product-displays"
+        },
+        {
+            "id": 2,
+            "src": "/images/gallery/product-display-2.jpg",
+            "alt": "Product arrangement and presentation",
+            "category": "product-displays"
+        },
+        {
+            "id": 3,
+            "src": "/images/gallery/product-display-3.jpg",
+            "alt": "Featured product showcase",
+            "category": "product-displays"
+        },
+        {
+            "id": 4,
+            "src": "/images/gallery/product-display-4.jpg",
+            "alt": "Product collection display",
+            "category": "product-displays"
+        },
+        {
+            "id": 5,
+            "src": "/images/gallery/product-display-5.png",
+            "alt": "Special product arrangement",
+            "category": "product-displays"
+        },
+        {
+            "id": 6,
+            "src": "/images/gallery/product-process-1.jpeg",
+            "alt": "Product manufacturing process",
+            "category": "manufacturing"
+        },
+        {
+            "id": 7,
+            "src": "/images/gallery/product-process-2.jpeg",
+            "alt": "Quality control process",
+            "category": "manufacturing"
+        },
+        {
+            "id": 8,
+            "src": "/images/gallery/product-process-3.jpeg",
+            "alt": "Production facility",
+            "category": "manufacturing"
+        },
+        {
+            "id": 9,
+            "src": "/images/gallery/event-1.jpg",
+            "alt": "Company event showcase",
+            "category": "events"
+        },
+        {
+            "id": 10,
+            "src": "/images/gallery/event-2.jpg",
+            "alt": "Product launch event",
+            "category": "events"
+        },
+        {
+            "id": 11,
+            "src": "/images/gallery/manufacturing-1.jpg",
+            "alt": "Manufacturing facility overview",
+            "category": "manufacturing"
+        },
+        {
+            "id": 12,
+            "src": "/images/gallery/manufacturing-2.jpg",
+            "alt": "Product preparation process",
+            "category": "manufacturing"
+        },
+        {
+            "id": 13,
+            "src": "/images/gallery/manufacturing-3.jpg",
+            "alt": "Quality assurance process",
+            "category": "manufacturing"
+        },
+        {
+            "id": 14,
+            "src": "/images/gallery/team-1.jpg",
+            "alt": "Team gathering",
+            "category": "team"
+        },
+        {
+            "id": 15,
+            "src": "/images/gallery/team-2.jpg",
+            "alt": "Team collaboration",
+            "category": "team"
+        },
+        {
+            "id": 16,
+            "src": "/images/gallery/team-3.jpg",
+            "alt": "Team celebration",
+            "category": "team"
+        }
+    ],
+    "categories": [
+        {
+            "id": "product-displays",
+            "name": "Product Displays"
+        },
+        {
+            "id": "manufacturing",
+            "name": "Manufacturing Process"
+        },
+        {
+            "id": "events",
+            "name": "Events"
+        },
+        {
+            "id": "team",
+            "name": "Our Team"
+        }
+    ]
+}

@@ -1,0 +1,95 @@
+{
+    "products": [
+        {
+            "id": "carrot-lip-balm",
+            "name": "Carrot Lip Balm",
+            "slug": "carrot-lip-balm",
+            "category": "natural-cosmetics",
+            "image": "/images/products/carrot-lip-balm.jpeg",
+            "price": "290",
+            "currency": "Rs",
+            "description": "Carrot Lip Balm moisturises your lips and helps to get rid of pigmentation. It is a perfect skin tonic. NAADAN SOWKHYA Lip Balm can use by any age group.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Carrot%20Lip%20Balm"
+        },
+        {
+            "id": "lemon-grass-essential-oil-30ml",
+            "name": "Lemon Grass Essential Oil 30ml",
+            "slug": "lemon-grass-essential-oil-30ml",
+            "category": "natural-cosmetics",
+            "image": "/images/products/lemon-grass-essential-oil-30ml.jpg",
+            "price": "95",
+            "currency": "Rs",
+            "description": "Lemon Grass Essential Oil is extracted from the leaves and stalks of the lemongrass plant. It has a fresh, lemony aroma and is used in aromatherapy.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Lemon%20Grass%20Essential%20Oil%2030ml"
+        },
+        {
+            "id": "natural-lip-stick",
+            "name": "Natural Lip Stick (5 Natural Colors)",
+            "slug": "natural-lip-stick-5natural-colors",
+            "category": "natural-cosmetics",
+            "image": "/images/products/natural-lip-stick-5natural-colors.jpg",
+            "price": "470",
+            "currency": "Rs",
+            "description": "Natural lipstick made with organic ingredients, available in 5 different natural colors. Free from harmful chemicals.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Lip%20Stick%20(5Natural%20Colors)"
+        },
+        {
+            "id": "golden-glow-oil",
+            "name": "Golden Glow Oil (for tan removal)",
+            "slug": "golden-glow-oil",
+            "category": "natural-cosmetics",
+            "image": "/images/products/golden-glow-oil.jpg",
+            "price": "250",
+            "currency": "Rs",
+            "description": "Natural oil blend specially formulated for tan removal and skin brightening.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Golden%20Glow%20Oil%20(for%20tan%20removal)"
+        },
+        {
+            "id": "beetroot-lip-balm",
+            "name": "Beetroot Lip Balm Chap Stick",
+            "slug": "beetroot-lip-balm-chap-stick",
+            "category": "natural-cosmetics",
+            "image": "/images/products/beetroot-lip-balm-chap-stick.jpg",
+            "price": "290",
+            "currency": "Rs",
+            "description": "Natural lip balm made with beetroot extract for natural color and moisturization.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Beetroot%20Lip%20Balm%20Chap%20Stick"
+        },
+        {
+            "id": "goat-milk-honey-soap",
+            "name": "Goat Milk & Honey Soap",
+            "slug": "goat-milk-honey-soap",
+            "category": "natural-cosmetics",
+            "image": "/images/products/goat-milk-honey-soap.jpg",
+            "price": "190",
+            "currency": "Rs",
+            "description": "Natural soap made with goat milk and honey, known for its moisturizing and nourishing properties.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Goat%20Milk%20&%20Honey%20Soap"
+        },
+        {
+            "id": "natural-kajal",
+            "name": "Natural Kajal Round/Stick",
+            "slug": "natural-kajal-round-stick",
+            "category": "natural-cosmetics",
+            "image": "/images/products/natural-kajal-round-stick.jpg",
+            "price": "130",
+            "currency": "Rs",
+            "description": "Natural kajal made with traditional ingredients, safe for daily use.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Kajal%20Round/Stick"
+        }
+    ]
+}

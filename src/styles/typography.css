@@ -1,0 +1,335 @@
+/* 
+ * Naadan Sowkhya Typography System
+ * A comprehensive typography system for consistent text styling across the website
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
+
+/* Base Typography Variables */
+:root {
+  /* Font Families */
+  --font-sans: "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: "Playfair Display", Georgia, "Times New Roman", serif;
+
+  /* Font Sizes */
+  --text-xs: 0.75rem; /* 12px */
+  --text-sm: 0.875rem; /* 14px */
+  --text-base: 1rem; /* 16px */
+  --text-lg: 1.125rem; /* 18px */
+  --text-xl: 1.25rem; /* 20px */
+  --text-2xl: 1.5rem; /* 24px */
+  --text-3xl: 1.875rem; /* 30px */
+  --text-4xl: 2.25rem; /* 36px */
+  --text-5xl: 3rem; /* 48px */
+  --text-6xl: 3.75rem; /* 60px */
+
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.75;
+  --leading-loose: 2;
+
+  /* Letter Spacing */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* Font Weights */
+  --font-thin: 100;
+  --font-extralight: 200;
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+}
+
+/* Heading Classes */
+.heading-1 {
+  font-family: var(--font-serif);
+  font-size: var(--text-5xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--primary-color);
+}
+
+.heading-2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  line-height: var(--leading-tight);
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--primary-color);
+}
+
+.heading-3 {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  line-height: var(--leading-snug);
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--primary-color);
+}
+
+.heading-4 {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  line-height: var(--leading-snug);
+  font-weight: var(--font-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--primary-color);
+}
+
+.heading-5 {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  line-height: var(--leading-normal);
+  font-weight: var(--font-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--primary-color);
+}
+
+.heading-6 {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  line-height: var(--leading-normal);
+  font-weight: var(--font-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--primary-color);
+}
+
+/* Body Text Classes */
+.body-large {
+  font-family: var(--font-sans);
+  font-size: var(--text-lg);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--font-normal);
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-dark);
+}
+
+.body-default {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--font-normal);
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-dark);
+}
+
+.body-small {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  font-weight: var(--font-normal);
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-dark);
+}
+
+/* Special Text Classes */
+.text-lead {
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-dark);
+}
+
+.text-caption {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  font-weight: var(--font-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--tertiary-color);
+}
+
+.text-overline {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  font-weight: var(--font-semibold);
+  letter-spacing: var(--tracking-widest);
+  text-transform: uppercase;
+  color: var(--tertiary-color);
+}
+
+.text-quote {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  line-height: var(--leading-relaxed);
+  font-weight: var(--font-normal);
+  font-style: italic;
+  letter-spacing: var(--tracking-normal);
+  color: var(--primary-color);
+  border-left: 3px solid var(--tertiary-color);
+  padding-left: 1rem;
+}
+
+/* Text Decoration Classes */
+.text-underline {
+  position: relative;
+  display: inline-block;
+}
+
+.text-underline::after {
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--tertiary-color);
+  opacity: 0.7;
+}
+
+.text-highlight {
+  position: relative;
+  display: inline;
+  padding: 0 0.25rem;
+}
+
+.text-highlight::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background-color: var(--tertiary-color);
+  opacity: 0.2;
+  z-index: -1;
+}
+
+/* Animated Text Classes */
+.text-reveal {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.text-reveal::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--tertiary-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1s ease-out;
+}
+
+.text-reveal.visible::after {
+  transform: scaleX(1);
+}
+
+.text-fade-in {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.text-fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  .heading-1 {
+    font-size: var(--text-4xl);
+  }
+
+  .heading-2 {
+    font-size: var(--text-3xl);
+  }
+
+  .heading-3 {
+    font-size: var(--text-2xl);
+  }
+
+  .heading-4 {
+    font-size: var(--text-xl);
+  }
+
+  .heading-5 {
+    font-size: var(--text-lg);
+  }
+
+  .heading-6 {
+    font-size: var(--text-base);
+  }
+
+  .text-lead {
+    font-size: var(--text-lg);
+  }
+}
+
+/* Utility Classes */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-justify {
+  text-align: justify;
+}
+
+.text-uppercase {
+  text-transform: uppercase;
+}
+
+.text-lowercase {
+  text-transform: lowercase;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.font-sans {
+  font-family: var(--font-sans);
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+.font-light {
+  font-weight: var(--font-light);
+}
+
+.font-normal {
+  font-weight: var(--font-normal);
+}
+
+.font-medium {
+  font-weight: var(--font-medium);
+}
+
+.font-semibold {
+  font-weight: var(--font-semibold);
+}
+
+.font-bold {
+  font-weight: var(--font-bold);
+}

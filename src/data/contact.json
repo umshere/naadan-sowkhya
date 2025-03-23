@@ -1,0 +1,21 @@
+{
+    "title": "Contact Us",
+    "phone": "+91 9846981231",
+    "email": "sowkhyaproducts@gmail.com",
+    "address": "Pulikkal Plaza, Althara Road, Vadakkekad, Kerala 679562, India",
+    "whatsappLink": "https://wa.me/919846981231",
+    "callLink": "tel:9846981231",
+    "workingHours": "10AM - 7PM",
+    "location": {
+        "lat": 10.61472,
+        "lng": 76.21533
+    },
+    "socialMedia": {
+        "whatsapp": "https://wa.me/919846981231",
+        "phone": "tel:9846981231",
+        "instagram": "https://www.instagram.com/sowkhyanaturalproducts/",
+        "facebook": "https://www.facebook.com/sowkhyaproducts/",
+        "telegram": "https://t.me/sowhhyaproducts",
+        "twitter": "https://twitter.com/"
+    }
+}

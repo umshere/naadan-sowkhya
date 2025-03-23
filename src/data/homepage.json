@@ -1,0 +1,154 @@
+{
+    "slider": [
+        {
+            "id": 1,
+            "image": "/images/slider/traditional5.jpg",
+            "title": "Experience Nature's Goodness",
+            "subtitle": "Pure, Holistic, and Handpicked for You",
+            "buttonText": "Explore Products",
+            "buttonLink": "/product_category/natural-hair-care"
+        },
+        {
+            "id": 2,
+            "image": "/images/slider/traditional7-new-1-1.jpg",
+            "title": "Elevate Your Wellness",
+            "subtitle": "Natural Care & Herbal Essentials",
+            "buttonText": "Shop Now",
+            "buttonLink": "/product_category/herbal-products"
+        }
+    ],
+    "about": {
+        "title": "Pure, Natural & Free from Harsh Chemicals",
+        "description": [
+            "At NAADAN SOWKHYA, we are passionate advocates for health, sustainability, and the environment. Our journey began with a simple belief: nature provides the finest ingredients. We meticulously source them from trusted farmers and suppliers who share our values, ensuring every product is crafted with transparency, integrity, and respect for the Earth's bounty. Our mission is to deliver pure, wholesome goodness without compromise.",
+            "Whether it's nourishing skincare, wholesome foods, or eco-friendly home essentials, we uphold exceptional quality in everything we offer. More than just a company, we're a community united by a shared commitment to holistic wellness and environmental stewardship. We believe that by choosing natural products, we enrich our own lives while contributing to a healthier, more sustainable world for generations to come. Embrace the harmony between humanity and nature—join us in making a positive impact. Welcome to NAADAN SOWKHYA."
+        ],
+        "buttonText": "Read More",
+        "buttonLink": "/about-us/about-ceo",
+        "images": [
+            "/images/about/WhatsApp-Image-2024-04-30-at-09.36.46.jpeg",
+            "/images/about/IMG-20240227-WA00211.jpg"
+        ]
+    },
+    "productCategoriesSection": {
+        "title": "Our Product Categories",
+        "subtitle": "Discover our range of natural and traditional products crafted with care and authenticity.",
+        "categories": [
+            {
+                "id": "natural-hair-care",
+                "name": "Natural Hair Care",
+                "image": "/images/categories/WELLNESS.png",
+                "link": "/product_category/natural-hair-care",
+                "description": "Discover our range of natural hair care products made from traditional herbs and pure ingredients."
+            },
+            {
+                "id": "food-products",
+                "name": "Natural Food Products",
+                "image": "/images/categories/AYURVEDIC.png",
+                "link": "/product_category/food-products",
+                "description": "Experience the goodness of traditional Kerala cuisine with our natural food products."
+            },
+            {
+                "id": "natural-cosmetics",
+                "name": "Cosmetics & Herbal Products",
+                "image": "/images/categories/GLITTER.png",
+                "link": "/product_category/natural-cosmetics",
+                "description": "Our natural cosmetics line brings you the power of nature for skin care."
+            },
+            {
+                "id": "herbal-products",
+                "name": "Herbal Products",
+                "image": "/images/categories/WELLNESS.png",
+                "link": "/product_category/herbal-products",
+                "description": "Traditional herbal products crafted with age-old wisdom and therapeutic properties."
+            }
+        ]
+    },
+    "featuredProducts": [
+        "carrot-lip-balm",
+        "black-seed-oil-30ml",
+        "virgin-coconut-oil-100ml",
+        "pure-cow-ghee-200gm",
+        "lemon-grass-essential-oil-30ml",
+        "navara-rice-500gm"
+    ],
+    "testimonials": [
+        {
+            "id": 1,
+            "name": "Shemeena-Pavaratty",
+            "text": "I had a good result for Naadan Sowkhya glow oil, highly effective in reducing tan and pigmentation. Thank you. I will refer to my friends too."
+        },
+        {
+            "id": 2,
+            "name": "Sherly – Mananthavady",
+            "text": "I had migraine issues for a long time. Often, I suffer hours of pain, vomiting, and irritation. I started to use Naadan Sowkhya Black seed oil for a trial. So, I continuously used black seed oil for three months and the result was remarkable. Nowadays I feel normal and have no such migraine-related issues or symptoms. Thanks to Naadan Sowkhya for Support."
+        },
+        {
+            "id": 3,
+            "name": "Vipin – Thrissur",
+            "text": "While on my official travel, I accidentally visited the Naadan Sowkhya outlet in Vadakkekad. I understood the quality of the products from the description and I personally experienced the awesome quality of natural products as well. I too have purchased the natural henna and natural indigo, which is a recommended demandable product. As per the calculation we had used the natural henna and indigo for That's also a wonderful result for natural hair colouring. l personally suggest all Naadan Sowkhya products without any mindset. Thank you Naadan Sowkhya."
+        },
+        {
+            "id": 4,
+            "name": "Vinod – Alathoor",
+            "text": "Naadan Sowkhya Cane Sugar is a best substitute for white sugar. We are using cane sugar at home."
+        }
+    ],
+    "certifications": [
+        {
+            "id": 1,
+            "image": "/images/certifications/IMG_5007.jpeg",
+            "link": "#"
+        },
+        {
+            "id": 2,
+            "image": "/images/certifications/IMG_6071.jpeg",
+            "link": "#"
+        }
+    ],
+    "gallery": {
+        "title": "Our Gallery",
+        "images": [
+            {
+                "id": 1,
+                "src": "/images/slider/traditional5.jpg",
+                "alt": "Naadan Sowkhya Product Display"
+            },
+            {
+                "id": 2,
+                "src": "/images/slider/traditional7-new-1-1.jpg",
+                "alt": "Naadan Sowkhya Natural Products"
+            },
+            {
+                "id": 3,
+                "src": "/images/products/black-seed-oil-30ml.jpg",
+                "alt": "Black Seed Oil"
+            },
+            {
+                "id": 4,
+                "src": "/images/products/carrot-lip-balm.jpeg",
+                "alt": "Carrot Lip Balm"
+            },
+            {
+                "id": 5,
+                "src": "/images/products/lemon-grass-essential-oil-30ml.jpg",
+                "alt": "Lemon Grass Essential Oil"
+            },
+            {
+                "id": 6,
+                "src": "/images/products/navara-rice-500gm.jpg",
+                "alt": "Navara Rice"
+            },
+            {
+                "id": 7,
+                "src": "/images/products/pure-cow-ghee-200gm.jpeg",
+                "alt": "Pure Cow Ghee"
+            },
+            {
+                "id": 8,
+                "src": "/images/products/virgin-coconut-oil-100ml.jpg",
+                "alt": "Virgin Coconut Oil"
+            }
+        ]
+    }
+}

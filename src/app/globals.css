@@ -1,0 +1,677 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap");
+@import "tailwindcss";
+
+:root {
+  --primary-color: #2c7a43;
+  --secondary-color: #1a4d2e;
+  --tertiary-color: #a3b899;
+  --primary-light: #e8f4ea;
+  --primary-dark: #0f3520;
+  --accent-color: #25d366;
+  --success-color: #4caf50;
+  --error-color: #f44336;
+  --warning-color: #ffc107;
+  --background: #ffffff;
+  --foreground: #171717;
+  --text-light: #ffffff;
+  --text-dark: #0f3520;
+  --natural-light: #f4f7ed;
+  --natural-dark: #2c3e2d;
+  --border-color: #e5e5e5;
+  --font-primary: "Poppins", sans-serif;
+  --font-secondary: "Playfair Display", Georgia, serif;
+}
+
+@layer base {
+  body {
+    @apply bg-white text-[var(--text-dark)] font-[var(--font-primary)] overflow-x-hidden leading-relaxed;
+    background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30,50 Q40,30 50,50 Q60,70 70,50' stroke='%232A6D3C' stroke-width='1' fill='none' opacity='0.05'/%3E%3Cpath d='M20,30 Q30,10 40,30 Q50,50 60,30' stroke='%232A6D3C' stroke-width='1' fill='none' opacity='0.05'/%3E%3Cpath d='M50,80 Q60,60 70,80 Q80,100 90,80' stroke='%232A6D3C' stroke-width='1' fill='none' opacity='0.05'/%3E%3Cpath d='M10,70 Q20,50 30,70 Q40,90 50,70' stroke='%232A6D3C' stroke-width='1' fill='none' opacity='0.05'/%3E%3Cpath d='M25,25 C30,20 35,20 40,25 C35,30 30,30 25,25 Z' fill='%232A6D3C' opacity='0.03'/%3E%3Cpath d='M65,45 C70,40 75,40 80,45 C75,50 70,50 65,45 Z' fill='%232A6D3C' opacity='0.03'/%3E%3Cpath d='M15,65 C20,60 25,60 30,65 C25,70 20,70 15,65 Z' fill='%232A6D3C' opacity='0.03'/%3E%3Cpath d='M55,85 C60,80 65,80 70,85 C65,90 60,90 55,85 Z' fill='%232A6D3C' opacity='0.03'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    background-size: 300px;
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold text-[var(--primary-color)] font-serif tracking-wider;
+  }
+
+  .container {
+    @apply max-w-7xl mx-auto px-4;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 rounded-md
+           bg-[var(--primary-color)] text-white font-semibold tracking-wider
+           transition-all duration-300 ease-in-out relative overflow-hidden
+           hover:bg-[var(--secondary-color)] hover:shadow-lg
+           focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)];
+    &::before {
+      content: "";
+      @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+    }
+    &:hover::before {
+      @apply opacity-10;
+    }
+  }
+
+  .btn-secondary {
+    @apply bg-[var(--secondary-color)] hover:bg-[var(--primary-color)];
+  }
+
+  .btn-accent {
+    @apply bg-[var(--accent-color)] hover:bg-[#20b355];
+  }
+
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-center mb-12 text-[var(--primary-color)] relative font-serif tracking-wider;
+    padding-bottom: 1rem;
+  }
+
+  .section-title::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: var(--tertiary-color);
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300;
+    border: 1px solid var(--border-color);
+  }
+
+  .card:hover {
+    @apply shadow-lg;
+    transform: translateY(-5px);
+  }
+
+  /* New Typography Classes */
+  .heading-serif {
+    @apply font-serif tracking-wider text-[var(--primary-color)];
+  }
+
+  .heading-large {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold leading-tight;
+  }
+
+  .heading-medium {
+    @apply text-3xl md:text-4xl font-bold leading-tight;
+  }
+
+  .heading-small {
+    @apply text-2xl md:text-3xl font-bold leading-tight;
+  }
+
+  .body-text {
+    @apply text-base leading-relaxed text-[var(--text-dark)];
+  }
+
+  .body-large {
+    @apply text-lg leading-relaxed text-[var(--text-dark)];
+  }
+
+  .body-small {
+    @apply text-sm leading-relaxed text-[var(--text-dark)];
+  }
+
+  .text-accent {
+    @apply text-[var(--tertiary-color)];
+  }
+
+  .text-highlight {
+    @apply relative inline-block;
+    &::after {
+      content: "";
+      @apply absolute bottom-0 left-0 w-full h-[3px] bg-[var(--tertiary-color)] opacity-70;
+    }
+  }
+
+  .herbal-bg-pattern {
+    background-color: var(--natural-light);
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M54.627 0l.83.828-1.415 1.415L51.8 0h2.827zM5.373 0l-.83.828L5.96 2.243 8.2 0H5.374zM48.97 0l3.657 3.657-1.414 1.414L46.143 0h2.828zM11.03 0L7.372 3.657 8.787 5.07 13.857 0H11.03zm32.284 0L49.8 6.485 48.384 7.9l-7.9-7.9h2.83zM16.686 0L10.2 6.485 11.616 7.9l7.9-7.9h-2.83zm20.97 0l9.315 9.314-1.414 1.414L34.828 0h2.83zM22.344 0L13.03 9.314l1.414 1.414L25.172 0h-2.83zM32 0l12.142 12.142-1.414 1.414L30 .828 17.272 13.556l-1.414-1.414L28 0h4zM.284 0l28 28-1.414 1.414L0 2.544v2.83L25.456 30l-1.414 1.414L0 7.97v2.828L22.627 30l-1.414 1.414L0 13.398v2.827L19.8 30l-1.414 1.414L0 18.827v2.83L16.97 30l-1.414 1.414L0 24.255v2.828L14.142 30l-1.414 1.414L0 29.683v2.83L8.485 30 7.07 31.414 0 35.112v2.83L4.343 30 2.93 31.414 0 40.54v2.83L1.515 30 .1 31.414 0 45.97v2.828L4.142 30 2.727 31.414 0 51.398v2.827L7.8 30 6.384 31.414 0 56.826v2.83L10.97 30 9.555 31.414 0 62.254V60h60v2.255L50.442 31.415 49.026 30 60 2.254v2.83L47.8 30l-1.415-1.414L60 7.97v2.828L44.97 30l-1.414-1.414L60 13.4v2.827L42.142 30l-1.414-1.414L60 18.83v2.83L39.314 30l-1.414-1.414L60 24.257v2.828L36.485 30l-1.414-1.414L60 29.684v2.83L33.657 30l-1.414-1.414L60 35.114v2.83L30.828 30l-1.414 1.415L60 40.542v2.83L28 30l-1.414 1.414L60 45.97v2.83L25.172 30l-1.415 1.414L60 51.4v2.827L22.344 30 20.93 31.414 60 56.828v2.83L19.515 30l-1.414 1.414L60 62.255V0H0zM60 0L0 60h60V0z' fill='%232A6D3C' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+  }
+
+  .leaf-bg-pattern {
+    background-color: var(--natural-light);
+    background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232A6D3C' fill-opacity='0.1'%3E%3Cpath d='M0 40 C20 20, 40 0, 60 20 C40 40, 20 60, 0 40 Z'/%3E%3Cpath d='M40 80 C60 60, 80 40, 60 20 C40 40, 20 60, 40 80 Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  /* Enhanced Organic Patterns */
+  .organic-texture {
+    background-color: var(--primary-light);
+    background-image: url("/images/backgrounds/subtle-leaf-bg.svg");
+    background-size: 300px;
+    background-repeat: repeat;
+    opacity: 0.15;
+  }
+
+  /* Parallax Effect */
+  .parallax-container {
+    @apply relative overflow-hidden;
+  }
+
+  .parallax-element {
+    @apply absolute transition-transform duration-1000 ease-out;
+    transform: translateY(var(--parallax-translate, 0));
+  }
+}
+
+/* Hero Slider Animations */
+.slide-enter {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+.slide-enter-active {
+  transform: translateX(0%);
+  opacity: 1;
+  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 1000ms ease-out; /* Changed from 700ms to 1000ms and improved easing */
+}
+
+.slide-exit {
+  transform: translateX(0%);
+  opacity: 1;
+}
+
+.slide-exit-active {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 1000ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 1000ms ease-out; /* Changed from 700ms to 1000ms and improved easing */
+}
+
+/* Leaf Animation */
+@keyframes floatLeaf {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(5px, -5px) rotate(5deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+}
+
+.floating-leaf {
+  animation: floatLeaf 8s ease-in-out infinite; /* Increased from 6s to 8s */
+}
+
+.floating-leaf-reverse {
+  animation: floatLeaf 10s ease-in-out infinite reverse; /* Increased from 7s to 10s */
+}
+
+.floating-leaf-slow {
+  animation: floatLeaf 15s ease-in-out infinite; /* Increased from 10s to 15s */
+}
+
+/* Content Animations */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.stagger-fade > * {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.stagger-fade.visible > * {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.stagger-fade.visible > *:nth-child(1) {
+  transition-delay: 0.1s;
+}
+.stagger-fade.visible > *:nth-child(2) {
+  transition-delay: 0.2s;
+}
+.stagger-fade.visible > *:nth-child(3) {
+  transition-delay: 0.3s;
+}
+.stagger-fade.visible > *:nth-child(4) {
+  transition-delay: 0.4s;
+}
+.stagger-fade.visible > *:nth-child(5) {
+  transition-delay: 0.5s;
+}
+
+/* Text Reveal Animation */
+@keyframes textReveal {
+  0% {
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.text-reveal-line {
+  position: relative;
+  display: inline-block;
+}
+
+.text-reveal-line::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--tertiary-color);
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+.text-reveal-line.visible::after {
+  animation: textReveal 1.5s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; /* Changed from 1s to 1.5s and improved easing */
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition: transform 0.3s ease-in-out;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+}
+
+/* Enhanced Button Hover Effect */
+.btn-elegant {
+  @apply relative overflow-hidden bg-[var(--primary-color)] text-white px-8 py-3 rounded-md 
+         font-semibold tracking-wider transition-all duration-300 border border-transparent;
+}
+
+.btn-elegant::before {
+  content: "";
+  @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-300;
+}
+
+.btn-elegant:hover {
+  @apply bg-[var(--secondary-color)] shadow-lg border-[var(--tertiary-color)];
+  border-opacity: 0.3; /* Changed from border-opacity-30 to standard CSS */
+}
+
+.btn-elegant:hover::before {
+  @apply opacity-10;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--natural-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary-color);
+}
+
+/* Image Loading States */
+.image-loading {
+  @apply relative overflow-hidden bg-[var(--natural-light)];
+}
+
+.image-loading::after {
+  content: "";
+  @apply absolute inset-0 -translate-x-full;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Responsive Typography */
+@media (max-width: 768px) {
+  h1 {
+    @apply text-3xl font-serif tracking-wider;
+  }
+  h2 {
+    @apply text-2xl font-serif tracking-wider;
+  }
+  h3 {
+    @apply text-xl font-serif tracking-wider;
+  }
+  .btn {
+    @apply px-4 py-2 text-sm;
+  }
+}
+
+@media (min-width: 769px) {
+  h1 {
+    @apply text-4xl md:text-5xl font-serif tracking-wider;
+  }
+  h2 {
+    @apply text-3xl md:text-4xl font-serif tracking-wider;
+  }
+  h3 {
+    @apply text-2xl md:text-3xl font-serif tracking-wider;
+  }
+}
+
+/* Hero Slider Animations - Modern Fade Transitions */
+@keyframes fadeInZoom {
+  0% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOutZoom {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.05);
+  }
+}
+
+.fade-in-zoom {
+  animation: fadeInZoom 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.fade-out-zoom {
+  animation: fadeOutZoom 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Replace old slide animations */
+.slide-enter,
+.slide-exit,
+.slide-enter-active,
+.slide-exit-active {
+  display: none; /* Disable old slide animations */
+}
+
+/* Organic Slider Transitions - Nature-inspired animations for herbal products */
+.leaf-transition-mask {
+  position: absolute;
+  inset: 0;
+  transform-origin: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  mix-blend-mode: overlay;
+  z-index: 50;
+}
+
+.leaf-transition-mask.idle {
+  opacity: 0;
+}
+
+.leaf-transition-mask.growing svg {
+  transform: scale(0);
+  animation: leafGrowth 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.leaf-transition-mask.revealing svg {
+  transform: scale(3.5);
+  animation: leafReveal 1.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.leaf-transition-mask.complete svg {
+  transform: scale(5);
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+@keyframes leafGrowth {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(3.5);
+    opacity: 1;
+  }
+}
+
+@keyframes leafReveal {
+  0% {
+    transform: scale(3.5);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(5);
+    opacity: 0;
+  }
+}
+
+.leaf-growth-path {
+  transform-origin: center;
+  transform: scale(0);
+  opacity: 0;
+}
+
+.leaf-transition-mask.growing .leaf-growth-path {
+  animation: pathGrow 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.leaf-transition-mask.revealing .leaf-growth-path {
+  animation: pathReveal 1.5s ease-out forwards;
+}
+
+@keyframes pathGrow {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotate(5deg);
+    opacity: 1;
+  }
+}
+
+@keyframes pathReveal {
+  0% {
+    transform: scale(1) rotate(5deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5) rotate(10deg);
+    opacity: 0;
+  }
+}
+
+.delay-100 {
+  animation-delay: 0.1s !important;
+}
+
+.delay-200 {
+  animation-delay: 0.2s !important;
+}
+
+/* Organic content reveal animations */
+.organic-content-reveal {
+  overflow: hidden;
+}
+
+.organic-stagger-item {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1.2s ease-out,
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.organic-stagger-item.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.organic-stagger-item:nth-child(1).revealed {
+  transition-delay: 0.2s;
+}
+
+.organic-stagger-item:nth-child(2).revealed {
+  transition-delay: 0.4s;
+}
+
+.organic-stagger-item:nth-child(3).revealed {
+  transition-delay: 0.6s;
+}
+
+.organic-stagger-item:nth-child(4).revealed {
+  transition-delay: 0.8s;
+}
+
+.organic-text-reveal {
+  position: relative;
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px) scale(0.96);
+  transition: opacity 1.2s ease-out,
+    transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: 0.4s;
+}
+
+.organic-text-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.organic-underline {
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: var(--tertiary-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+  transition-delay: 0.8s;
+}
+
+.organic-text-reveal.revealed .organic-underline {
+  transform: scaleX(1);
+}
+
+/* Organic button with growth animation */
+.organic-button {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--primary-color);
+  color: white;
+  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid transparent;
+  transform: translateY(30px);
+  opacity: 0;
+}
+
+.organic-button-bg {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    135deg,
+    var(--primary-color),
+    var(--secondary-color)
+  );
+  z-index: -1;
+  transition: all 0.5s ease-out;
+}
+
+.organic-button-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--tertiary-color);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.organic-button.revealed {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.6s;
+}
+
+.organic-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  border-color: var(--tertiary-color);
+  border-opacity: 0.3;
+}
+
+.organic-button:hover .organic-button-bg {
+  opacity: 0.9;
+}
+
+.organic-button:hover .organic-button-highlight {
+  transform: scaleX(1);
+}
+
+/* Organic ripple overlay for more natural texture */
+.organic-ripple-overlay {
+  background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50,20 Q60,10 70,20 T90,20 T100,30 T90,40 T70,40 T50,50 T30,40 T10,40 T0,30 T10,20 T30,20 T50,20 Z' fill='%232c7a43' fill-opacity='0.1'/%3E%3C/svg%3E");
+  background-size: 100px;
+  animation: rippleBackground 70s linear infinite;
+}
+
+@keyframes rippleBackground {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 1000px 1000px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}

@@ -1,0 +1,82 @@
+{
+    "products": [
+        {
+            "id": "black-seed-oil-30ml",
+            "name": "Black Seed Oil (Pure & Original)",
+            "slug": "black-seed-oil-30ml",
+            "category": "natural-hair-care",
+            "image": "/images/products/black-seed-oil-30ml.jpg",
+            "price": "270",
+            "currency": "Rs",
+            "description": "Black Seed Oil is extracted from the seeds of Nigella sativa, a plant native to southwest Asia. The oil is commonly used in cooking and has been used in traditional medicine for centuries.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Black%20Seed%20Oil%20(Pure%20&%20Original)"
+        },
+        {
+            "id": "virgin-coconut-oil-100ml",
+            "name": "Virgin Coconut Oil 100ml",
+            "slug": "virgin-coconut-oil-100ml",
+            "category": "natural-hair-care",
+            "image": "/images/products/virgin-coconut-oil-100ml.jpg",
+            "price": "270",
+            "currency": "Rs",
+            "description": "Virgin Coconut Oil is extracted from fresh coconut meat without using high temperatures or chemicals. It retains the natural scent and taste of coconut.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Virgin%20Coconut%20Oil%20100ml"
+        },
+        {
+            "id": "natural-indigo-60gm",
+            "name": "Natural Indigo Powder",
+            "slug": "natural-indigo-60gm",
+            "category": "natural-hair-care",
+            "image": "/images/products/natural-indigo-60gm.jpg",
+            "price": "100",
+            "currency": "Rs",
+            "description": "Natural Indigo Powder is made from the leaves of the indigo plant. It is used as a natural hair dye and gives a blue-black color to hair.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Indigo%20Powder"
+        },
+        {
+            "id": "shampoo-natural",
+            "name": "Shampoo Natural 100ml",
+            "slug": "shampoo-natural-100ml",
+            "category": "natural-hair-care",
+            "image": "/images/products/shampoo-natural-100ml.jpg",
+            "price": "179",
+            "currency": "Rs",
+            "description": "Natural shampoo made with herbal ingredients for healthy hair care.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Shampoo%20Natural%20100ml"
+        },
+        {
+            "id": "natural-herbal-dye",
+            "name": "Natural Herbal Dye (Hair Dye)",
+            "slug": "natural-herbal-dye-90gm",
+            "category": "natural-hair-care",
+            "image": "/images/products/natural-herbal-dye-90gm.jpg",
+            "price": "150",
+            "currency": "Rs",
+            "description": "Natural hair dye made from herbal ingredients, safe and gentle on hair.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Herbal%20Dye%20(Hair%20Dye)"
+        },
+        {
+            "id": "carrot-oil",
+            "name": "Carrot Oil",
+            "slug": "carrot-oil",
+            "category": "natural-hair-care",
+            "image": "/images/products/carrot-oil.jpg",
+            "price": "390",
+            "currency": "Rs",
+            "description": "Natural carrot oil for hair growth and nourishment.",
+            "benefits": "",
+            "ingredients": "",
+            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Carrot%20Oil"
+        }
+    ]
+}

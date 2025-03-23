@@ -1,0 +1,32 @@
+{
+    "categories": [
+        {
+            "id": "natural-hair-care",
+            "name": "Natural Hair Care",
+            "slug": "natural-hair-care",
+            "image": "/images/categories/WELLNESS.png",
+            "description": "Discover our range of natural hair care products made from traditional herbs and pure ingredients. From oils to shampoos, each product is crafted to nourish and strengthen your hair naturally."
+        },
+        {
+            "id": "food-products",
+            "name": "Natural Food Products",
+            "slug": "food-products",
+            "image": "/images/categories/AYURVEDIC.png",
+            "description": "Experience the goodness of traditional Kerala cuisine with our natural food products. From pure honey to organic rice varieties, each product is carefully sourced and processed to maintain its authentic taste and nutritional value."
+        },
+        {
+            "id": "natural-cosmetics",
+            "name": "Cosmetics & Herbal Products",
+            "slug": "natural-cosmetics",
+            "image": "/images/categories/GLITTER.png",
+            "description": "Our natural cosmetics line brings you the power of nature for skin care. Made with pure ingredients and traditional formulations, these products help enhance your natural beauty without harmful chemicals."
+        },
+        {
+            "id": "herbal-products",
+            "name": "Herbal Products",
+            "slug": "herbal-products",
+            "image": "/images/categories/WELLNESS.png",
+            "description": "Traditional herbal products crafted with age-old wisdom. Each product in our herbal range is made using carefully selected herbs known for their therapeutic properties and health benefits."
+        }
+    ]
+}

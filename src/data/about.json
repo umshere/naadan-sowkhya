@@ -1,0 +1,15 @@
+{
+    "mission": {
+        "title": "Mission",
+        "description": "Our NAADAN SOWKHYA mission is to offer customers the best quality products, without artificial preservatives, colours or flavours and provide pure products at reasonable prices."
+    },
+    "vision": {
+        "title": "Vision",
+        "description": "Our vision is to provide Personalized and Preventive Nutrition at the cellular level for each individual to focus on their physical, Mental, and Social Health."
+    },
+    "founder": {
+        "name": "Ahmed Bin Hamza",
+        "image": "/images/about/ahmed-web-dp.jpg",
+        "description": "Ahmed Bin Hamza, an Entrepreneur, Palliative Volunteer, and a Traveler. Professionally a business man and post graduated in Master of Business Administration from Calicut University in 2009. Later Worked for Saipem Angola – Africa, and resigned from Saipem Africa and started first business building budget villas. Completed villa projects in 2017 and started the new beginning of non-preservative food and non-chemical products.\n\nHave started to travel and connect with organic farmers and manufacturers to establish a new business model based on responsible economic, social and environmental principles and fair trade-based farmer support. Since 2017 entry into the natural food and herbal products industry, Now NAADAN SOWKHYA selling natural products in different countries of world, India, Malaysia, United Arab Emirates etc."
+    }
+}
