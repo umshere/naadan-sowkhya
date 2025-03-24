@@ -33,7 +33,7 @@
 
 @layer base {
   html {
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
     touch-action: manipulation;
     width: 100%;
     position: relative;
