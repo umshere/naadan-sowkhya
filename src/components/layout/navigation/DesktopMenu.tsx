@@ -13,7 +13,7 @@ export const DesktopMenu = ({ menuItems }: DesktopMenuProps) => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
   return (
-    <ul className="hidden lg:flex items-center space-x-10">
+    <ul className="hidden lg:flex items-center space-x-12">
       {menuItems.map((item) => (
         <li 
           key={item.name} 
@@ -24,11 +24,11 @@ export const DesktopMenu = ({ menuItems }: DesktopMenuProps) => {
           {item.submenu ? (
             <div className="relative">
               <button
-                className="flex items-center space-x-1.5 font-medium text-white hover:text-gray-200 transition-colors duration-300 py-2 group"
+                className="flex items-center space-x-2 font-medium text-white hover:text-white transition-colors duration-300 py-3 text-lg group"
               >
-                <span>{item.name}</span>
+                <span className="border-b-2 border-transparent group-hover:border-white transition-all duration-300">{item.name}</span>
                 <svg 
-                  className="w-4 h-4 transform transition-transform duration-200 group-hover:translate-y-0.5" 
+                  className="w-5 h-5 transform transition-transform duration-200 group-hover:translate-y-0.5" 
                   fill="none" 
                   viewBox="0 0 24 24" 
                   stroke="currentColor"
@@ -40,7 +40,7 @@ export const DesktopMenu = ({ menuItems }: DesktopMenuProps) => {
               <AnimatePresence>
                 {activeDropdown === item.name && (
                   <motion.div 
-                    className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-56 z-50"
+                    className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-64 z-50"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
@@ -51,7 +51,7 @@ export const DesktopMenu = ({ menuItems }: DesktopMenuProps) => {
                         <Link
                           key={subItem.name}
                           href={subItem.href}
-                          className="block px-4 py-2.5 text-gray-700 hover:text-[var(--primary-color)] hover:bg-gray-50 transition-colors text-sm"
+                          className="block px-6 py-3 text-gray-700 hover:text-[var(--primary-color)] hover:bg-gray-50 transition-colors text-base"
                         >
                           {subItem.name}
                         </Link>
@@ -64,10 +64,9 @@ export const DesktopMenu = ({ menuItems }: DesktopMenuProps) => {
           ) : (
             <Link
               href={item.href}
-              className="inline-block font-medium text-white hover:text-gray-200 transition-colors duration-300 py-2 relative group"
+              className="inline-block font-medium text-white hover:text-white transition-colors duration-300 py-3 text-lg relative group"
             >
-              {item.name}
-              <span className="absolute bottom-1.5 left-0 w-full h-0.5 bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300" />
+              <span className="border-b-2 border-transparent group-hover:border-white transition-all duration-300">{item.name}</span>
             </Link>
           )}
         </li>

@@ -8,11 +8,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        "primary-color": "#2C7A43", // Refined, more vibrant green
-        "secondary-color": "#1A4D2E", // Deeper, more sophisticated dark green
-        "tertiary-color": "#A3B899", // Softer, more elegant sage green
-        "primary-light": "#E8F4EA", // Very light green for backgrounds
-        "primary-dark": "#0F3520", // Very dark green for text contrast
+        "primary-color": "var(--primary-color)",
+        "secondary-color": "var(--secondary-color)",
+        "tertiary-color": "var(--tertiary-color)",
+        "primary-light": "var(--primary-light)",
+        "primary-dark": "var(--primary-dark)",
         "accent-color": "#25D366",
         "natural-light": "#F4F7ED", // Light background color
         "natural-dark": "#2C3E2D", // Very dark green for text
@@ -45,5 +45,15 @@ module.exports = {
       },
     },
   },
-  plugins: [require("@tailwindcss/forms")], // Re-added the @tailwindcss/forms plugin
+  plugins: [
+    require("@tailwindcss/forms"),
+    function({ addUtilities }) {
+      const newUtilities = {
+        ".text-white\\!": {
+          color: "white !important",
+        },
+      };
+      addUtilities(newUtilities, ["responsive", "hover"]);
+    },
+  ],
 };

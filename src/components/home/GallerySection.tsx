@@ -83,8 +83,7 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
   };
 
   return (
-    <section ref={sectionRef} className="py-16 relative overflow-hidden">
-      {/* Leaf Pattern Background */}
+    <section ref={sectionRef} className="py-8 relative overflow-hidden">
       <motion.div 
         className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"
         initial={{ opacity: 0 }}
@@ -93,27 +92,16 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
       />
       
       <div className="container mx-auto px-4 relative">
-        {/* Section Title */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">{title}</h2>
-          <div className="w-24 h-1 bg-green-600 mx-auto mb-6"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto mb-8">
-            Explore our gallery showcasing our products, events, and manufacturing process
-          </p>
-          <Link 
-            href="/gallery"
-            className="inline-block px-6 py-3 bg-green-600 text-white rounded-lg
-              transform transition-all duration-300 hover:scale-105 hover:bg-green-700
-              shadow-md hover:shadow-lg"
+        {title && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isVisible ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-8"
           >
-            View Full Gallery
-          </Link>
-        </motion.div>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary-color">{title}</h2>
+          </motion.div>
+        )}
 
         {/* Thumbnail Grid */}
         <motion.div
@@ -166,7 +154,7 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        className="h-6 w-6"
+                        className="h-6 w-6 text-white"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -178,7 +166,7 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
                       initial={{ y: 10, opacity: 0 }}
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 0.2 }}
-                      className="text-sm font-medium"
+                      className="text-sm font-medium text-white"
                     >
                       {image.alt}
                     </motion.p>
@@ -203,7 +191,7 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
               {/* Close Button */}
               <button
                 onClick={closeLightbox}
-                className="absolute -top-12 right-0 text-white hover:text-gray-300 focus:outline-none"
+                className="absolute -top-12 right-0 text-primary-color hover:text-gray-700 focus:outline-none"
                 aria-label="Close lightbox"
               >
                 <svg
@@ -228,8 +216,8 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
                   priority
                 />
                 {/* Image Caption */}
-                <div className="absolute bottom-4 left-4 right-4 text-white text-center bg-black/60 p-3 rounded-lg">
-                  {selectedImage.alt}
+                <div className="absolute bottom-4 left-4 right-4 text-primary-color text-center bg-black/60 p-3 rounded-lg">
+                  <span className="text-white">{selectedImage.alt}</span>
                 </div>
               </div>
 
@@ -237,7 +225,7 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
               <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-8">
                 <button
                   onClick={goToPrevious}
-                  className="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-3 focus:outline-none transition-all hover:scale-110"
+                  className="bg-white/20 hover:bg-white/30 rounded-full p-3 focus:outline-none transition-all hover:scale-110"
                   aria-label="Previous image"
                 >
                   <svg
@@ -254,7 +242,7 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
               <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-8">
                 <button
                   onClick={goToNext}
-                  className="bg-white bg-opacity-20 hover:bg-opacity-30 rounded-full p-3 focus:outline-none transition-all hover:scale-110"
+                  className="bg-white/20 hover:bg-white/30 rounded-full p-3 focus:outline-none transition-all hover:scale-110"
                   aria-label="Next image"
                 >
                   <svg
