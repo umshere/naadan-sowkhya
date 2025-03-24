@@ -7,23 +7,39 @@ import { FaWhatsapp, FaPhone, FaEnvelope, FaTimes } from 'react-icons/fa';
 const FloatingButtons = () => {
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 1500);
-    return () => clearTimeout(timer);
+    
+    // Handle scroll for minimizing buttons
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      setIsMinimized(scrollY > 100);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const toggleEnquiry = () => {
     setIsEnquiryOpen(!isEnquiryOpen);
   };
 
-  const buttonStyles = "flex items-center justify-center w-14 h-14 rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-xl";
+  const buttonStyles = `flex items-center justify-center rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-xl ${
+    isMinimized ? 'w-10 h-10 md:w-14 md:h-14 opacity-70 hover:opacity-100' : 'w-14 h-14'
+  }`;
 
   return (
     <>
-      <div className="fixed bottom-6 right-6 z-50 flex flex-col space-y-4">
+      <div className={`fixed bottom-6 z-50 flex flex-col space-y-4 transition-all duration-300 ${
+        isMinimized ? 'right-2 md:right-6' : 'right-6'
+      }`}>
         <AnimatePresence>
           {isVisible && (
             <>
@@ -32,40 +48,40 @@ const FloatingButtons = () => {
                 href="https://wa.me/919846981231"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`${buttonStyles} bg-[#25D366]`}
+                className={`${buttonStyles} bg-[#25D366] group`}
                 aria-label="Contact us on WhatsApp"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
                 whileHover={{ scale: 1.1 }}
               >
-                <FaWhatsapp size={28} color="white" />
+                <FaWhatsapp size={isMinimized ? 20 : 28} color="white" className="transition-transform group-hover:scale-110" />
               </motion.a>
 
               {/* Call Button */}
               <motion.a
                 href="tel:9846981231"
-                className={`${buttonStyles} bg-[#4CAF50]`}
+                className={`${buttonStyles} bg-[#4CAF50] group`}
                 aria-label="Call us"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 whileHover={{ scale: 1.1 }}
               >
-                <FaPhone size={28} color="white" />
+                <FaPhone size={isMinimized ? 20 : 28} color="white" className="transition-transform group-hover:scale-110" />
               </motion.a>
 
               {/* Enquiry Button */}
               <motion.button
                 onClick={toggleEnquiry}
-                className={`${buttonStyles} bg-[#2196F3]`}
+                className={`${buttonStyles} bg-[#2196F3] group`}
                 aria-label="Send an enquiry"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
                 whileHover={{ scale: 1.1 }}
               >
-                <FaEnvelope size={28} color="white" />
+                <FaEnvelope size={isMinimized ? 20 : 28} color="white" className="transition-transform group-hover:scale-110" />
               </motion.button>
             </>
           )}

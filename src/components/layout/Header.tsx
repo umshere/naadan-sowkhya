@@ -11,16 +11,21 @@ import { menuItems } from '@/data/menuItems';
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrollingUp, setIsScrollingUp] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      const currentScrollY = window.scrollY;
+      setIsScrolled(currentScrollY > 20);
+      setIsScrollingUp(currentScrollY < lastScrollY || currentScrollY <= 0);
+      setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [lastScrollY]);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -46,19 +51,23 @@ export const Header = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50">
-      <TopBar />
+    <div className={`fixed top-0 left-0 right-0 z-50 transform transition-transform duration-300 
+      ${!isScrollingUp && !isMenuOpen ? '-translate-y-full' : 'translate-y-0'}
+    `}>
+      <div className={`transition-opacity duration-300 ${isScrolled ? 'opacity-0 h-0' : 'opacity-100'}`}>
+        <TopBar />
+      </div>
       
-      <header className={`bg-black transition-all duration-300 ${
-        isScrolled ? 'py-2' : 'py-4'
+      <header className={`bg-black bg-opacity-95 backdrop-blur-sm transition-all duration-300 ${
+        isScrolled ? 'py-2 shadow-lg' : 'py-4'
       }`}>
         <div className="container mx-auto px-4 max-w-7xl">
           <nav className="flex items-center justify-between">
             {/* Logo */}
             <Link 
               href="/" 
-              className={`relative flex items-center transition-transform duration-300 ${
-                isScrolled ? 'scale-90' : 'scale-100'
+              className={`relative flex items-center transition-all duration-300 ${
+                isScrolled ? 'scale-[0.85]' : 'scale-100'
               }`}
             >
               <Image 
@@ -66,7 +75,7 @@ export const Header = () => {
                 alt="Naadan Sowkhya"
                 width={400}
                 height={78}
-                className="w-[180px] sm:w-[220px] md:w-[280px] h-auto object-contain"
+                className="w-[140px] sm:w-[180px] md:w-[220px] lg:w-[280px] h-auto object-contain"
                 priority
               />
             </Link>
@@ -78,25 +87,21 @@ export const Header = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2 rounded-md hover:bg-white/10 transition-colors"
+              className="lg:hidden p-2 -mr-2 rounded-md hover:bg-white/10 transition-colors"
               onClick={toggleMenu}
               aria-label="Toggle menu"
             >
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                {isMenuOpen ? (
-                  <path d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
+              <div className="relative w-6 h-5">
+                <span className={`absolute left-0 top-0 w-full h-0.5 bg-white transform transition-all duration-300 ${
+                  isMenuOpen ? 'rotate-45 top-2' : ''
+                }`} />
+                <span className={`absolute left-0 top-2 w-full h-0.5 bg-white transition-all duration-200 ${
+                  isMenuOpen ? 'opacity-0' : ''
+                }`} />
+                <span className={`absolute left-0 bottom-0 w-full h-0.5 bg-white transform transition-all duration-300 ${
+                  isMenuOpen ? '-rotate-45 top-2' : ''
+                }`} />
+              </div>
             </button>
 
             {/* Mobile Menu */}

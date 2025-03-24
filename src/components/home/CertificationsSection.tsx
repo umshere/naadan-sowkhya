@@ -19,6 +19,8 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
   const [isVisible, setIsVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedCertification, setSelectedCertification] = useState<Certification | null>(null);
+  const [imagesPreloaded, setImagesPreloaded] = useState(false);
+  const [imageErrors, setImageErrors] = useState<{ [key: string]: boolean }>({});
   const sectionRef = useRef<HTMLElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
@@ -43,6 +45,30 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
 
     return () => observer.disconnect();
   }, []);
+
+  // Preload images
+  useEffect(() => {
+    const preloadImages = async () => {
+      const imagePromises = certifications.map((cert) => {
+        return new Promise((resolve, reject) => {
+          const img = new window.Image(280, 380); // Specify width and height
+          img.src = cert.image;
+          img.onload = resolve;
+          img.onerror = reject;
+        });
+      });
+
+      try {
+        await Promise.all(imagePromises);
+        setImagesPreloaded(true);
+      } catch (error) {
+        console.error('Error preloading images:', error);
+        setImagesPreloaded(true); // Still set to true to allow rendering
+      }
+    };
+
+    preloadImages();
+  }, [certifications]);
 
   // Create a larger pool of certifications for the carousel
   const allCertifications = [...certifications, ...certifications, ...certifications];
@@ -70,8 +96,10 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
     return () => clearInterval(interval);
   }, [isVisible]);
 
-  // Calculate which items to display
+  // Calculate which items to display with improved smoothness
   const getVisibleCertifications = () => {
+    if (!imagesPreloaded) return [];
+    
     const result = [];
     const itemCount = allCertifications.length;
     
@@ -95,6 +123,13 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
   // Close modal
   const closeModal = () => {
     setSelectedCertification(null);
+  };
+
+  const handleImageError = (certId: number) => {
+    setImageErrors(prev => ({
+      ...prev,
+      [certId]: true
+    }));
   };
 
   return (
@@ -142,39 +177,63 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
           
           {/* Carousel */}
           <div ref={carouselRef} className="relative h-[450px] flex justify-center items-center">
-            {getVisibleCertifications().map(({ cert, position }, index) => (
-              <motion.a
-                key={`${cert.id}-${index}`}
-                href={cert.link}
-                className="absolute"
-                initial={false}
-                animate={{
-                  x: position * 320,
-                  scale: position === 0 ? 1 : 0.8,
-                  zIndex: position === 0 ? 10 : 5 - Math.abs(position),
-                  opacity: Math.abs(position) > 2 ? 0 : 1 - Math.abs(position) * 0.2
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                onClick={(e) => handleCertificationClick(cert, e)}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div className={`relative w-[280px] h-[380px] bg-white rounded-xl overflow-hidden
-                  ${position === 0 ? 'shadow-2xl border-2 border-green-500' : 'shadow-lg'}
-                  transition-all duration-300 hover:shadow-xl cursor-pointer`}
+            <AnimatePresence mode="popLayout">
+              {getVisibleCertifications().map(({ cert, position }, index) => (
+                <motion.a
+                  key={`${cert.id}-${position}`}
+                  href={cert.link}
+                  className="absolute"
+                  initial={{ 
+                    x: position * 320,
+                    scale: 0.8,
+                    opacity: 0 
+                  }}
+                  animate={{
+                    x: position * 320,
+                    scale: position === 0 ? 1 : 0.8,
+                    zIndex: position === 0 ? 10 : 5 - Math.abs(position),
+                    opacity: Math.abs(position) > 2 ? 0 : 1 - Math.abs(position) * 0.2
+                  }}
+                  exit={{ 
+                    scale: 0.8,
+                    opacity: 0 
+                  }}
+                  transition={{ 
+                    type: "spring",
+                    stiffness: 200,
+                    damping: 25,
+                    mass: 0.5,
+                    duration: 0.5
+                  }}
+                  onClick={(e) => handleCertificationClick(cert, e)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    willChange: 'transform, opacity'
+                  }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 z-10"></div>
-                  <Image
-                    src={cert.image}
-                    alt="Certification"
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, 300px"
-                    quality={90}
-                  />
-                </div>
-              </motion.a>
-            ))}
+                  <motion.div 
+                    className={`relative w-[280px] h-[380px] bg-white rounded-xl overflow-hidden
+                      ${position === 0 ? 'shadow-2xl border-2 border-green-500' : 'shadow-lg'}
+                      transition-all duration-300 hover:shadow-xl cursor-pointer`}
+                    layoutId={`cert-${cert.id}`}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300 z-10"></div>
+                    <Image
+                      src={imageErrors[cert.id] ? '/images/placeholder.jpg' : cert.image}
+                      alt={`${cert.title} Certification`}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 300px"
+                      quality={90}
+                      priority={Math.abs(position) <= 1}
+                      loading={Math.abs(position) <= 1 ? "eager" : "lazy"}
+                      onError={() => handleImageError(cert.id)}
+                    />
+                  </motion.div>
+                </motion.a>
+              ))}
+            </AnimatePresence>
           </div>
           
           {/* Dots indicator */}
@@ -208,8 +267,20 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
             <motion.div
               className="relative bg-white rounded-xl overflow-hidden max-w-[90vw] max-h-[90vh] flex flex-col"
               initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
+              animate={{ 
+                scale: 1, 
+                opacity: 1,
+                transition: {
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 30
+                }
+              }}
+              exit={{ 
+                scale: 0.9, 
+                opacity: 0,
+                transition: { duration: 0.2 }
+              }}
               onClick={(e) => e.stopPropagation()}
             >
               <button 

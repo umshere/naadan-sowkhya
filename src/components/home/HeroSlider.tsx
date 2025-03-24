@@ -185,21 +185,21 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
 
       {/* Navigation Dots */}
       <motion.div 
-        className="absolute bottom-8 left-0 right-0 z-30"
+        className="absolute bottom-4 md:bottom-8 left-0 right-0 z-30"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.8, duration: 0.6 }}
       >
-        <div className="flex justify-center space-x-3">
+        <div className="flex justify-center space-x-2 md:space-x-3">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide
-                  ? 'bg-[var(--tertiary-color)] scale-125'
-                  : 'bg-white/50 hover:bg-[var(--tertiary-color)]/75'
-              }`}
+              className={`w-2 h-2 md:w-3 md:h-3 rounded-full transition-all duration-300 
+                ${index === currentSlide
+                  ? 'bg-white scale-125'
+                  : 'bg-white/40 hover:bg-white/60'
+                }`}
               aria-label={`Go to slide ${index + 1}`}
             />
           ))}
@@ -208,7 +208,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
 
       {/* Navigation Arrows */}
       <motion.div 
-        className="absolute left-4 right-4 top-1/2 -translate-y-1/2 z-30 flex justify-between md:left-8 md:right-8 lg:left-12 lg:right-12"
+        className="absolute left-2 right-2 top-1/2 -translate-y-1/2 z-30 flex justify-between md:left-8 md:right-8 lg:left-12 lg:right-12"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}
@@ -216,13 +216,15 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
         <button
           onClick={goToPrevSlide}
           disabled={isAnimating}
-          className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 
-                     backdrop-blur-sm border border-white/20 shadow-lg transform hover:scale-105 
-                     disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-2 md:p-3 rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 
+                     backdrop-blur-[2px] border border-white/10 shadow-sm transform 
+                     transition-all duration-300 hover:scale-105 group
+                     disabled:opacity-50 disabled:cursor-not-allowed
+                     focus:outline-none focus:ring-2 focus:ring-white/20"
           aria-label="Previous slide"
         >
           <svg
-            className="w-6 h-6 text-white"
+            className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white/90 transition-colors"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -238,13 +240,15 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
         <button
           onClick={goToNextSlide}
           disabled={isAnimating}
-          className="p-3 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 
-                     backdrop-blur-sm border border-white/20 shadow-lg transform hover:scale-105 
-                     disabled:opacity-50 disabled:cursor-not-allowed"
+          className="p-2 md:p-3 rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 
+                     backdrop-blur-[2px] border border-white/10 shadow-sm transform 
+                     transition-all duration-300 hover:scale-105 group
+                     disabled:opacity-50 disabled:cursor-not-allowed
+                     focus:outline-none focus:ring-2 focus:ring-white/20"
           aria-label="Next slide"
         >
           <svg
-            className="w-6 h-6 text-white"
+            className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white/90 transition-colors"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

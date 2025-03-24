@@ -16,19 +16,19 @@ import contactData from '@/data/contact.json';
 export default function TopBar() {
   return (
     <div className="bg-gradient-to-r from-[#e8f4ea] to-[#f4f7ed] border-b border-[#2c7a43]/10">
-      <div className="container mx-auto py-2 px-4 max-w-7xl">
+      <div className="container mx-auto py-1.5 md:py-2 px-4 max-w-7xl">
         <div className="flex flex-row justify-between items-center text-sm">
-          {/* Contact Info - Only Phone visible on mobile */}
-          <div className="flex items-center space-x-4">
+          {/* Contact Info - Reduced padding and size on mobile */}
+          <div className="flex items-center space-x-2 md:space-x-4">
             <a 
               href={`tel:${contactData.phone.replace(/\s+/g, '')}`}
-              className="flex items-center text-[#2c7a43] hover:text-[#1a4d2e] transition-colors"
+              className="flex items-center text-[#2c7a43] hover:text-[#1a4d2e] transition-colors text-xs md:text-sm"
             >
-              <FaPhoneAlt className="mr-1.5" />
+              <FaPhoneAlt className="mr-1 w-3 h-3 md:w-4 md:h-4" />
               <span className="font-medium">{contactData.phone}</span>
             </a>
             
-            {/* Email - Hidden on mobile */}
+            {/* Email - Hidden on smaller screens */}
             <div className="hidden md:flex items-center text-[#2c7a43]/80 hover:text-[#2c7a43] transition-colors">
               <FaEnvelope className="mr-1.5" />
               <a href={`mailto:${contactData.email}`} className="hover:underline">
@@ -43,9 +43,9 @@ export default function TopBar() {
             </div>
           </div>
           
-          {/* Social Media Icons */}
+          {/* Social Media Icons - Smaller on mobile */}
           <div className="flex items-center">
-            <div className="flex space-x-3">
+            <div className="flex space-x-1.5 md:space-x-3">
               {[
                 { Icon: FaFacebookF, link: contactData.socialMedia.facebook, label: "Facebook", color: "#1877F2", hoverBg: "#1877F2" },
                 { Icon: FaInstagram, link: contactData.socialMedia.instagram, label: "Instagram", color: "#E1306C", hoverBg: "#E1306C" },
@@ -59,11 +59,11 @@ export default function TopBar() {
                   target="_blank" 
                   rel="noopener noreferrer" 
                   aria-label={label}
-                  className="w-7 h-7 flex items-center justify-center rounded-full transition-all transform hover:scale-110 group"
+                  className="w-5 h-5 md:w-7 md:h-7 flex items-center justify-center rounded-full transition-all transform hover:scale-110 group"
                   style={{ backgroundColor: `${color}15` }}
                 >
                   <Icon 
-                    className="w-3.5 h-3.5 transition-colors" 
+                    className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 transition-colors" 
                     style={{ color }}
                   />
                   <style jsx>{`
