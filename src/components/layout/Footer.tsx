@@ -11,7 +11,7 @@ const Footer = () => {
   return (
     <footer className="bg-[#f0f7ff] text-gray-800 pt-16 pb-0 relative overflow-hidden">
       {/* Wave Background */}
-      <div className="absolute bottom-0 left-0 w-full h-40 overflow-hidden z-0">
+      <div className="absolute bottom-0 left-0 w-full h-60 sm:h-40 overflow-hidden z-0">
         <svg 
           viewBox="0 0 1440 320" 
           className="absolute bottom-0 w-full h-auto"
@@ -147,7 +147,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Footer */}
-        <div className="text-center pb-16 relative z-10">
+        <div className="text-center pb-16 relative z-10 mb-4">
           <p className="text-white font-medium">
             &copy; {new Date().getFullYear()} NAADAN SOWKHYA. All rights reserved.
           </p>
