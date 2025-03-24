@@ -66,13 +66,18 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null); // Reset on touch start
     setTouchStart(e.targetTouches[0].clientX);
+    // Prevent default to avoid potential mobile browser behavior
+    e.preventDefault();
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
     setTouchEnd(e.targetTouches[0].clientX);
+    // Prevent default to avoid browser scrolling
+    e.preventDefault();
   };
 
-  const onTouchEnd = () => {
+  const onTouchEnd = (e: React.TouchEvent) => {
+    e.preventDefault();
     if (!touchStart || !touchEnd) return;
     
     const distance = touchStart - touchEnd;
@@ -89,6 +94,15 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
     setTouchStart(null);
     setTouchEnd(null);
   };
+
+  // Animation handling
+  useEffect(() => {
+    if (currentSlide !== previousSlide) {
+      setIsAnimating(true);
+      const timer = setTimeout(() => setIsAnimating(false), 800); // Match with animation duration
+      return () => clearTimeout(timer);
+    }
+  }, [currentSlide, previousSlide]);
 
   const slideVariants = {
     enter: {
@@ -117,108 +131,113 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
     <motion.div
       ref={slideRef}
       style={{ y: parallaxY }}
-      className="relative h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)]"
+      className="swipeable-section relative h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)] touch-none w-full"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
     >
-      <AnimatePresence mode="wait">
-        {slides.map((slide, index) => (
-          index === currentSlide && (
-            <motion.div
-              key={slide.id}
-              variants={slideVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              className="absolute inset-0 w-full h-full"
-            >
-              <div className="relative w-full h-full">
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  fill
-                  priority={index === 0}
-                  className="object-cover"
-                  sizes="100vw"
-                  quality={90}
-                />
-                <motion.div 
-                  className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70"
-                  style={{ opacity }}
-                />
-                
-                {/* Content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
+      {/* Ensure content doesn't overflow the container */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden">
+        <AnimatePresence mode="wait">
+          {slides.map((slide, index) => (
+            index === currentSlide && (
+              <motion.div
+                key={slide.id}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="absolute inset-0 w-full h-full"
+                onAnimationStart={() => setIsAnimating(true)}
+                onAnimationComplete={() => setIsAnimating(false)}
+              >
+                <div className="relative w-full h-full">
+                  <Image
+                    src={slide.image}
+                    alt={slide.title}
+                    fill
+                    priority={index === 0}
+                    className="object-cover"
+                    sizes="100vw"
+                    quality={90}
+                  />
                   <motion.div 
-                    className="max-w-5xl mx-auto text-center"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3, duration: 0.6 }}
-                  >
-                    {/* Brand Label */}
-                    <motion.p
+                    className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70"
+                    style={{ opacity }}
+                  />
+                  
+                  {/* Content */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
+                    <motion.div 
+                      className="max-w-5xl mx-auto text-center"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.4, duration: 0.6 }}
-                      className="text-base md:text-lg lg:text-xl font-semibold tracking-wider uppercase mb-4 text-white/90 drop-shadow-lg"
+                      transition={{ delay: 0.3, duration: 0.6 }}
                     >
-                      NAADAN SOWKHYA
-                    </motion.p>
-
-                    {/* Main Heading */}
-                    <motion.h1
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.5, duration: 0.6 }}
-                      className="font-serif font-bold text-3xl md:text-5xl lg:text-6xl xl:text-7xl mb-6 tracking-wider drop-shadow-lg text-white"
-                    >
-                      <span className="relative inline-block">
-                        {slide.title}
-                        <motion.span
-                          initial={{ scaleX: 0 }}
-                          animate={{ scaleX: 1 }}
-                          transition={{ delay: 0.8, duration: 0.6 }}
-                          className="absolute -bottom-2 left-0 right-0 h-1 bg-[var(--tertiary-color)]"
-                          style={{ transformOrigin: 'left' }}
-                        />
-                      </span>
-                    </motion.h1>
-
-                    {/* Subtitle */}
-                    <motion.p
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.6, duration: 0.6 }}
-                      className="text-white/90 text-base md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg"
-                    >
-                      {slide.subtitle}
-                    </motion.p>
-
-                    {/* Button */}
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.7, duration: 0.6 }}
-                    >
-                      <Link
-                        href={slide.buttonLink}
-                        className="btn-elegant group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-[var(--primary-color)] rounded-lg hover:bg-[var(--primary-color)]/90 transition-all duration-300"
+                      {/* Brand Label */}
+                      <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4, duration: 0.6 }}
+                        className="text-base md:text-lg lg:text-xl font-semibold tracking-wider uppercase mb-4 text-white/90 drop-shadow-lg"
                       >
-                        <span className="relative z-10">{slide.buttonText}</span>
-                        <span className="absolute inset-0 overflow-hidden rounded-lg">
-                          <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                        NAADAN SOWKHYA
+                      </motion.p>
+
+                      {/* Main Heading */}
+                      <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5, duration: 0.6 }}
+                        className="font-serif font-bold text-3xl md:text-5xl lg:text-6xl xl:text-7xl mb-6 tracking-wider drop-shadow-lg text-white"
+                      >
+                        <span className="relative inline-block">
+                          {slide.title}
+                          <motion.span
+                            initial={{ scaleX: 0 }}
+                            animate={{ scaleX: 1 }}
+                            transition={{ delay: 0.8, duration: 0.6 }}
+                            className="absolute -bottom-2 left-0 right-0 h-1 bg-[var(--tertiary-color)]"
+                            style={{ transformOrigin: 'left' }}
+                          />
                         </span>
-                        <span className="absolute bottom-0 left-0 h-[2px] w-full bg-[var(--tertiary-color)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-                      </Link>
+                      </motion.h1>
+
+                      {/* Subtitle */}
+                      <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.6, duration: 0.6 }}
+                        className="text-white/90 text-base md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg"
+                      >
+                        {slide.subtitle}
+                      </motion.p>
+
+                      {/* Button */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.7, duration: 0.6 }}
+                      >
+                        <Link
+                          href={slide.buttonLink}
+                          className="btn-elegant group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-[var(--primary-color)] rounded-lg hover:bg-[var(--primary-color)]/90 transition-all duration-300"
+                        >
+                          <span className="relative z-10">{slide.buttonText}</span>
+                          <span className="absolute inset-0 overflow-hidden rounded-lg">
+                            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                          </span>
+                          <span className="absolute bottom-0 left-0 h-[2px] w-full bg-[var(--tertiary-color)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                        </Link>
+                      </motion.div>
                     </motion.div>
-                  </motion.div>
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          )
-        ))}
-      </AnimatePresence>
+              </motion.div>
+            )
+          ))}
+        </AnimatePresence>
+      </div>
 
       {/* Navigation Dots */}
       <motion.div 

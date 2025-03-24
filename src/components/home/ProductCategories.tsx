@@ -48,10 +48,10 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
   return (
     <section 
       ref={sectionRef}
-      className="relative py-24 lg:py-32 bg-white overflow-hidden"
+      className="relative py-24 lg:py-32 bg-white overflow-hidden max-w-[100vw] touch-none"
     >
       {/* Section Header */}
-      <div className="container mx-auto px-4 max-w-7xl">
+      <div className="container mx-auto px-4 max-w-7xl overflow-hidden">
         <motion.div 
           className="text-center mb-16 md:mb-20"
           initial={{ opacity: 0, y: -20 }}
@@ -99,7 +99,7 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
         </motion.div>
 
         <motion.div 
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 w-full"
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -109,7 +109,7 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
           {categories.map((category, index) => (
             <motion.div
               key={category.name}
-              className="group"
+              className="group w-full"
               variants={{
                 hidden: { opacity: 0, y: 20 },
                 visible: { 
@@ -119,10 +119,10 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
                 }
               }}
             >
-              <Link href={category.link} className="block">
+              <Link href={category.link} className="block w-full">
                 <motion.div 
                   className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 
-                           transform hover:-translate-y-1 relative overflow-hidden group"
+                           transform hover:-translate-y-1 relative overflow-hidden group w-full"
                 >
                   {/* Icon Background */}
                   <motion.div 

@@ -65,7 +65,7 @@ const AboutSection = ({
     <section
       id="about-section"
       ref={sectionRef}
-      className="relative overflow-hidden py-20 lg:py-32"
+      className="relative overflow-hidden py-20 lg:py-32 max-w-[100vw] touch-none"
     >
       {/* Subtle background texture */}
       <motion.div 
@@ -110,16 +110,16 @@ const AboutSection = ({
         </motion.div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
           {/* Left Column: Text Content */}
           <motion.div
             ref={textRef}
             style={{ y: textY }}
-            className="order-2 lg:order-1"
+            className="order-2 lg:order-1 w-full"
           >
             {/* Promise Box */}
             <motion.div 
-              className="bg-[var(--primary-light)] rounded-xl p-8 mb-10 border-l-4 border-[var(--primary-color)] shadow-lg"
+              className="bg-[var(--primary-light)] rounded-xl p-8 mb-10 border-l-4 border-[var(--primary-color)] shadow-lg w-full"
               initial={{ opacity: 0, x: -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -135,7 +135,7 @@ const AboutSection = ({
 
             {/* Benefits */}
             <motion.div 
-              className="space-y-8 mb-10"
+              className="space-y-8 mb-10 w-full"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -176,7 +176,7 @@ const AboutSection = ({
 
             {/* Additional Description */}
             <motion.div 
-              className="space-y-6"
+              className="space-y-6 w-full"
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
@@ -231,7 +231,7 @@ const AboutSection = ({
           <motion.div
             ref={imageRef}
             style={{ scale: imageScale }}
-            className="order-1 lg:order-2"
+            className="order-1 lg:order-2 w-full overflow-hidden"
           >
             <div className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
               {images.map((image, i) => (

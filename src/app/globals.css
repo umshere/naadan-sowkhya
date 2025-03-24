@@ -32,6 +32,14 @@
 }
 
 @layer base {
+  html {
+    overflow-x: hidden;
+    touch-action: manipulation;
+    width: 100%;
+    position: relative;
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-white text-[var(--text-dark)] font-[var(--font-primary)] overflow-x-hidden leading-relaxed;
     background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30,50 Q40,30 50,50 Q60,70 70,50' stroke='%232A6D3C' stroke-width='1' fill='none' opacity='0.05'/%3E%3Cpath d='M20,30 Q30,10 40,30 Q50,50 60,30' stroke='%232A6D3C' stroke-width='1' fill='none' opacity='0.05'/%3E%3Cpath d='M50,80 Q60,60 70,80 Q80,100 90,80' stroke='%232A6D3C' stroke-width='1' fill='none' opacity='0.05'/%3E%3Cpath d='M10,70 Q20,50 30,70 Q40,90 50,70' stroke='%232A6D3C' stroke-width='1' fill='none' opacity='0.05'/%3E%3Cpath d='M25,25 C30,20 35,20 40,25 C35,30 30,30 25,25 Z' fill='%232A6D3C' opacity='0.03'/%3E%3Cpath d='M65,45 C70,40 75,40 80,45 C75,50 70,50 65,45 Z' fill='%232A6D3C' opacity='0.03'/%3E%3Cpath d='M15,65 C20,60 25,60 30,65 C25,70 20,70 15,65 Z' fill='%232A6D3C' opacity='0.03'/%3E%3Cpath d='M55,85 C60,80 65,80 70,85 C65,90 60,90 55,85 Z' fill='%232A6D3C' opacity='0.03'/%3E%3C/svg%3E");
@@ -43,10 +51,24 @@
     min-height: 100vh;
     font-feature-settings: 'rlig' 1, 'calt' 1;
     overflow-x: hidden;
+    max-width: 100vw;
+    width: 100%;
+    position: relative;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
     /* Prevent content shift when scrollbar appears */
     scrollbar-gutter: stable;
+    overscroll-behavior-x: none;
+  }
+
+  /* Add a fix for mobile webkit browsers */
+  @supports (-webkit-touch-callout: none) {
+    body, html {
+      height: -webkit-fill-available;
+      overflow-x: hidden;
+      position: relative;
+      width: 100%;
+    }
   }
 
   h1,
@@ -59,7 +81,12 @@
   }
 
   .container {
-    @apply max-w-7xl mx-auto px-4;
+    @apply max-w-7xl mx-auto px-4 overflow-hidden;
+  }
+
+  /* Fix for swipeable sections to prevent horizontal overflow */
+  .swipeable-section {
+    @apply overflow-hidden touch-none max-w-[100vw] w-full;
   }
 }
 

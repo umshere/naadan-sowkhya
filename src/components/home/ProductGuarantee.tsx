@@ -65,14 +65,14 @@ const ProductGuarantee = () => {
   return (
     <section 
       id="product-guarantee" 
-      className="relative py-24 lg:py-32 bg-[var(--natural-light)] overflow-hidden"
+      className="relative py-24 lg:py-32 bg-[var(--natural-light)] overflow-hidden max-w-[100vw] touch-none"
     >
       {/* Natural texture overlay */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"></div>
       </div>
       
-      <div className="container mx-auto px-4 relative z-10 max-w-7xl">
+      <div className="container mx-auto px-4 relative z-10 max-w-7xl overflow-hidden">
         <motion.h2 
           className="text-4xl lg:text-5xl font-bold text-center text-[var(--primary-color)] mb-6"
           initial={{ opacity: 0, y: 20 }}
@@ -91,11 +91,11 @@ const ProductGuarantee = () => {
           Experience the difference of our natural and pure products, crafted with care and commitment to quality.
         </motion.p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 w-full">
           {guarantees.map((guarantee, index) => (
             <motion.div
               key={guarantee.title}
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden group"
+              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden group w-full"
               initial={{ opacity: 0, y: 20 }}
               animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ 
