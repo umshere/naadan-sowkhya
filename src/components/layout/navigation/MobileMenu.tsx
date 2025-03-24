@@ -20,28 +20,56 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
   const minSwipeDistance = 50;
 
   const onTouchStart = (e: React.TouchEvent) => {
+    // Only handle touch events when menu is open and prevent scroll interference
+    if (!isMenuOpen) {
+      e.stopPropagation();
+      return;
+    }
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
+    // Only handle touch events when menu is open
+    if (!isMenuOpen) {
+      e.stopPropagation();
+      return;
+    }
+    
+    // Get the touch target element
+    const target = e.target as HTMLElement;
+    const isScrollableContent = target.closest('.mobile-menu-content');
+    
+    // Allow vertical scrolling within menu content
+    if (isScrollableContent) {
+      const touch = e.targetTouches[0];
+      const deltaX = touchStart ? touch.clientX - touchStart : 0;
+      
+      // Only prevent default if trying to scroll horizontally
+      if (Math.abs(deltaX) > Math.abs(touch.clientY - (touchStart || 0))) {
+        e.preventDefault();
+      }
+    } else {
+      e.preventDefault();
+    }
+    
     setTouchEnd(e.targetTouches[0].clientX);
   };
 
-  const onTouchEnd = () => {
+  const onTouchEnd = (e: React.TouchEvent) => {
+    // Only handle touch events when menu is open
+    if (!isMenuOpen) {
+      e.stopPropagation();
+      return;
+    }
+    
     if (!touchStart || !touchEnd) return;
     
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
     
-    // If swiping left (towards right edge of screen) and menu is open, close it
-    if (isLeftSwipe && isMenuOpen) {
-      toggleMenu();
-    }
-    
-    // If swiping right (towards left edge of screen) and menu is closed, open it
-    if (isRightSwipe && !isMenuOpen) {
+    // Only close on left swipe
+    if (isLeftSwipe) {
       toggleMenu();
     }
     
@@ -54,7 +82,20 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
   useEffect(() => {
     if (!isMenuOpen) {
       setActiveDropdown(null);
+      // Re-enable scrolling on the main content when menu is closed
+      document.body.classList.remove('mobile-menu-open');
+      document.body.classList.add('allow-scroll');
+    } else {
+      // Disable scrolling on the main content when menu is open
+      document.body.classList.add('mobile-menu-open');
+      document.body.classList.remove('allow-scroll');
     }
+    
+    return () => {
+      // Cleanup on unmount
+      document.body.classList.remove('mobile-menu-open');
+      document.body.classList.add('allow-scroll');
+    };
   }, [isMenuOpen]);
 
   return (
@@ -80,11 +121,12 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
       
       {/* Menu Content */}
       <div 
-        className={`fixed top-0 right-0 w-[85%] max-w-sm h-[100dvh] bg-white shadow-xl transform transition-transform duration-300 ease-out ${
+        className={`fixed top-0 right-0 w-[85%] max-w-sm h-[100dvh] bg-white transform transition-transform duration-300 ease-out ${
           isMenuOpen && !isAnimating ? 'translate-x-0' : 'translate-x-full'
-        } overflow-hidden flex flex-col`}
+        } flex flex-col`}
       >
         <div className="flex flex-col h-full">
+          {/* Header */}
           <div className="flex items-center justify-between p-4 border-b sticky top-0 bg-white/95 backdrop-blur-sm z-10 shadow-sm">
             <h1 className="text-xl font-bold text-primary-color">NAADAN SOWKHYA</h1>
             <button
@@ -106,7 +148,14 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
             </button>
           </div>
 
-          <nav className="flex-1 overflow-y-auto overscroll-contain py-4" role="navigation">
+          {/* Scrollable Content */}
+          <nav 
+            className="mobile-menu-content flex-1 overflow-y-auto overscroll-contain py-4 -webkit-overflow-scrolling-touch" 
+            role="navigation"
+            style={{
+              touchAction: 'pan-y pinch-zoom',
+            }}
+          >
             <ul className="px-4 space-y-2">
               {menuItems.map((item, index) => (
                 <Fragment key={item.name}>
