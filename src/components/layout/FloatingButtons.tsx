@@ -1,88 +1,103 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaWhatsapp, FaPhone, FaEnvelope, FaTimes } from 'react-icons/fa';
+import { FaWhatsapp, FaPhone, FaEnvelope, FaTimes, FaComments } from 'react-icons/fa';
 
 const FloatingButtons = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
-  const toggleEnquiry = () => {
-    setIsEnquiryOpen(!isEnquiryOpen);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
   };
 
-  // Styles for all buttons
-  const buttonStyles = "flex items-center justify-center rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-xl w-12 h-12";
+  const toggleEnquiry = () => {
+    setIsEnquiryOpen(!isEnquiryOpen);
+    setIsMenuOpen(false); // Close menu when opening enquiry form
+  };
 
-  // Icon styles for all buttons
-  const iconStyles = "w-6 h-6 text-white transition-transform group-hover:scale-110";
+  // Common styles
+  const buttonStyles = "flex items-center justify-center rounded-full shadow-md transition-all duration-200";
+  const iconStyles = "text-white";
 
   return (
     <>
-      <div
-        className="fixed bottom-6 right-4 z-[1000] flex flex-col space-y-4 transition-all duration-300 opacity-100"
-      >
+      {/* Main floating contact button container */}
+      <div className="fixed bottom-6 right-4 z-[1000] flex flex-col items-end space-y-3">
+        {/* Contact options that appear when main button is clicked */}
         <AnimatePresence>
-          <>
-            {/* WhatsApp Button */}
-            <motion.a
-              href="https://wa.me/919846981231"
-              className={`${buttonStyles} bg-[#25D366] group`}
-              aria-label="Contact us on WhatsApp"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-              whileHover={{ scale: 1.1 }}
-            >
-              <FaWhatsapp className={iconStyles} />
-            </motion.a>
+          {isMenuOpen && (
+            <div className="flex flex-col space-y-3">
+              {/* WhatsApp Button */}
+              <motion.a
+                href="https://wa.me/919846981231"
+                className={`${buttonStyles} bg-[#25D366] w-12 h-12`}
+                aria-label="Contact us on WhatsApp"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+              >
+                <FaWhatsapp className={`${iconStyles} w-6 h-6`} />
+              </motion.a>
 
-            {/* Call Button */}
-            <motion.a
-              href="tel:9846981231"
-              className={`${buttonStyles} bg-[#4CAF50] group`}
-              aria-label="Call us"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ scale: 1.1 }}
-            >
-              <FaPhone className={iconStyles} />
-            </motion.a>
+              {/* Call Button */}
+              <motion.a
+                href="tel:9846981231"
+                className={`${buttonStyles} bg-[#4CAF50] w-12 h-12`}
+                aria-label="Call us"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ delay: 0.05 }}
+              >
+                <FaPhone className={`${iconStyles} w-6 h-6`} />
+              </motion.a>
 
-            {/* Enquiry Button */}
-            <motion.button
-              onClick={toggleEnquiry}
-              className={`${buttonStyles} bg-[#2196F3] group`}
-              aria-label="Send an enquiry"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              whileHover={{ scale: 1.1 }}
-            >
-              <FaEnvelope className={iconStyles} />
-            </motion.button>
-          </>
+              {/* Enquiry Button */}
+              <motion.button
+                onClick={toggleEnquiry}
+                className={`${buttonStyles} bg-[#2196F3] w-12 h-12`}
+                aria-label="Send an enquiry"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 10 }}
+                transition={{ delay: 0.1 }}
+              >
+                <FaEnvelope className={`${iconStyles} w-6 h-6`} />
+              </motion.button>
+            </div>
+          )}
         </AnimatePresence>
+
+        {/* Main contact button */}
+        <motion.button
+          onClick={toggleMenu}
+          className={`${buttonStyles} bg-primary-color w-14 h-14`}
+          aria-label={isMenuOpen ? "Close contact options" : "Open contact options"}
+          whileHover={{ scale: 1.05 }}
+        >
+          <FaComments className={`${iconStyles} w-7 h-7`} />
+        </motion.button>
       </div>
 
       {/* Enquiry Form Modal */}
       <AnimatePresence>
         {isEnquiryOpen && (
-          <motion.div
+          <div
             className="fixed inset-0 z-[1500] flex items-center justify-center p-4 bg-black bg-opacity-50"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+            onClick={() => setIsEnquiryOpen(false)}
           >
             <motion.div
               className="bg-white rounded-lg shadow-xl w-full max-w-md p-6 relative"
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: 'spring', damping: 20 }}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              transition={{ type: 'tween', duration: 0.3 }}
+              onClick={(e) => e.stopPropagation()}
             >
               <button
-                onClick={toggleEnquiry}
+                onClick={() => setIsEnquiryOpen(false)}
                 className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
                 aria-label="Close enquiry form"
               >
@@ -144,17 +159,15 @@ const FloatingButtons = () => {
                   ></textarea>
                 </div>
 
-                <motion.button
+                <button
                   type="submit"
                   className="w-full bg-primary-color text-white py-2 px-4 rounded-md hover:bg-opacity-90 transition-colors"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
                 >
                   Send Message
-                </motion.button>
+                </button>
               </form>
             </motion.div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </>
