@@ -65,19 +65,25 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
   // Handle touch events for swipe functionality
   const onTouchStart = (e: React.TouchEvent) => {
     setTouchEnd(null); // Reset on touch start
-    setTouchStart(e.targetTouches[0].clientX);
-    // Prevent default to avoid potential mobile browser behavior
-    e.preventDefault();
+    const touch = e.targetTouches[0];
+    setTouchStart(touch.clientX);
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
-    setTouchEnd(e.targetTouches[0].clientX);
-    // Prevent default to avoid browser scrolling
-    e.preventDefault();
+    const touch = e.targetTouches[0];
+    setTouchEnd(touch.clientX);
+    
+    // Only prevent default for horizontal swipes
+    const touchDeltaX = touch.clientX - (touchStart ?? 0);
+    const touchDeltaY = touch.clientY - (touch.clientY ?? 0);
+    
+    // If horizontal movement is greater than vertical, prevent default
+    if (Math.abs(touchDeltaX) > Math.abs(touchDeltaY)) {
+      e.preventDefault();
+    }
   };
 
   const onTouchEnd = (e: React.TouchEvent) => {
-    e.preventDefault();
     if (!touchStart || !touchEnd) return;
     
     const distance = touchStart - touchEnd;
@@ -131,7 +137,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
     <motion.div
       ref={slideRef}
       style={{ y: parallaxY }}
-      className="swipeable-section relative h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)] touch-none w-full"
+      className="swipeable-section relative h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)] w-full"
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}

@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, Fragment, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { MenuItem } from '@/data/menuItems';
+import { motion, AnimatePresence } from 'framer-motion';
 
 type MobileMenuProps = {
   isMenuOpen: boolean;
@@ -12,7 +13,6 @@ type MobileMenuProps = {
 };
 
 export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: MobileMenuProps) => {
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
@@ -20,21 +20,13 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
   const minSwipeDistance = 50;
 
   const onTouchStart = (e: React.TouchEvent) => {
-    // Only handle touch events when menu is open and prevent scroll interference
-    if (!isMenuOpen) {
-      e.stopPropagation();
-      return;
-    }
-    setTouchEnd(null);
+    setTouchEnd(null); // Reset on touch start
     setTouchStart(e.targetTouches[0].clientX);
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
-    // Only handle touch events when menu is open
-    if (!isMenuOpen) {
-      e.stopPropagation();
-      return;
-    }
+    const touch = e.targetTouches[0];
+    setTouchEnd(touch.clientX);
     
     // Get the touch target element
     const target = e.target as HTMLElement;
@@ -42,27 +34,17 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
     
     // Allow vertical scrolling within menu content
     if (isScrollableContent) {
-      const touch = e.targetTouches[0];
       const deltaX = touchStart ? touch.clientX - touchStart : 0;
+      const deltaY = Math.abs(touch.clientY - (touchStart || 0));
       
-      // Only prevent default if trying to scroll horizontally
-      if (Math.abs(deltaX) > Math.abs(touch.clientY - (touchStart || 0))) {
+      // Only prevent default for horizontal swipes
+      if (Math.abs(deltaX) > deltaY) {
         e.preventDefault();
       }
-    } else {
-      e.preventDefault();
     }
-    
-    setTouchEnd(e.targetTouches[0].clientX);
   };
 
-  const onTouchEnd = (e: React.TouchEvent) => {
-    // Only handle touch events when menu is open
-    if (!isMenuOpen) {
-      e.stopPropagation();
-      return;
-    }
-    
+  const onTouchEnd = () => {
     if (!touchStart || !touchEnd) return;
     
     const distance = touchStart - touchEnd;
@@ -72,31 +54,7 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
     if (isLeftSwipe) {
       toggleMenu();
     }
-    
-    // Reset touch positions
-    setTouchStart(null);
-    setTouchEnd(null);
   };
-
-  // Close dropdown when menu is closed
-  useEffect(() => {
-    if (!isMenuOpen) {
-      setActiveDropdown(null);
-      // Re-enable scrolling on the main content when menu is closed
-      document.body.classList.remove('mobile-menu-open');
-      document.body.classList.add('allow-scroll');
-    } else {
-      // Disable scrolling on the main content when menu is open
-      document.body.classList.add('mobile-menu-open');
-      document.body.classList.remove('allow-scroll');
-    }
-    
-    return () => {
-      // Cleanup on unmount
-      document.body.classList.remove('mobile-menu-open');
-      document.body.classList.add('allow-scroll');
-    };
-  }, [isMenuOpen]);
 
   return (
     <div
@@ -112,7 +70,7 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
       onTouchEnd={onTouchEnd}
     >
       {/* Backdrop */}
-      <div 
+      <motion.div 
         className={`fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${
           isMenuOpen && !isAnimating ? 'opacity-100' : 'opacity-0'
         }`}
@@ -120,10 +78,13 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
       />
       
       {/* Menu Content */}
-      <div 
+      <motion.div 
         className={`fixed top-0 right-0 w-[85%] max-w-sm h-[100dvh] bg-white transform transition-transform duration-300 ease-out ${
           isMenuOpen && !isAnimating ? 'translate-x-0' : 'translate-x-full'
         } flex flex-col`}
+        initial={{ x: '100%' }}
+        animate={{ x: isMenuOpen ? 0 : '100%' }}
+        transition={{ duration: 0.3 }}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -152,92 +113,33 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
           <nav 
             className="mobile-menu-content flex-1 overflow-y-auto overscroll-contain py-4 -webkit-overflow-scrolling-touch" 
             role="navigation"
-            style={{
-              touchAction: 'pan-y pinch-zoom',
-            }}
+            style={{ touchAction: 'pan-y' }}
           >
             <ul className="px-4 space-y-2">
               {menuItems.map((item, index) => (
-                <Fragment key={item.name}>
-                  <li 
-                    className={`transform transition-all duration-300 ${
-                      isMenuOpen && !isAnimating 
-                        ? 'translate-x-0 opacity-100' 
-                        : 'translate-x-8 opacity-0'
-                    }`}
-                    style={{ transitionDelay: `${index * 50 + 100}ms` }}
+                <motion.li
+                  key={item.name}
+                  className={`transform transition-all duration-300 ${
+                    isMenuOpen && !isAnimating 
+                      ? 'translate-x-0 opacity-100' 
+                      : 'translate-x-8 opacity-0'
+                  }`}
+                  style={{ transitionDelay: `${index * 50 + 100}ms` }}
+                >
+                  <Link
+                    href={item.href}
+                    className="block py-3 text-gray-800 hover:text-primary-color font-medium transition-colors"
+                    onClick={toggleMenu}
                   >
-                    {item.submenu ? (
-                      <button
-                        className="w-full text-left py-3 text-gray-800 hover:text-primary-color font-medium transition-colors flex items-center justify-between"
-                        onClick={() => setActiveDropdown(activeDropdown === item.name ? null : item.name)}
-                        aria-expanded={activeDropdown === item.name}
-                        aria-controls={`submenu-${item.name}`}
-                      >
-                        {item.name}
-                        <svg 
-                          className={`w-4 h-4 transform transition-transform ${activeDropdown === item.name ? 'rotate-180' : ''}`} 
-                          fill="none" 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round" 
-                          strokeWidth="2" 
-                          viewBox="0 0 24 24" 
-                          stroke="currentColor"
-                        >
-                          <path d="M19 9l-7 7-7-7" />
-                        </svg>
-                      </button>
-                    ) : (
-                      <Link
-                        href={item.href}
-                        className="block py-3 text-gray-800 hover:text-primary-color font-medium transition-colors"
-                        onClick={() => {
-                          toggleMenu();
-                          setActiveDropdown(null);
-                        }}
-                      >
-                        {item.name}
-                      </Link>
-                    )}
-                  </li>
-                  {item.submenu && activeDropdown === item.name && (
-                    <div 
-                      id={`submenu-${item.name}`}
-                      className="pl-4"
-                      role="region"
-                      aria-label={`${item.name} submenu`}
-                    >
-                      {item.submenu.map((subItem, subIndex) => (
-                        <li
-                          key={subItem.name}
-                          className={`transform transition-all duration-300 ${
-                            isMenuOpen && !isAnimating 
-                              ? 'translate-x-0 opacity-100' 
-                              : 'translate-x-8 opacity-0'
-                          }`}
-                          style={{ transitionDelay: `${(index * 50) + (subIndex * 30) + 150}ms` }}
-                        >
-                          <Link
-                            href={subItem.href}
-                            className="block py-2 text-gray-600 hover:text-primary-color transition-colors"
-                            onClick={() => {
-                              toggleMenu();
-                              setActiveDropdown(null);
-                            }}
-                          >
-                            {subItem.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </div>
-                  )}
-                </Fragment>
+                    {item.name}
+                  </Link>
+                </motion.li>
               ))}
             </ul>
           </nav>
           
           {/* Contact Info */}
-          <div 
+          <motion.div 
             className={`p-4 border-t border-gray-200 transform transition-all duration-300 bg-gray-50 ${
               isMenuOpen && !isAnimating 
                 ? 'translate-y-0 opacity-100' 
@@ -268,9 +170,9 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
                 Chat on WhatsApp
               </a>
             </div>
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };

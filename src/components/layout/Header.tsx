@@ -11,18 +11,34 @@ import { menuItems } from '@/data/menuItems';
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
     if (isMenuOpen) {
-      document.body.style.overflow = 'hidden';
-      document.body.classList.add('mobile-menu-open');
+      // Store current scroll position
+      const currentScroll = window.pageYOffset;
+      setScrollPosition(currentScroll);
+      
+      // Apply fixed position to body
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${currentScroll}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflowY = 'scroll';  // Keep scrollbar to prevent layout shift
     } else {
-      document.body.style.overflow = '';
-      document.body.classList.remove('mobile-menu-open');
+      // Restore scroll position
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflowY = '';
+      window.scrollTo(0, scrollPosition);
     }
+    
     return () => {
-      document.body.style.overflow = '';
-      document.body.classList.remove('mobile-menu-open');
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflowY = '';
+      window.scrollTo(0, scrollPosition);
     };
   }, [isMenuOpen]);
 
@@ -47,8 +63,8 @@ export const Header = () => {
       
       {/* Main Header */}
       <header className="relative z-[1003] bg-black w-full py-4">
-        <div className="container mx-auto px-4 max-w-7xl">
-          <nav className="flex items-center justify-between">
+        <div className="container mx-auto px-4 max-w-7xl relative">
+          <nav className="flex items-center justify-between relative">
             {/* Logo */}
             <Link 
               href="/" 
@@ -66,7 +82,7 @@ export const Header = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-12">
+            <div className="hidden lg:block">
               <DesktopMenu menuItems={menuItems} />
             </div>
 
