@@ -285,25 +285,17 @@ const AboutSection = ({
             </div>
 
             {/* Quality Badge */}
-            <motion.div
-              className="absolute -bottom-6 -right-6 bg-[var(--primary-color)] text-white 
-                       rounded-full h-24 w-24 flex items-center justify-center shadow-lg z-20"
-              initial={{ scale: 0, rotate: -180 }}
-              whileInView={{ scale: 1, rotate: 0 }}
-              viewport={{ once: true }}
-              transition={{ 
-                type: "spring",
-                stiffness: 260,
-                damping: 20,
-                delay: 0.6
-              }}
-              whileHover={{ scale: 1.1, rotate: 10 }}
-            >
-              <div className="text-center">
-                <div className="text-[11px] uppercase tracking-wider">Pure</div>
-                <div className="font-serif font-bold text-lg">Ayurveda</div>
+            <div className="relative">
+              <div
+                className="absolute -bottom-6 -right-6 bg-[var(--primary-color)] text-white 
+                         rounded-full h-24 w-24 flex items-center justify-center shadow-lg z-20"
+              >
+                <div className="text-center">
+                  <div className="text-[11px] uppercase tracking-wider">Pure</div>
+                  <div className="font-serif font-bold text-lg">Ayurveda</div>
+                </div>
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         </div>
       </div>
