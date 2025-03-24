@@ -148,12 +148,14 @@ const Footer = () => {
 
         {/* Bottom Footer */}
         <div className="text-center pb-16 relative z-10 mb-4">
-          <p className="text-white font-medium">
-            &copy; {new Date().getFullYear()} NAADAN SOWKHYA. All rights reserved.
-          </p>
-          <p className="text-white text-sm mt-1 opacity-80">
-            Natural products free from preservatives and artificial colours or chemicals
-          </p>
+          <div className="inline-block bg-white/90 px-4 py-2 rounded-lg shadow-sm">
+            <p className="text-gray-800 font-medium">
+              &copy; {new Date().getFullYear()} NAADAN SOWKHYA. All rights reserved.
+            </p>
+            <p className="text-gray-800 text-sm mt-1 opacity-80">
+              Natural products free from preservatives and artificial colours or chemicals
+            </p>
+          </div>
         </div>
       </div>
       
