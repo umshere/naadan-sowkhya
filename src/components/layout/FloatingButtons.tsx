@@ -32,13 +32,13 @@ const FloatingButtons = () => {
   };
 
   const buttonStyles = `flex items-center justify-center rounded-full shadow-lg transition-all duration-300 transform hover:scale-110 hover:shadow-xl ${
-    isMinimized ? 'w-10 h-10 md:w-14 md:h-14 opacity-70 hover:opacity-100' : 'w-14 h-14'
+    isMinimized ? 'w-10 h-10 md:w-12 md:h-12 opacity-70 hover:opacity-100' : 'w-14 h-14 md:w-14 md:h-14'
   }`;
 
   return (
     <>
       <div className={`fixed bottom-6 z-50 flex flex-col space-y-4 transition-all duration-300 ${
-        isMinimized ? 'right-2 md:right-6' : 'right-6'
+        isMinimized ? 'right-2 md:right-4' : 'right-6'
       }`}>
         <AnimatePresence>
           {isVisible && (
@@ -55,7 +55,9 @@ const FloatingButtons = () => {
                 transition={{ delay: 0.1 }}
                 whileHover={{ scale: 1.1 }}
               >
-                <FaWhatsapp size={isMinimized ? 20 : 28} color="white" className="transition-transform group-hover:scale-110" />
+                <FaWhatsapp className={`transition-transform group-hover:scale-110 ${
+                  isMinimized ? 'w-5 h-5 md:w-6 md:h-6' : 'w-7 h-7'
+                } text-white`} />
               </motion.a>
 
               {/* Call Button */}
@@ -68,7 +70,9 @@ const FloatingButtons = () => {
                 transition={{ delay: 0.2 }}
                 whileHover={{ scale: 1.1 }}
               >
-                <FaPhone size={isMinimized ? 20 : 28} color="white" className="transition-transform group-hover:scale-110" />
+                <FaPhone className={`transition-transform group-hover:scale-110 ${
+                  isMinimized ? 'w-5 h-5 md:w-6 md:h-6' : 'w-7 h-7'
+                } text-white`} />
               </motion.a>
 
               {/* Enquiry Button */}
@@ -81,7 +85,9 @@ const FloatingButtons = () => {
                 transition={{ delay: 0.3 }}
                 whileHover={{ scale: 1.1 }}
               >
-                <FaEnvelope size={isMinimized ? 20 : 28} color="white" className="transition-transform group-hover:scale-110" />
+                <FaEnvelope className={`transition-transform group-hover:scale-110 ${
+                  isMinimized ? 'w-5 h-5 md:w-6 md:h-6' : 'w-7 h-7'
+                } text-white`} />
               </motion.button>
             </>
           )}
