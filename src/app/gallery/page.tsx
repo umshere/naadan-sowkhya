@@ -3,12 +3,13 @@
 import galleryData from '@/data/gallery.json';
 import GallerySection from '@/components/home/GallerySection';
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function GalleryPage() {
   const { images, categories } = galleryData;
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isFilterExpanded, setIsFilterExpanded] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -20,6 +21,15 @@ export default function GalleryPage() {
   const filteredImages = selectedCategory
     ? images.filter((img) => img.category === selectedCategory)
     : images;
+
+  const toggleFilter = () => {
+    setIsFilterExpanded(!isFilterExpanded);
+  };
+
+  const handleCategorySelect = (categoryId: string | null) => {
+    setSelectedCategory(categoryId);
+    setIsFilterExpanded(false);  // Close the filter after selection
+  };
 
   return (
     <div className="min-h-screen bg-[#FAFAFA]">
@@ -60,42 +70,98 @@ export default function GalleryPage() {
       </motion.div>
 
       {/* Category Filter */}
-      <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1, duration: 0.6 }}
-        className="container mx-auto px-4 py-6"
-      >
-        <div className="flex flex-wrap justify-center gap-4">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setSelectedCategory(null)}
-            className={`px-6 py-3 rounded-full text-base font-medium transition-all duration-300
-              ${!selectedCategory
-                ? 'bg-gray-900 text-white shadow-lg'
-                : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg'
-              }`}
-          >
-            All Categories
-          </motion.button>
-          {categories.map((category) => (
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.6 }}
+          className="container mx-auto px-4 py-4"
+        >
+          {/* Mobile Filter Button */}
+          <div className="md:hidden w-full flex justify-center mb-2">
             <motion.button
-              key={category.id}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => setSelectedCategory(category.id)}
+              onClick={toggleFilter}
+              className="px-6 py-3 rounded-full text-base font-medium bg-gray-900 text-white shadow-lg w-full max-w-[200px]"
+            >
+              {isFilterExpanded ? 'Hide Filters' : 'Show Filters'}
+            </motion.button>
+          </div>
+
+          {/* Desktop Filters - Always visible on desktop */}
+          <div className="hidden md:flex flex-wrap justify-center gap-4">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleCategorySelect(null)}
               className={`px-6 py-3 rounded-full text-base font-medium transition-all duration-300
-                ${selectedCategory === category.id
+                ${!selectedCategory
                   ? 'bg-gray-900 text-white shadow-lg'
                   : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg'
                 }`}
             >
-              {category.name}
+              All Categories
             </motion.button>
-          ))}
-        </div>
-      </motion.div>
+            {categories.map((category) => (
+              <motion.button
+                key={category.id}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleCategorySelect(category.id)}
+                className={`px-6 py-3 rounded-full text-base font-medium transition-all duration-300
+                  ${selectedCategory === category.id
+                    ? 'bg-gray-900 text-white shadow-lg'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg'
+                  }`}
+              >
+                {category.name}
+              </motion.button>
+            ))}
+          </div>
+
+          {/* Mobile Filters - Expandable */}
+          <AnimatePresence>
+            {isFilterExpanded && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="md:hidden flex flex-col gap-2 mt-2"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleCategorySelect(null)}
+                  className={`px-6 py-3 rounded-full text-base font-medium transition-all duration-300 w-full
+                    ${!selectedCategory
+                      ? 'bg-gray-900 text-white shadow-lg'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg'
+                    }`}
+                >
+                  All Categories
+                </motion.button>
+                {categories.map((category) => (
+                  <motion.button
+                    key={category.id}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => handleCategorySelect(category.id)}
+                    className={`px-6 py-3 rounded-full text-base font-medium transition-all duration-300 w-full
+                      ${selectedCategory === category.id
+                        ? 'bg-gray-900 text-white shadow-lg'
+                        : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg'
+                      }`}
+                  >
+                    {category.name}
+                  </motion.button>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
 
       {/* Gallery Grid */}
       <motion.div 
