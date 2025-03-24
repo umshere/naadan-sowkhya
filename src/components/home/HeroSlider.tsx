@@ -23,6 +23,12 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [previousSlide, setPreviousSlide] = useState(-1);
   const slideRef = useRef<HTMLDivElement>(null);
+  // Touch tracking state
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Minimum swipe distance (in px)
+  const minSwipeDistance = 50;
 
   // Scroll-based parallax effect
   const { scrollY } = useScroll();
@@ -56,6 +62,34 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
     return () => clearInterval(interval);
   }, [currentSlide, isAnimating]);
 
+  // Handle touch events for swipe functionality
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null); // Reset on touch start
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe) {
+      goToNextSlide();
+    } else if (isRightSwipe) {
+      goToPrevSlide();
+    }
+    
+    // Reset values
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
+
   const slideVariants = {
     enter: {
       opacity: 0,
@@ -84,6 +118,9 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
       ref={slideRef}
       style={{ y: parallaxY }}
       className="relative h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)]"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       <AnimatePresence mode="wait">
         {slides.map((slide, index) => (
@@ -206,9 +243,9 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
         </div>
       </motion.div>
 
-      {/* Navigation Arrows */}
+      {/* Navigation Arrows - Hide on small screens */}
       <motion.div 
-        className="absolute left-2 right-2 top-1/2 -translate-y-1/2 z-30 flex justify-between md:left-8 md:right-8 lg:left-12 lg:right-12"
+        className="absolute left-2 right-2 top-1/2 -translate-y-1/2 z-30 flex justify-between md:left-8 md:right-8 lg:left-12 lg:right-12 hidden md:flex"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}
@@ -261,6 +298,24 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
             />
           </svg>
         </button>
+      </motion.div>
+
+      {/* Mobile Swipe Indicator - Only visible on small screens */}
+      <motion.div 
+        className="absolute bottom-16 left-0 right-0 z-30 md:hidden"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.9, duration: 0.6 }}
+      >
+        <div className="flex justify-center items-center space-x-4 text-white/70">
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          </svg>
+          <span className="text-xs font-medium">Swipe to navigate</span>
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          </svg>
+        </div>
       </motion.div>
     </motion.div>
   );
