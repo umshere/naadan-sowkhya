@@ -13,6 +13,42 @@ type MobileMenuProps = {
 
 export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: MobileMenuProps) => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  // Minimum swipe distance in pixels to trigger action
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e: React.TouchEvent) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    // If swiping left (towards right edge of screen) and menu is open, close it
+    if (isLeftSwipe && isMenuOpen) {
+      toggleMenu();
+    }
+    
+    // If swiping right (towards left edge of screen) and menu is closed, open it
+    if (isRightSwipe && !isMenuOpen) {
+      toggleMenu();
+    }
+    
+    // Reset touch positions
+    setTouchStart(null);
+    setTouchEnd(null);
+  };
 
   // Close dropdown when menu is closed
   useEffect(() => {
@@ -30,6 +66,9 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
       role="dialog"
       aria-modal="true"
       aria-label="Mobile navigation menu"
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
     >
       {/* Backdrop */}
       <div 
