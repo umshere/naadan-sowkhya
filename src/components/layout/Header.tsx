@@ -10,18 +10,7 @@ import { menuItems } from '@/data/menuItems';
 
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollY = window.scrollY;
-      setIsScrolled(scrollY > 20);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -50,30 +39,20 @@ export const Header = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-[var(--z-header)]" style={{ zIndex: 'var(--z-header)' }}>
-      {/* TopBar with conditional visibility */}
-      <div 
-        className={`transition-all duration-300 ${
-          isScrolled ? 'opacity-0 -translate-y-full' : 'opacity-100 translate-y-0'
-        }`}
-      >
+    <div className="fixed top-0 left-0 right-0 z-[1001]">
+      {/* TopBar */}
+      <div className="relative z-[1002]">
         <TopBar />
       </div>
       
       {/* Main Header */}
-      <header 
-        className={`bg-black bg-opacity-95 backdrop-blur-sm w-full transition-all duration-300 ${
-          isScrolled ? 'py-2 shadow-lg' : 'py-4'
-        }`}
-      >
+      <header className="relative z-[1003] bg-black w-full py-4">
         <div className="container mx-auto px-4 max-w-7xl">
           <nav className="flex items-center justify-between">
             {/* Logo */}
             <Link 
               href="/" 
-              className={`relative flex items-center transition-all duration-300 ${
-                isScrolled ? 'scale-[0.85]' : 'scale-100'
-              }`}
+              className="relative flex items-center transition-all duration-300"
               onClick={() => isMenuOpen && toggleMenu()}
             >
               <Image 
@@ -93,7 +72,7 @@ export const Header = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden p-2 -mr-2 rounded-md hover:bg-white/10 transition-colors"
+              className="block lg:hidden p-2 rounded-md hover:bg-white/10 transition-colors z-[1005]"
               onClick={toggleMenu}
               aria-label="Toggle menu"
               aria-expanded={isMenuOpen}

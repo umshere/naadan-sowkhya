@@ -23,10 +23,9 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
 
   return (
     <div
-      className={`fixed inset-0 z-[110] lg:hidden ${
+      className={`fixed inset-0 z-[1004] lg:hidden ${
         isMenuOpen ? 'block' : 'hidden'
       }`}
-      style={{ zIndex: 'var(--z-mobile-menu)' }}
       aria-hidden={!isMenuOpen}
       role="dialog"
       aria-modal="true"
@@ -34,7 +33,7 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
     >
       {/* Backdrop */}
       <div 
-        className={`fixed inset-0 bg-black/60 backdrop-blur-[2px] transition-opacity duration-300 ${
+        className={`fixed inset-0 bg-black/80 backdrop-blur-sm transition-opacity duration-300 ${
           isMenuOpen && !isAnimating ? 'opacity-100' : 'opacity-0'
         }`}
         onClick={toggleMenu}
