@@ -11,30 +11,29 @@ import { menuItems } from '@/data/menuItems';
 export const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isScrollingUp, setIsScrollingUp] = useState(true);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setIsScrolled(currentScrollY > 20);
-      setIsScrollingUp(currentScrollY < lastScrollY || currentScrollY <= 0);
-      setLastScrollY(currentScrollY);
+      const scrollY = window.scrollY;
+      setIsScrolled(scrollY > 20);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  }, []);
 
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
+      document.body.classList.add('mobile-menu-open');
     } else {
       document.body.style.overflow = '';
+      document.body.classList.remove('mobile-menu-open');
     }
     return () => {
       document.body.style.overflow = '';
+      document.body.classList.remove('mobile-menu-open');
     };
   }, [isMenuOpen]);
 
@@ -51,16 +50,22 @@ export const Header = () => {
   };
 
   return (
-    <div className={`fixed top-0 left-0 right-0 z-50 transform transition-transform duration-300 
-      ${!isScrollingUp && !isMenuOpen ? '-translate-y-full' : 'translate-y-0'}
-    `}>
-      <div className={`transition-opacity duration-300 ${isScrolled ? 'opacity-0 h-0' : 'opacity-100'}`}>
+    <div className="fixed top-0 left-0 right-0 z-[var(--z-header)]" style={{ zIndex: 'var(--z-header)' }}>
+      {/* TopBar with conditional visibility */}
+      <div 
+        className={`transition-all duration-300 ${
+          isScrolled ? 'opacity-0 -translate-y-full' : 'opacity-100 translate-y-0'
+        }`}
+      >
         <TopBar />
       </div>
       
-      <header className={`bg-black bg-opacity-95 backdrop-blur-sm transition-all duration-300 ${
-        isScrolled ? 'py-2 shadow-lg' : 'py-4'
-      }`}>
+      {/* Main Header */}
+      <header 
+        className={`bg-black bg-opacity-95 backdrop-blur-sm w-full transition-all duration-300 ${
+          isScrolled ? 'py-2 shadow-lg' : 'py-4'
+        }`}
+      >
         <div className="container mx-auto px-4 max-w-7xl">
           <nav className="flex items-center justify-between">
             {/* Logo */}
@@ -69,6 +74,7 @@ export const Header = () => {
               className={`relative flex items-center transition-all duration-300 ${
                 isScrolled ? 'scale-[0.85]' : 'scale-100'
               }`}
+              onClick={() => isMenuOpen && toggleMenu()}
             >
               <Image 
                 src="/images/brandname_black.png"
@@ -90,6 +96,7 @@ export const Header = () => {
               className="lg:hidden p-2 -mr-2 rounded-md hover:bg-white/10 transition-colors"
               onClick={toggleMenu}
               aria-label="Toggle menu"
+              aria-expanded={isMenuOpen}
             >
               <div className="relative w-6 h-5">
                 <span className={`absolute left-0 top-0 w-full h-0.5 bg-white transform transition-all duration-300 ${
@@ -109,7 +116,7 @@ export const Header = () => {
               isMenuOpen={isMenuOpen} 
               isAnimating={isAnimating} 
               toggleMenu={toggleMenu} 
-              menuItems={menuItems} 
+              menuItems={menuItems}
             />
           </nav>
         </div>

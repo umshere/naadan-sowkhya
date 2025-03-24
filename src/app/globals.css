@@ -20,6 +20,15 @@
   --border-color: #e5e5e5;
   --font-primary: "Poppins", sans-serif;
   --font-secondary: "Playfair Display", Georgia, serif;
+
+  /* Updated Z-index stack levels */
+  --z-base: 1;
+  --z-floating: 90;
+  --z-header: 100;
+  --z-mobile-menu: 110;
+  --z-modal: 150;
+  --z-loader: 200;
+  --z-toast: 250;
 }
 
 @layer base {
@@ -29,6 +38,15 @@
     background-repeat: repeat;
     background-size: 300px;
     background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    /* Prevent content shift when scrollbar appears */
+    scrollbar-gutter: stable;
   }
 
   h1,
@@ -372,6 +390,33 @@
   .btn {
     @apply px-4 py-2 text-sm;
   }
+
+  body.menu-open {
+    overflow: hidden;
+    touch-action: none;
+  }
+
+  .header-mobile {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-header);
+    transition: transform 0.3s ease-in-out;
+    will-change: transform;
+  }
+
+  .mobile-menu-active {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Floating buttons visibility */
+  .floating-buttons {
+    position: fixed !important;
+    z-index: var(--z-floating) !important;
+  }
 }
 
 @media (min-width: 769px) {
@@ -674,4 +719,67 @@
 
 .animate-fadeIn {
   animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Header and mobile menu adjustments */
+.header-offset {
+  scroll-margin-top: 100px;
+}
+
+.mobile-menu-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.mobile-menu-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Smooth scrolling for the whole page */
+html {
+  scroll-behavior: smooth;
+}
+
+@supports (height: 100dvh) {
+  .h-screen {
+    height: 100dvh;
+  }
+}
+
+/* Mobile menu specific styles */
+.mobile-menu-open {
+  overflow: hidden !important;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overscroll-behavior: none;
+  touch-action: none;
+  -webkit-overflow-scrolling: none;
+}
+
+.mobile-menu-backdrop {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* Ensure proper stacking on mobile */
+@media (max-width: 1023px) {
+  .header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: var(--z-header);
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+  }
+
+  .mobile-menu {
+    z-index: var(--z-mobile-menu);
+  }
 }

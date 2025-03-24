@@ -42,10 +42,10 @@ export default function RootLayout({
       >
         <div className="min-h-screen flex flex-col">
           <Header />
-          <main className="flex-1 pt-[110px]"> {/* Add padding-top to account for fixed header */}
-          <AnimationProvider>
-            {children}
-          </AnimationProvider>
+          <main className="min-h-screen pt-[80px] sm:pt-[100px]">
+            <AnimationProvider>
+              {children}
+            </AnimationProvider>
           </main>
           <Footer />
           <FloatingButtons />
