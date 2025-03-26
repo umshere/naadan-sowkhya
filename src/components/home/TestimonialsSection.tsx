@@ -72,7 +72,7 @@ const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) => {
         </motion.p>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          className="max-w-4xl mx-auto"
           initial="hidden"
           animate={isVisible ? "show" : "hidden"}
           variants={{
@@ -86,59 +86,39 @@ const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) => {
             }
           }}
         >
-          {testimonials.slice(0, isMobile ? 3 : 6).map((testimonial, index) => (
-            <motion.div
-              key={testimonial.id}
-              className="h-full"
-              variants={{
-                hidden: { opacity: 0, y: 20 },
-                show: { 
-                  opacity: 1, 
-                  y: 0,
-                  transition: {
-                    duration: isMobile ? 0.3 : 0.5,
-                    ease: "easeOut"
-                  }
-                }
-              }}
-            >
-              <TestimonialCarousel 
-                testimonials={[testimonial]} 
-                compact={isMobile}
-              />
-            </motion.div>
-          ))}
+          <TestimonialCarousel 
+            testimonials={testimonials}
+            compact={isMobile}
+          />
         </motion.div>
 
-        {testimonials.length > (isMobile ? 3 : 6) && (
-          <motion.div
-            className="text-center mt-12"
-            initial={{ opacity: 0 }}
-            animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
-            transition={{ delay: 0.8 }}
+        <motion.div
+          className="text-center mt-12"
+          initial={{ opacity: 0 }}
+          animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
+          transition={{ delay: 0.8 }}
+        >
+          <Link
+            href="/testimonials"
+            className="inline-flex items-center px-6 py-3 bg-[var(--primary-color)] text-white rounded-lg 
+                     hover:bg-opacity-90 transition-all duration-300 touch-target"
           >
-            <Link
-              href="/testimonials"
-              className="inline-flex items-center px-6 py-3 bg-[var(--primary-color)] text-white rounded-lg 
-                       hover:bg-opacity-90 transition-all duration-300 touch-target"
+            <span className="mr-2">View All Testimonials</span>
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
             >
-              <span className="mr-2">View All Testimonials</span>
-              <svg
-                className="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 5l7 7-7 7"
-                />
-              </svg>
-            </Link>
-          </motion.div>
-        )}
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M9 5l7 7-7 7"
+              />
+            </svg>
+          </Link>
+        </motion.div>
       </div>
     </section>
   );
