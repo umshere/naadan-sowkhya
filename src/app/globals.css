@@ -3,12 +3,24 @@
 @tailwind utilities;
 
 :root {
-  --primary-color: #2c5282;
-  --primary-light: #ebf8ff;
-  --secondary-color: #4a5568;
-  --tertiary-color: #9f7aea;
-  --text-dark: #2d3748;
-  --text-light: #718096;
+  --primary-color: #2c7a43;
+  --secondary-color: #1a4d2e;
+  --tertiary-color: #a3b899;
+  --primary-light: #e8f4ea;
+  --primary-dark: #0f3520;
+  --accent-color: #25d366;
+  --success-color: #4caf50;
+  --error-color: #f44336;
+  --warning-color: #ffc107;
+  --background: #ffffff;
+  --foreground: #171717;
+  --text-light: #ffffff;
+  --text-dark: #0f3520;
+  --natural-light: #f4f7ed;
+  --natural-dark: #2c3e2d;
+  --border-color: #e5e5e5;
+  --font-primary: "Poppins", sans-serif;
+  --font-secondary: "Playfair Display", Georgia, serif;
 }
 
 /* Base styles */

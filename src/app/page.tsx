@@ -38,7 +38,8 @@ const sections: Section[] = [
   { id: "categories", label: "Categories" },
   { id: "products", label: "Products" },
   { id: "testimonials", label: "Testimonials" },
-  { id: "gallery", label: "Gallery" }
+  { id: "gallery", label: "Gallery" }, 
+  { id: "certifications", label: "Certifications" },
 ];
 
 const SectionWrapper = ({ id, children }: SectionWrapperProps): React.ReactElement => (
@@ -131,6 +132,12 @@ const HomePage = (): React.ReactElement => {
               />
             </ScrollRevealContainer>
           </CollapsibleSection>
+        </SectionWrapper>
+
+        <SectionWrapper id="certifications">
+          <ScrollRevealContainer animation="fade-up" duration={800}>
+            <CertificationsSection certifications={homepageData.certifications} />
+          </ScrollRevealContainer>
         </SectionWrapper>
       </div>
 

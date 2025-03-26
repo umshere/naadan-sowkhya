@@ -348,7 +348,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
                         transition={{ delay: isMobile ? 0.4 : 0.7, duration: isMobile ? 0.3 : 0.6 }}
                       >
                         <Link
-                          href={slide.buttonLink}
+                          href="/products" // Updated link to go to all products page
                           className="btn-elegant group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-[var(--primary-color)] rounded-lg hover:bg-[var(--primary-color)]/90 transition-all duration-300"
                         >
                           <span className="relative z-10">{slide.buttonText}</span>
