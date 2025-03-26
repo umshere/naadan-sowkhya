@@ -65,7 +65,7 @@ const AboutSection = ({
     <section
       id="about-section"
       ref={sectionRef}
-      className="relative overflow-hidden py-20 lg:py-32 max-w-[100vw] touch-none"
+      className="relative overflow-hidden py-20 lg:py-32 max-w-[100vw] section-scroll"
     >
       {/* Subtle background texture */}
       <motion.div 
@@ -73,7 +73,7 @@ const AboutSection = ({
         style={{ opacity }}
       />
 
-      <div className="container max-w-7xl mx-auto px-4 relative z-10">
+      <div className="container max-w-7xl mx-auto px-4 relative z-10 section-content">
         {/* Section Header */}
         <motion.div 
           className="text-center mb-16 md:mb-24"

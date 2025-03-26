@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface Testimonial {
@@ -17,6 +17,10 @@ interface TestimonialCarouselProps {
 export default function TestimonialCarousel({ testimonials, compact = false }: TestimonialCarouselProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const minSwipeDistance = 50;
+  const verticalSwipeThreshold = 30;
 
   const slideVariants = {
     enter: (direction: number) => ({
@@ -65,12 +69,44 @@ export default function TestimonialCarousel({ testimonials, compact = false }: T
     });
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartX.current || !touchStartY.current) return;
+
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    
+    const deltaX = touchStartX.current - touchEndX;
+    const deltaY = Math.abs(touchStartY.current - touchEndY);
+
+    // Only handle horizontal swipes if vertical movement is minimal
+    if (deltaY < verticalSwipeThreshold) {
+      if (Math.abs(deltaX) > minSwipeDistance) {
+        if (deltaX > 0) {
+          paginate(1); // Swipe left
+        } else {
+          paginate(-1); // Swipe right
+        }
+      }
+    }
+
+    // Reset touch coordinates
+    touchStartX.current = 0;
+    touchStartY.current = 0;
+  };
+
   return (
     <motion.div 
-      className={`relative bg-white rounded-2xl shadow-xl ${compact ? 'p-6 md:p-8' : 'p-8 md:p-12'}`}
+      className={`relative bg-white rounded-2xl shadow-xl ${compact ? 'p-6 md:p-8' : 'p-8 md:p-12'} touch-pan-y select-none`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <div className="max-w-4xl mx-auto overflow-hidden">
         <AnimatePresence initial={false} custom={direction} mode="wait">

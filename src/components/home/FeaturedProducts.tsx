@@ -32,6 +32,9 @@ interface FeaturedProductsProps {
 const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: FeaturedProductsProps) => {
   const [visibleProducts, setVisibleProducts] = useState<number>(4);
   const sectionRef = useRef<HTMLElement>(null);
+  const touchStartRef = useRef<{ x: number; y: number; time: number }>({ x: 0, y: 0, time: 0 });
+  const [isSwipeScrolling, setIsSwipeScrolling] = useState(false);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   // Scroll-based animations
   const { scrollYProgress } = useScroll({
@@ -47,23 +50,62 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
   // Filter products based on the featured product IDs
   const featuredProducts = allProducts.filter(product => productIds.includes(product.id));
 
-  // Determine how many products to show based on screen size
+  // Enhanced resize handler with debouncing
   useEffect(() => {
+    let resizeTimer: NodeJS.Timeout;
+    
     const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setVisibleProducts(1);
-      } else if (window.innerWidth < 768) {
-        setVisibleProducts(2);
-      } else if (window.innerWidth < 1024) {
-        setVisibleProducts(3);
-      } else {
-        setVisibleProducts(4);
-      }
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (window.innerWidth < 640) {
+          setVisibleProducts(1);
+        } else if (window.innerWidth < 768) {
+          setVisibleProducts(2);
+        } else if (window.innerWidth < 1024) {
+          setVisibleProducts(3);
+        } else {
+          setVisibleProducts(4);
+        }
+      }, 100);
     };
+
     handleResize();
     window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimer);
+    };
   }, []);
+
+  // Touch event handlers for improved mobile interaction
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartRef.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+      time: Date.now()
+    };
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartRef.current.time) return;
+
+    const deltaX = Math.abs(e.touches[0].clientX - touchStartRef.current.x);
+    const deltaY = Math.abs(e.touches[0].clientY - touchStartRef.current.y);
+
+    if (deltaX > deltaY && deltaX > 10) {
+      setIsSwipeScrolling(true);
+    }
+  };
+
+  const handleTouchEnd = () => {
+    const touchDuration = Date.now() - touchStartRef.current.time;
+    if (touchDuration < 300) {
+      setTimeout(() => setIsSwipeScrolling(false), 50);
+    } else {
+      setIsSwipeScrolling(false);
+    }
+    touchStartRef.current = { x: 0, y: 0, time: 0 };
+  };
 
   // Wave animation variants
   const waveVariants = {
@@ -81,7 +123,13 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
   };
 
   return (
-    <section ref={sectionRef} className="relative py-16 bg-[var(--natural-light)]">
+    <section 
+      ref={sectionRef}
+      className="relative py-16 md:py-24 bg-[var(--natural-light)] overflow-hidden section-scroll"
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       {/* Top decorative wave */}
       <motion.div 
         className="absolute left-0 w-full overflow-hidden h-16 -top-1 z-10"
@@ -103,7 +151,7 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
       </motion.div>
 
       <motion.div 
-        className="container mx-auto px-4 relative z-20"
+        className="container mx-auto px-4 relative z-20 section-content"
         style={{ y, opacity }}
       >
         <motion.h2 
@@ -129,7 +177,7 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
         )}
 
         <motion.div 
-          className="relative pb-12"
+          className="relative pb-12 mobile-optimized"
           style={{ scale }}
         >
           <Swiper
@@ -143,6 +191,9 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
             }}
             autoplay={{ delay: 5000, disableOnInteraction: false }}
             className="product-carousel !pb-12"
+            style={{
+              touchAction: isMobile ? 'pan-y pinch-zoom' : 'none',
+            }}
           >
             {featuredProducts.map((product, index) => (
               <SwiperSlide key={product.id} className="h-full">
@@ -157,6 +208,8 @@ const FeaturedProducts = ({ title, subtitle, productIds, allProducts }: Featured
                   }}
                 >
                   <motion.div
+                    className={isSwipeScrolling ? 'pointer-events-none' : ''}
+                    onClick={(e) => isSwipeScrolling && e.preventDefault()}
                     whileHover={{ 
                       y: -8,
                       transition: { duration: 0.2 }

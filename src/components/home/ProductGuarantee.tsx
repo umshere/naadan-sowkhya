@@ -65,7 +65,7 @@ const ProductGuarantee = () => {
   return (
     <section 
       id="product-guarantee" 
-      className="relative py-24 lg:py-32 bg-[var(--natural-light)] overflow-hidden max-w-[100vw] touch-none"
+      className="relative py-24 lg:py-32 bg-[var(--natural-light)] overflow-hidden max-w-[100vw]"
     >
       {/* Natural texture overlay */}
       <div className="absolute inset-0 pointer-events-none">

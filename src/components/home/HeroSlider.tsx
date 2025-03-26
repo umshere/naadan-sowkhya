@@ -23,14 +23,38 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [previousSlide, setPreviousSlide] = useState(-1);
   const slideRef = useRef<HTMLDivElement>(null);
-  // Touch tracking state
-  const [touchStart, setTouchStart] = useState<number | null>(null);
-  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  
+  // Enhanced touch tracking state
+  const touchRef = useRef<{
+    startX: number;
+    startY: number;
+    lastY: number;
+    isVerticalScroll: boolean;
+    scrollStartTime: number;
+  }>({
+    startX: 0,
+    startY: 0,
+    lastY: 0,
+    isVerticalScroll: false,
+    scrollStartTime: 0
+  });
+  const [isSwiping, setIsSwiping] = useState(false);
 
-  // Minimum swipe distance (in px)
-  const minSwipeDistance = 50;
+  // Minimum swipe distance and timing (in px and ms)
+  const minSwipeDistance = 40;
+  const minVerticalSwipe = 10;
+  const swipeTimeThreshold = 300; // ms
 
-  // Scroll-based parallax effect
+  // Debug logging in development
+  const logTouch = (event: string, data: any) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`HeroSlider Touch Event - ${event}:`, data);
+    }
+  };
+
+  // Scroll-based parallax effect for desktop only
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
   const { scrollY } = useScroll();
   const parallaxY = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0.3]);
@@ -53,106 +77,204 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
-  // Auto-rotate slides
-  useEffect(() => {
-    const interval = setInterval(() => {
-      goToNextSlide();
-    }, 6000);
-    
-    return () => clearInterval(interval);
-  }, [currentSlide, isAnimating]);
-
-  // Handle touch events for swipe functionality
+  // Enhanced touch event handling
   const onTouchStart = (e: React.TouchEvent) => {
-    setTouchEnd(null); // Reset on touch start
     const touch = e.targetTouches[0];
-    setTouchStart(touch.clientX);
+    touchRef.current = {
+      startX: touch.clientX,
+      startY: touch.clientY,
+      lastY: touch.clientY,
+      isVerticalScroll: false,
+      scrollStartTime: Date.now()
+    };
+    setIsSwiping(false);
+    
+    logTouch('Start', {
+      x: touch.clientX,
+      y: touch.clientY,
+      time: touchRef.current.scrollStartTime
+    });
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
+    if (!containerRef.current) return;
+    
     const touch = e.targetTouches[0];
-    setTouchEnd(touch.clientX);
-    
-    // Only prevent default for horizontal swipes
-    const touchDeltaX = touch.clientX - (touchStart ?? 0);
-    const touchDeltaY = touch.clientY - (touch.clientY ?? 0);
-    
-    // If horizontal movement is greater than vertical, prevent default
-    if (Math.abs(touchDeltaX) > Math.abs(touchDeltaY)) {
+    const deltaX = touch.clientX - touchRef.current.startX;
+    const deltaY = touch.clientY - touchRef.current.startY;
+    const moveY = touch.clientY - touchRef.current.lastY;
+    touchRef.current.lastY = touch.clientY;
+
+    logTouch('Move', {
+      deltaX,
+      deltaY,
+      moveY,
+      isVerticalScroll: touchRef.current.isVerticalScroll
+    });
+
+    // Allow unrestricted vertical scrolling initially
+    if (!touchRef.current.isVerticalScroll && Math.abs(deltaY) > minVerticalSwipe) {
+      touchRef.current.isVerticalScroll = Math.abs(deltaY) > Math.abs(deltaX);
+      if (touchRef.current.isVerticalScroll) {
+        return; // Exit early to allow natural scrolling
+      }
+    }
+
+    // Handle horizontal swipes
+    if (!touchRef.current.isVerticalScroll && Math.abs(deltaX) > minVerticalSwipe) {
+      setIsSwiping(true);
       e.preventDefault();
+
+      // Add visual feedback during swipe with damping
+      if (slideRef.current) {
+        const damping = 0.3; // Reduce movement by 70%
+        const maxOffset = containerRef.current.offsetWidth * 0.5; // Limit movement to 50% of width
+        const dampedDelta = Math.min(Math.abs(deltaX * damping), maxOffset) * Math.sign(deltaX);
+        slideRef.current.style.transform = `translateX(${dampedDelta}px)`;
+      }
     }
   };
 
   const onTouchEnd = (e: React.TouchEvent) => {
-    if (!touchStart || !touchEnd) return;
+    if (!touchRef.current || touchRef.current.isVerticalScroll) return;
+
+    const deltaX = e.changedTouches[0].clientX - touchRef.current.startX;
+    const swipeTime = Date.now() - touchRef.current.scrollStartTime;
     
-    const distance = touchStart - touchEnd;
-    const isLeftSwipe = distance > minSwipeDistance;
-    const isRightSwipe = distance < -minSwipeDistance;
-    
-    if (isLeftSwipe) {
-      goToNextSlide();
-    } else if (isRightSwipe) {
-      goToPrevSlide();
+    logTouch('End', { 
+      deltaX, 
+      isSwiping, 
+      swipeTime,
+      isVerticalScroll: touchRef.current.isVerticalScroll 
+    });
+
+    if (isSwiping) {
+      const isQuickSwipe = swipeTime < swipeTimeThreshold;
+      const swipeThreshold = isQuickSwipe ? minSwipeDistance * 0.5 : minSwipeDistance;
+
+      if (Math.abs(deltaX) > swipeThreshold) {
+        if (deltaX > 0) {
+          goToPrevSlide();
+        } else {
+          goToNextSlide();
+        }
+      }
+
+      // Reset transform with animation
+      if (slideRef.current) {
+        slideRef.current.style.transition = 'transform 0.3s ease-out';
+        slideRef.current.style.transform = '';
+        setTimeout(() => {
+          if (slideRef.current) {
+            slideRef.current.style.transition = '';
+          }
+        }, 300);
+      }
     }
-    
-    // Reset values
-    setTouchStart(null);
-    setTouchEnd(null);
+
+    // Reset state
+    setIsSwiping(false);
+    touchRef.current = {
+      startX: 0,
+      startY: 0,
+      lastY: 0,
+      isVerticalScroll: false,
+      scrollStartTime: 0
+    };
   };
+
+  // Auto-rotate slides (pause during swipe)
+  useEffect(() => {
+    if (!isSwiping) {
+      const interval = setInterval(() => {
+        goToNextSlide();
+      }, 6000);
+      return () => clearInterval(interval);
+    }
+    return undefined;
+  }, [currentSlide, isAnimating, isSwiping]);
 
   // Animation handling
   useEffect(() => {
     if (currentSlide !== previousSlide) {
       setIsAnimating(true);
-      const timer = setTimeout(() => setIsAnimating(false), 800); // Match with animation duration
+      const timer = setTimeout(() => setIsAnimating(false), 800);
       return () => clearTimeout(timer);
     }
   }, [currentSlide, previousSlide]);
 
+  // Animation variants
   const slideVariants = {
     enter: {
-      opacity: 0,
-      scale: 1.2,
+      mobile: {
+        opacity: 0,
+      },
+      desktop: {
+        opacity: 0,
+        scale: 1.2,
+      }
     },
     center: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: [0.4, 0.0, 0.2, 1],
+      mobile: {
+        opacity: 1,
+        transition: {
+          duration: 0.4,
+          ease: "easeOut",
+        },
       },
+      desktop: {
+        opacity: 1,
+        scale: 1,
+        transition: {
+          duration: 0.8,
+          ease: [0.4, 0.0, 0.2, 1],
+        },
+      }
     },
     exit: {
-      opacity: 0,
-      scale: 0.9,
-      transition: {
-        duration: 0.8,
-        ease: [0.4, 0.0, 0.2, 1],
+      mobile: {
+        opacity: 0,
+        transition: { duration: 0.3 },
       },
-    },
+      desktop: {
+        opacity: 0,
+        scale: 0.9,
+        transition: {
+          duration: 0.8,
+          ease: [0.4, 0.0, 0.2, 1],
+        },
+      }
+    }
   };
+
+  const variants = isMobile ? 'mobile' : 'desktop';
 
   return (
     <motion.div
-      ref={slideRef}
-      style={{ y: parallaxY }}
-      className="swipeable-section relative h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)] w-full"
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
+      ref={containerRef}
+      className="swipeable-section relative h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)] w-full touch-pan-y"
+      style={{
+        y: isMobile ? 0 : parallaxY,
+        transition: 'transform 0.3s ease-out',
+        touchAction: 'pan-y pinch-zoom'
+      }}
     >
-      {/* Ensure content doesn't overflow the container */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
+      <div 
+        ref={slideRef}
+        className="absolute inset-0 w-full h-full overflow-hidden"
+        onTouchStart={onTouchStart}
+        onTouchMove={onTouchMove}
+        onTouchEnd={onTouchEnd}
+      >
         <AnimatePresence mode="wait">
           {slides.map((slide, index) => (
             index === currentSlide && (
               <motion.div
                 key={slide.id}
                 variants={slideVariants}
-                initial="enter"
-                animate="center"
-                exit="exit"
+                initial={slideVariants.enter[variants]}
+                animate={slideVariants.center[variants]}
+                exit={slideVariants.exit[variants]}
                 className="absolute inset-0 w-full h-full"
                 onAnimationStart={() => setIsAnimating(true)}
                 onAnimationComplete={() => setIsAnimating(false)}
@@ -169,22 +291,22 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
                   />
                   <motion.div 
                     className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70"
-                    style={{ opacity }}
+                    style={{ opacity: isMobile ? 0.6 : opacity }}
                   />
                   
                   {/* Content */}
                   <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
                     <motion.div 
                       className="max-w-5xl mx-auto text-center"
-                      initial={{ opacity: 0, y: 20 }}
+                      initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
                       animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3, duration: 0.6 }}
+                      transition={{ delay: isMobile ? 0.2 : 0.3, duration: isMobile ? 0.3 : 0.6 }}
                     >
                       {/* Brand Label */}
                       <motion.p
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.6 }}
+                        transition={{ delay: isMobile ? 0.2 : 0.4, duration: isMobile ? 0.3 : 0.6 }}
                         className="text-base md:text-lg lg:text-xl font-semibold tracking-wider uppercase mb-4 text-white/90 drop-shadow-lg"
                       >
                         NAADAN SOWKHYA
@@ -192,9 +314,9 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
 
                       {/* Main Heading */}
                       <motion.h1
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: isMobile ? 15 : 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.5, duration: 0.6 }}
+                        transition={{ delay: isMobile ? 0.3 : 0.5, duration: isMobile ? 0.3 : 0.6 }}
                         className="font-serif font-bold text-3xl md:text-5xl lg:text-6xl xl:text-7xl mb-6 tracking-wider drop-shadow-lg text-white"
                       >
                         <span className="relative inline-block">
@@ -202,7 +324,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
                           <motion.span
                             initial={{ scaleX: 0 }}
                             animate={{ scaleX: 1 }}
-                            transition={{ delay: 0.8, duration: 0.6 }}
+                            transition={{ delay: isMobile ? 0.4 : 0.8, duration: isMobile ? 0.3 : 0.6 }}
                             className="absolute -bottom-2 left-0 right-0 h-1 bg-[var(--tertiary-color)]"
                             style={{ transformOrigin: 'left' }}
                           />
@@ -211,9 +333,9 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
 
                       {/* Subtitle */}
                       <motion.p
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.6, duration: 0.6 }}
+                        transition={{ delay: isMobile ? 0.3 : 0.6, duration: isMobile ? 0.3 : 0.6 }}
                         className="text-white/90 text-base md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg"
                       >
                         {slide.subtitle}
@@ -221,9 +343,9 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
 
                       {/* Button */}
                       <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.7, duration: 0.6 }}
+                        transition={{ delay: isMobile ? 0.4 : 0.7, duration: isMobile ? 0.3 : 0.6 }}
                       >
                         <Link
                           href={slide.buttonLink}
@@ -268,21 +390,22 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
         </div>
       </motion.div>
 
-      {/* Navigation Arrows - Hide on small screens */}
+      {/* Navigation Arrows - Desktop only */}
       <motion.div 
         className="absolute left-2 right-2 top-1/2 -translate-y-1/2 z-30 flex justify-between md:left-8 md:right-8 lg:left-12 lg:right-12 hidden md:flex"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}
       >
+        {/* Previous/Next buttons */}
         <button
           onClick={goToPrevSlide}
           disabled={isAnimating}
           className="p-2 md:p-3 rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 
-                     backdrop-blur-[2px] border border-white/10 shadow-sm transform 
-                     transition-all duration-300 hover:scale-105 group
-                     disabled:opacity-50 disabled:cursor-not-allowed
-                     focus:outline-none focus:ring-2 focus:ring-white/20"
+                   backdrop-blur-[2px] border border-white/10 shadow-sm transform 
+                   transition-all duration-300 hover:scale-105 group
+                   disabled:opacity-50 disabled:cursor-not-allowed
+                   focus:outline-none focus:ring-2 focus:ring-white/20"
           aria-label="Previous slide"
         >
           <svg
@@ -303,10 +426,10 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
           onClick={goToNextSlide}
           disabled={isAnimating}
           className="p-2 md:p-3 rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 
-                     backdrop-blur-[2px] border border-white/10 shadow-sm transform 
-                     transition-all duration-300 hover:scale-105 group
-                     disabled:opacity-50 disabled:cursor-not-allowed
-                     focus:outline-none focus:ring-2 focus:ring-white/20"
+                   backdrop-blur-[2px] border border-white/10 shadow-sm transform 
+                   transition-all duration-300 hover:scale-105 group
+                   disabled:opacity-50 disabled:cursor-not-allowed
+                   focus:outline-none focus:ring-2 focus:ring-white/20"
           aria-label="Next slide"
         >
           <svg
@@ -325,7 +448,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
         </button>
       </motion.div>
 
-      {/* Mobile Swipe Indicator - Only visible on small screens */}
+      {/* Mobile Swipe Indicator */}
       <motion.div 
         className="absolute bottom-16 left-0 right-0 z-30 md:hidden"
         initial={{ opacity: 0, y: 20 }}

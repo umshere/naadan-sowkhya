@@ -17,11 +17,20 @@ interface GallerySectionProps {
   title: string;
 }
 
-export default function GallerySection({ images, title }: GallerySectionProps) {
+const GallerySection = ({ images, title }: GallerySectionProps) => {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredImage, setHoveredImage] = useState<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const minSwipeDistance = 50;
+  const verticalThreshold = 30;
+
+  const touchStartRef = useRef({ x: 0, y: 0, time: 0 });
+  const touchRef = useRef({ isVerticalScroll: false });
+  const [isScrolling, setIsScrolling] = useState(false);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
   // Intersection Observer for animations
   useEffect(() => {
@@ -64,6 +73,59 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
     const currentIndex = images.findIndex(img => img.id === selectedImage.id);
     const nextIndex = currentIndex === images.length - 1 ? 0 : currentIndex + 1;
     setSelectedImage(images[nextIndex]);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    touchStartRef.current = {
+      x: e.touches[0].clientX,
+      y: e.touches[0].clientY,
+      time: Date.now()
+    };
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartRef.current.time) return;
+    const deltaX = Math.abs(e.touches[0].clientX - touchStartRef.current.x);
+    const deltaY = Math.abs(e.touches[0].clientY - touchStartRef.current.y);
+    
+    if (!touchRef.current.isVerticalScroll) {
+      touchRef.current.isVerticalScroll = deltaY > deltaX;
+      if (deltaX > deltaY && deltaX > 10) {
+        setIsScrolling(true);
+        e.preventDefault();
+      }
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartRef.current.time || touchRef.current.isVerticalScroll) return;
+    
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const deltaX = touchStartRef.current.x - touchEndX;
+    const deltaY = Math.abs(touchStartRef.current.y - touchEndY);
+    
+    // Reset scrolling state after a short delay
+    setTimeout(() => setIsScrolling(false), 50);
+
+    // Only handle horizontal swipes if vertical movement is minimal
+    if (deltaY < verticalThreshold) {
+      if (Math.abs(deltaX) > minSwipeDistance) {
+        if (deltaX > 0) {
+          goToNext();
+        } else {
+          goToPrevious();
+        }
+        e.preventDefault();
+      }
+    }
+
+    // Reset touch tracking
+    touchStartRef.current = { x: 0, y: 0, time: 0 };
+    touchStartX.current = 0;
+    touchStartY.current = 0;
   };
 
   const container = {
@@ -115,7 +177,7 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
               key={image.id}
               variants={item}
               className="group relative overflow-hidden rounded-xl shadow-sm hover:shadow-xl 
-                        transition-all duration-300 cursor-pointer"
+                        transition-all duration-300 cursor-pointer touch-pan-y"
               onHoverStart={() => setHoveredImage(image.id)}
               onHoverEnd={() => setHoveredImage(null)}
               onClick={() => openLightbox(image)}
@@ -182,10 +244,12 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
       <AnimatePresence>
         {selectedImage && (
           <motion.div 
-            className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4 touch-pan-y"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
+            onTouchStart={handleTouchStart}
+            onTouchEnd={handleTouchEnd}
           >
             <div className="relative max-w-4xl w-full max-h-[90vh]">
               {/* Close Button */}
@@ -206,7 +270,7 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
               </button>
 
               {/* Fullscreen Image */}
-              <div className="relative w-full h-[80vh]">
+              <div className="relative w-full h-[80vh] select-none">
                 <Image
                   src={selectedImage.src}
                   alt={selectedImage.alt}
@@ -214,6 +278,7 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
                   sizes="100vw"
                   className="object-contain"
                   priority
+                  draggable={false}
                 />
                 {/* Image Caption */}
                 <div className="absolute bottom-4 left-4 right-4 text-primary-color text-center bg-black/60 p-3 rounded-lg">
@@ -222,15 +287,15 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
               </div>
 
               {/* Navigation Buttons */}
-              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-8">
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 md:-translate-x-8">
                 <button
                   onClick={goToPrevious}
-                  className="bg-white/20 hover:bg-white/30 rounded-full p-3 focus:outline-none transition-all hover:scale-110"
+                  className="p-4 md:p-3 rounded-full bg-white/20 hover:bg-white/30 focus:outline-none transition-all hover:scale-110"
                   aria-label="Previous image"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-white"
+                    className="h-8 w-8 md:h-6 md:w-6 text-white"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -239,15 +304,15 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
                   </svg>
                 </button>
               </div>
-              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-8">
+              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 md:translate-x-8">
                 <button
                   onClick={goToNext}
-                  className="bg-white/20 hover:bg-white/30 rounded-full p-3 focus:outline-none transition-all hover:scale-110"
+                  className="p-4 md:p-3 rounded-full bg-white/20 hover:bg-white/30 focus:outline-none transition-all hover:scale-110"
                   aria-label="Next image"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6 text-white"
+                    className="h-8 w-8 md:h-6 md:w-6 text-white"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -262,4 +327,6 @@ export default function GallerySection({ images, title }: GallerySectionProps) {
       </AnimatePresence>
     </section>
   );
-}
+};
+
+export default GallerySection;

@@ -7,53 +7,21 @@ module.exports = {
   ],
   theme: {
     extend: {
-      colors: {
-        "primary-color": "var(--primary-color)",
-        "secondary-color": "var(--secondary-color)",
-        "tertiary-color": "var(--tertiary-color)",
-        "primary-light": "var(--primary-light)",
-        "primary-dark": "var(--primary-dark)",
-        "accent-color": "#25D366",
-        "natural-light": "#F4F7ED", // Light background color
-        "natural-dark": "#2C3E2D", // Very dark green for text
+      height: {
+        "screen-dynamic": "100dvh",
       },
-      fontFamily: {
-        sans: ["Poppins", "var(--font-geist-sans)", "Arial", "sans-serif"],
-        mono: ["var(--font-geist-mono)", "monospace"],
-        poppins: ["Poppins", "sans-serif"],
-        serif: ["Playfair Display", "Georgia", "serif"],
-        heading: ["Playfair Display", "Georgia", "serif"],
+      screens: {
+        xs: "480px",
       },
-      ringOpacity: {
-        50: "0.5",
+      transitionProperty: {
+        height: "height",
+        spacing: "margin, padding",
       },
-      ringColor: {
-        DEFAULT: "#2C7A43",
-      },
-      backgroundImage: {
-        "leaf-pattern": "url('/images/leaf-pattern.png')",
-        "herbal-texture": "url('/images/herbal-texture.png')",
-        "organic-texture": "url('/images/backgrounds/subtle-leaf-bg.svg')",
-      },
-      lineHeight: {
-        relaxed: "1.75",
-        loose: "2",
-      },
-      letterSpacing: {
-        wider: "0.05em",
-        widest: "0.1em",
+      willChange: {
+        scroll: "scroll-position",
+        transform: "transform",
       },
     },
   },
-  plugins: [
-    require("@tailwindcss/forms"),
-    function({ addUtilities }) {
-      const newUtilities = {
-        ".text-white\\!": {
-          color: "white !important",
-        },
-      };
-      addUtilities(newUtilities, ["responsive", "hover"]);
-    },
-  ],
+  plugins: [require("@tailwindcss/forms")],
 };

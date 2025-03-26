@@ -23,6 +23,14 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
   const [imageErrors, setImageErrors] = useState<{ [key: string]: boolean }>({});
   const sectionRef = useRef<HTMLElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const touchStartX = useRef(0);
+  const touchStartY = useRef(0);
+  const minSwipeDistance = 50;
+  const verticalThreshold = 30;
+  const touchRef = useRef({ 
+    isScrolling: false,
+    startTime: 0
+  });
 
   // Updated Intersection Observer with lower threshold and rootMargin
   useEffect(() => {
@@ -132,6 +140,58 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
     }));
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+    touchRef.current.startTime = Date.now();
+    touchRef.current.isScrolling = false;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (!touchStartX.current || touchRef.current.isScrolling) return;
+
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const deltaX = touchStartX.current - touchEndX;
+    const deltaY = Math.abs(touchStartY.current - touchEndY);
+    const swipeTime = Date.now() - touchRef.current.startTime;
+
+    // Only handle horizontal swipes if vertical movement is minimal
+    if (deltaY < verticalThreshold) {
+      const isQuickSwipe = swipeTime < 300;
+      const effectiveThreshold = isQuickSwipe ? minSwipeDistance * 0.5 : minSwipeDistance;
+
+      if (Math.abs(deltaX) > effectiveThreshold) {
+        if (deltaX > 0) {
+          goToNext();
+        } else {
+          goToPrev();
+        }
+        e.preventDefault();
+      }
+    }
+
+    touchStartX.current = 0;
+    touchStartY.current = 0;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!touchStartX.current) return;
+
+    const deltaY = Math.abs(e.touches[0].clientY - touchStartY.current);
+    const deltaX = Math.abs(e.touches[0].clientX - touchStartX.current);
+
+    // Detect vertical scrolling
+    if (!touchRef.current.isScrolling) {
+      touchRef.current.isScrolling = deltaY > deltaX;
+    }
+
+    // Prevent default only for horizontal swipes
+    if (!touchRef.current.isScrolling && deltaX > deltaY) {
+      e.preventDefault();
+    }
+  };
+
   return (
     <section 
       ref={sectionRef} 
@@ -176,13 +236,19 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
           </button>
           
           {/* Carousel */}
-          <div ref={carouselRef} className="relative h-[450px] flex justify-center items-center">
+          <div 
+            ref={carouselRef} 
+            className="relative h-[450px] flex justify-center items-center touch-pan-y"
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
+          >
             <AnimatePresence mode="popLayout">
               {getVisibleCertifications().map(({ cert, position }, index) => (
                 <motion.a
                   key={`${cert.id}-${position}`}
                   href={cert.link}
-                  className="absolute"
+                  className="absolute select-none touch-pan-y"
                   initial={{ 
                     x: position * 320,
                     scale: 0.8,
@@ -258,7 +324,7 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
       <AnimatePresence>
         {selectedCertification && (
           <motion.div 
-            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4 touch-pan-y"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

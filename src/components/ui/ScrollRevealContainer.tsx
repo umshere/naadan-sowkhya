@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 type ScrollRevealProps = {
   children: ReactNode;
@@ -21,9 +21,21 @@ export default function ScrollRevealContainer({
   className = '',
   once = false,
   easing = 'ease-in-out',
-  offset = 50,  // Reduced default offset
+  offset = 50,
 }: ScrollRevealProps) {
   const elementRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check if we're on mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -40,8 +52,8 @@ export default function ScrollRevealContainer({
         });
       },
       {
-        threshold: 0.1,
-        rootMargin: '50px 0px -10% 0px' // Trigger earlier and maintain visibility longer
+        threshold: isMobile ? 0.05 : 0.1, // Lower threshold on mobile
+        rootMargin: isMobile ? '30px 0px -5% 0px' : '50px 0px -10% 0px' // Adjusted margins for mobile
       }
     );
 
@@ -54,7 +66,7 @@ export default function ScrollRevealContainer({
         observer.unobserve(elementRef.current);
       }
     };
-  }, [once]);
+  }, [once, isMobile]);
 
   return (
     <div
@@ -65,7 +77,7 @@ export default function ScrollRevealContainer({
       data-aos-easing={easing}
       data-aos-once={once}
       data-aos-offset={offset}
-      className={className}
+      className={`scroll-momentum ${className}`}
     >
       {children}
     </div>

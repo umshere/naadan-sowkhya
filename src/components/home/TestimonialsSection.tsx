@@ -1,8 +1,9 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import TestimonialCarousel from '@/components/ui/TestimonialCarousel';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Link from 'next/link';
 
 interface Testimonial {
   id: number;
@@ -14,140 +15,133 @@ interface TestimonialsSectionProps {
   testimonials: Testimonial[];
 }
 
-export default function TestimonialsSection({ testimonials }: TestimonialsSectionProps) {
+const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) => {
+  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
-  // Adjusted scroll-based animations with more generous thresholds
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start end", "end start"],
-  });
-
-  // Adjusted transform ranges for better visibility
-  const opacity = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [0, 1, 1, 0]);
-  const y = useTransform(scrollYProgress, [0, 0.1, 0.9, 1], [50, 0, 0, -50]);
-  const scale = useTransform(scrollYProgress, [0, 0.1], [0.95, 1]);
-  const waveOpacity = useTransform(scrollYProgress, [0, 0.3], [0, 0.3]);
-
-  const waveVariants = {
-    animate: {
-      x: [0, -1200],
-      transition: {
-        x: {
-          repeat: Infinity,
-          repeatType: "loop",
-          duration: 20,
-          ease: "linear",
-        },
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
       },
-    },
-  };
+      {
+        threshold: 0.1,
+        rootMargin: '50px 0px' // Earlier trigger on mobile
+      }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <section
       ref={sectionRef}
-      className="relative py-16 bg-[var(--natural-light)]"
-      id="testimonials-section"
+      className="py-16 md:py-24 lg:py-32 bg-[var(--natural-light)] relative overflow-hidden section-scroll"
+      style={{ touchAction: 'pan-y pinch-zoom' }}
     >
-      {/* Top decorative wave */}
-      <motion.div 
-        className="absolute left-0 w-full overflow-hidden h-16 -top-1 z-10"
-        style={{ opacity: waveOpacity }}
-      >
-        <motion.svg 
-          viewBox="0 0 2400 120" 
-          preserveAspectRatio="none" 
-          className="w-full h-full"
-          variants={waveVariants}
-          animate="animate"
-        >
-          <motion.path
-            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H2400V95.8C2332.19,118.92,2255.71,111.31,2185.66,92.83Z"
-            fill="var(--primary-color)"
-            opacity="0.2"
-          />
-        </motion.svg>
-      </motion.div>
+      {/* Decorative background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"></div>
+      </div>
 
-      <motion.div 
-        className="container mx-auto px-4 relative z-20"
-        style={{ y, opacity }}
-      >
+      <div className="container mx-auto px-4 relative z-10 section-content">
         <motion.h2
-          className="section-title text-center text-3xl md:text-4xl font-bold"
+          className="text-4xl lg:text-5xl font-bold text-center text-[var(--primary-color)] mb-6"
           initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.6 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: isMobile ? 0.4 : 0.6 }}
         >
-          Customer Reviews
+          What Our Customers Say
         </motion.h2>
 
-        <motion.div
-          className="mx-auto max-w-3xl relative mt-10"
-          style={{ scale }}
+        <motion.p
+          className="text-center text-gray-600 max-w-2xl mx-auto mb-16 text-lg"
+          initial={{ opacity: 0, y: 20 }}
+          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
-          <TestimonialCarousel testimonials={testimonials} compact />
-          
-          {/* Link to all testimonials */}
-          <motion.div 
-            className="text-center mt-12"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ delay: 0.3, duration: 0.6 }}
-          >
-            <motion.a
-              href="/testimonials"
-              className="inline-flex items-center text-[var(--primary-color)] hover:text-[var(--secondary-color)] transition-colors"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+          Read authentic testimonials from our valued customers who have experienced the quality of our natural products.
+        </motion.p>
+
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8"
+          initial="hidden"
+          animate={isVisible ? "show" : "hidden"}
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: {
+                staggerChildren: isMobile ? 0.1 : 0.2,
+                delayChildren: 0.3
+              }
+            }
+          }}
+        >
+          {testimonials.slice(0, isMobile ? 3 : 6).map((testimonial, index) => (
+            <motion.div
+              key={testimonial.id}
+              className="h-full"
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                show: { 
+                  opacity: 1, 
+                  y: 0,
+                  transition: {
+                    duration: isMobile ? 0.3 : 0.5,
+                    ease: "easeOut"
+                  }
+                }
+              }}
             >
-              <motion.span 
-                className="text-lg font-semibold"
-                whileHover={{ x: -3 }}
-              >
-                View All Reviews
-              </motion.span>
-              <motion.svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 ml-2"
+              <TestimonialCarousel 
+                testimonials={[testimonial]} 
+                compact={isMobile}
+              />
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {testimonials.length > (isMobile ? 3 : 6) && (
+          <motion.div
+            className="text-center mt-12"
+            initial={{ opacity: 0 }}
+            animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
+            transition={{ delay: 0.8 }}
+          >
+            <Link
+              href="/testimonials"
+              className="inline-flex items-center px-6 py-3 bg-[var(--primary-color)] text-white rounded-lg 
+                       hover:bg-opacity-90 transition-all duration-300 touch-target"
+            >
+              <span className="mr-2">View All Testimonials</span>
+              <svg
+                className="w-4 h-4"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                whileHover={{ x: 3 }}
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
                   strokeWidth={2}
-                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                  d="M9 5l7 7-7 7"
                 />
-              </motion.svg>
-            </motion.a>
+              </svg>
+            </Link>
           </motion.div>
-        </motion.div>
-      </motion.div>
-
-      {/* Bottom decorative wave */}
-      <motion.div 
-        className="absolute left-0 w-full overflow-hidden h-16 -bottom-1 z-10 transform rotate-180"
-        style={{ opacity: waveOpacity }}
-      >
-        <motion.svg 
-          viewBox="0 0 2400 120" 
-          preserveAspectRatio="none" 
-          className="w-full h-full"
-          variants={waveVariants}
-          animate="animate"
-        >
-          <motion.path
-            d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H2400V95.8C2332.19,118.92,2255.71,111.31,2185.66,92.83Z"
-            fill="var(--primary-color)"
-            opacity="0.2"
-          />
-        </motion.svg>
-      </motion.div>
+        )}
+      </div>
     </section>
   );
-}
+};
+
+export default TestimonialsSection;
