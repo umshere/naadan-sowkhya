@@ -60,18 +60,18 @@
                 "name": "Herbal Products",
                 "image": "/images/categories/WELLNESS.png",
                 "link": "/product_category/herbal-products",
-                "description": "Traditional herbal products crafted with age-old wisdom and therapeutic properties."
+                "description": "Traditional herbal products crafted with age-old wisdom."
             }
+        ],
+        "featuredProducts": [
+            "carrot-lip-balm",
+            "black-seed-oil-30ml",
+            "virgin-coconut-oil-100ml",
+            "pure-cow-ghee-200gm",
+            "lemon-grass-essential-oil-30ml",
+            "navara-rice-500gm"
         ]
     },
-    "featuredProducts": [
-        "carrot-lip-balm",
-        "black-seed-oil-30ml",
-        "virgin-coconut-oil-100ml",
-        "pure-cow-ghee-200gm",
-        "lemon-grass-essential-oil-30ml",
-        "navara-rice-500gm"
-    ],
     "testimonials": [
         {
             "id": 1,

@@ -55,7 +55,7 @@ const TestimonialCarousel = ({ testimonials, compact }: TestimonialCarouselProps
           {testimonials.map((testimonial, index) => (
             <div
               key={testimonial.id}
-              ref={el => testimonialRefs.current[index] = el}
+              ref={el => { testimonialRefs.current[index] = el; }} // Wrapped assignment in {}
               className="w-full flex-shrink-0 px-4"
             >
               <motion.div

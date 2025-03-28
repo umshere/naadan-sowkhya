@@ -4,13 +4,17 @@ import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import OptimizedImage from '@/components/ui/OptimizedImage';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Check, ArrowRight, Award, Leaf } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 interface AboutSectionProps {
-  title: string;            // e.g. "Natural Ayurvedic Excellence"
-  description: string[];    // Paragraphs of text
-  buttonText: string;       // e.g. "Read More"
-  buttonLink: string;       // e.g. "/about"
-  images: string[];         // Array of image URLs
+  title: string;
+  description: string[];
+  buttonText: string;
+  buttonLink: string;
+  images: string[];
 }
 
 const AboutSection = ({
@@ -21,10 +25,7 @@ const AboutSection = ({
   images,
 }: AboutSectionProps) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
 
   // Scroll-based animations
   const { scrollYProgress } = useScroll({
@@ -32,168 +33,255 @@ const AboutSection = ({
     offset: ["start end", "end start"]
   });
 
-  const textY = useTransform(scrollYProgress, [0, 1], [100, -100]);
-  const imageScale = useTransform(scrollYProgress, [0.2, 0.8], [0.8, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 1, 1, 0]);
+  const textY = useTransform(scrollYProgress, [0, 1], [40, -40]); 
+  const imageScale = useTransform(scrollYProgress, [0.1, 0.7], [0.95, 1]); 
+  const bgOpacity = useTransform(scrollYProgress, [0, 0.2, 0.8, 1], [0, 0.03, 0.03, 0]); 
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-        }
-      },
-      { threshold: 0.1 }
-    );
-
-    if (sectionRef.current) {
-      observer.observe(sectionRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, []);
-
+  // Image slideshow effect
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % images.length);
     }, 5000);
-
     return () => clearInterval(interval);
   }, [images.length]);
 
+  // Animation variants
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { staggerChildren: 0.15, delayChildren: 0.1 } 
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.98 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1, 
+      transition: { 
+        type: "spring",
+        stiffness: 100,
+        damping: 12,
+        duration: 0.6 
+      }
+    },
+  };
+  
+  const promiseCardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      transition: { 
+        delay: 0.2,
+        duration: 0.6 
+      }
+    },
+  };
+
+  const benefitItemVariants = {
+     hidden: { opacity: 0, x: -20 },
+     visible: { opacity: 1, x: 0, transition: { duration: 0.5 } }
+  };
+
   return (
-    <section
+    <motion.section
       id="about-section"
       ref={sectionRef}
-      className="relative overflow-hidden py-20 lg:py-32 max-w-[100vw] section-scroll"
+      className="relative overflow-hidden py-16 md:py-24 section-scroll bg-[var(--natural-light)]"
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
     >
-      {/* Subtle background texture */}
-      <motion.div 
-        className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"
-        style={{ opacity }}
+      {/* Subtle background texture with matching parallax effect */}
+      <motion.div
+        className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat" 
+        style={{ opacity: bgOpacity }}
+        initial={{ scale: 1.1 }}
+        whileInView={{ scale: 1 }}
+        transition={{ duration: 1.5 }}
       />
 
       <div className="container max-w-7xl mx-auto px-4 relative z-10 section-content">
-        {/* Section Header */}
-        <motion.div 
-          className="text-center mb-16 md:mb-24"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.span 
-            className="inline-block text-sm font-semibold tracking-wider text-[var(--tertiary-color)] uppercase mb-2"
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
+        {/* Section Header - Aligned with ProductGuarantee */}
+        <motion.div className="mb-12" variants={itemVariants}>
+          <motion.span
+            className="inline-block text-sm font-medium tracking-wider text-[var(--tertiary-color)] uppercase mb-2"
+            variants={itemVariants}
           >
             About Us
           </motion.span>
-          <motion.h2 
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--primary-dark)] mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.3 }}
+          <motion.h2
+            className="text-3xl md:text-4xl font-serif font-bold text-[var(--primary-color)] mb-3"
+            variants={itemVariants}
           >
             {title}
           </motion.h2>
-          <motion.div 
-            className="mx-auto w-24 h-1 bg-[var(--tertiary-color)]"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.6 }}
-          />
+          <div className="flex justify-center">
+            <div className="h-1 w-16 bg-[var(--primary-color)] rounded-full mb-4 opacity-80"></div>
+          </div>
+          <motion.p
+            className="text-center text-gray-600 max-w-2xl mx-auto text-base leading-relaxed mb-8"
+            variants={itemVariants}
+          >
+            Experience the natural goodness of our traditional products, handcrafted with care and ancient wisdom.
+          </motion.p>
         </motion.div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center w-full">
-          {/* Left Column: Text Content */}
+        {/* Main Content Grid - Fixed layout for better mobile experience */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          {/* Left Column: Image Gallery - Moved to left/first column */}
           <motion.div
-            ref={textRef}
-            style={{ y: textY }}
-            className="order-2 lg:order-1 w-full"
+            style={{ scale: imageScale }}
+            className="order-1 w-full"
+            variants={itemVariants}
           >
-            {/* Promise Box */}
-            <motion.div 
-              className="bg-[var(--primary-light)] rounded-xl p-8 mb-10 border-l-4 border-[var(--primary-color)] shadow-lg w-full"
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-            >
-              <h3 className="font-serif text-2xl text-[var(--primary-color)] mb-4">
-                Our Promise
-              </h3>
-              <p className="text-lg text-[var(--primary-dark)] leading-relaxed">
-                {description[0]}
-              </p>
+            {/* Image with softer corners, matching ProductGuarantee style */}
+            <div className="relative h-[350px] sm:h-[450px] md:h-[500px] rounded-card overflow-hidden shadow-lg">
+              {images.map((image, i) => (
+                <motion.div
+                  key={i}
+                  className="absolute inset-0"
+                  initial={{ opacity: 0, x: i > currentImageIndex ? 50 : -50 }}
+                  animate={{
+                    opacity: i === currentImageIndex ? 1 : 0,
+                    x: i === currentImageIndex ? 0 : (i > currentImageIndex ? 50 : -50),
+                    scale: i === currentImageIndex ? 1 : 1.03
+                  }}
+                  transition={{ duration: 0.7, ease: [0.4, 0, 0.2, 1] }}
+                >
+                  <OptimizedImage
+                    src={image}
+                    alt={`About Sowkhya - ${title} - Image ${i + 1}`}
+                    fill
+                    className="object-cover"
+                    priority={i === 0}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 80vw, 50vw"
+                  />
+                  {/* Simplified gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/5"></div>
+                </motion.div>
+              ))}
+
+              {/* Image Navigation Dots - Matching ProductGuarantee style */}
+              <motion.div
+                className="absolute bottom-5 left-0 right-0 flex justify-center space-x-2.5 z-20"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8 }}
+              >
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentImageIndex(i)}
+                    className={`w-2 h-2 md:w-2.5 md:h-2.5 rounded-full transition-all duration-300 border border-white/50
+                      ${i === currentImageIndex
+                        ? 'bg-white'
+                        : 'bg-white/40 hover:bg-white/70'
+                      }`}
+                    aria-label={`Switch to image ${i + 1}`}
+                  />
+                ))}
+              </motion.div>
+            </div>
+          </motion.div>
+
+          {/* Right Column: Text Content */}
+          <motion.div
+            style={{ y: textY }}
+            className="order-2 w-full"
+          >
+            {/* Promise Box - Matching ProductGuarantee card style */}
+            <motion.div variants={promiseCardVariants}>
+              <Card 
+                className={cn(
+                  "bg-white/90 backdrop-blur-sm overflow-hidden relative rounded-card",
+                  "hover:shadow-md transition-all duration-300 border-border/50 mb-8"
+                )}
+                style={{
+                  background: "radial-gradient(circle, rgba(76, 175, 80, 0.05) 0%, rgba(255,255,255,0) 70%)"
+                }}
+              >
+                {/* Decorative accents like in ProductGuarantee */}
+                <div className="absolute top-0 right-0 w-24 h-24 -mr-12 -mt-12 rounded-full"
+                  style={{ background: "rgba(76, 175, 80, 0.1)", opacity: 0.3 }}></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 -ml-8 -mb-8 rounded-full"
+                  style={{ background: "rgba(76, 175, 80, 0.1)", opacity: 0.2 }}></div>
+
+                {/* Badge-like accent */}
+                <div className="absolute top-0 left-0 w-full h-1 bg-[var(--tertiary-color)]"></div>
+                  
+                <CardHeader className="pt-5 md:pt-6 pb-2 md:pb-3 relative z-10">
+                  <CardTitle className="font-serif text-xl md:text-xl text-[var(--primary-dark)] flex items-center">
+                    <motion.div
+                      whileHover={{ scale: 1.15, rotate: 5 }}
+                      transition={{ type: "spring", stiffness: 300 }}
+                      className="p-2 bg-white rounded-full shadow-sm mr-3"
+                    >
+                      <Award className="w-5 h-5 text-[var(--primary-color)]" />
+                    </motion.div>
+                    Our Promise
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pb-5 md:pb-6 relative z-10">
+                  <p className="text-[var(--text-dark)] leading-relaxed text-sm md:text-base">
+                    {description[0]}
+                  </p>
+                </CardContent>
+              </Card>
             </motion.div>
 
-            {/* Benefits */}
-            <motion.div 
-              className="space-y-8 mb-10 w-full"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{
-                visible: {
-                  transition: { staggerChildren: 0.2 }
-                }
-              }}
+            {/* Benefits - Enhanced with ProductGuarantee-style cards */}
+            <motion.div
+              className="space-y-5 mb-8"
+              variants={{ visible: { transition: { staggerChildren: 0.15 } } }}
             >
               {[
-                { title: "100% Natural", desc: "Free from preservatives, chemicals, and artificial ingredients." },
-                { title: "Traditional Methods", desc: "Crafted with ancient Ayurvedic principles and techniques." }
+                { icon: Leaf, title: "100% Natural", desc: "Free from preservatives, chemicals, and artificial ingredients." },
+                { icon: Award, title: "Traditional Methods", desc: "Crafted with ancient Ayurvedic principles and techniques." }
               ].map((benefit, index) => (
                 <motion.div
                   key={index}
-                  className="flex items-start space-x-4"
-                  variants={{
-                    hidden: { opacity: 0, x: -20 },
-                    visible: { opacity: 1, x: 0, transition: { duration: 0.6 } }
-                  }}
+                  variants={benefitItemVariants}
                 >
-                  <div className="flex-shrink-0 w-12 h-12 bg-[var(--tertiary-color)] bg-opacity-20 rounded-full flex items-center justify-center">
-                    <svg className="w-6 h-6 text-[var(--primary-color)]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="text-xl font-semibold text-[var(--primary-color)] mb-2">
-                      {benefit.title}
-                    </h4>
-                    <p className="text-[var(--text-dark)] leading-relaxed">
-                      {benefit.desc}
-                    </p>
-                  </div>
+                  <Card 
+                    className="bg-white/80 backdrop-blur-sm rounded-card border-border/50 overflow-hidden relative"
+                  >
+                    {/* Badge-like accent with different colors */}
+                    <div className="absolute top-0 left-0 w-full h-1" 
+                      style={{ background: index === 0 ? "rgba(139, 195, 74, 0.5)" : "rgba(255, 193, 7, 0.5)" }}></div>
+                    
+                    <CardContent className="p-4 md:p-5 flex items-start space-x-4">
+                      <div className="flex-shrink-0 p-2 bg-white rounded-full shadow-sm">
+                        <benefit.icon className="w-5 h-5 md:w-6 md:h-6 text-[var(--primary-color)]" />
+                      </div>
+                      <div>
+                        <h4 className="text-base md:text-lg font-serif font-semibold text-[var(--primary-dark)] mb-1">
+                          {benefit.title}
+                        </h4>
+                        <p className="text-sm md:text-base text-[var(--text-dark)] leading-relaxed">
+                          {benefit.desc}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
                 </motion.div>
               ))}
             </motion.div>
 
             {/* Additional Description */}
-            <motion.div 
-              className="space-y-6 w-full"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              variants={{
-                visible: {
-                  transition: { staggerChildren: 0.15 }
-                }
-              }}
+            <motion.div
+              className="space-y-4 prose prose-sm md:prose-base max-w-none"
+              variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
             >
               {description.slice(1).map((paragraph, index) => (
-                <motion.p
-                  key={index}
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
-                  }}
-                  className="text-[var(--text-dark)] leading-relaxed"
+                <motion.p 
+                  key={index} 
+                  variants={itemVariants}
+                  className="text-[var(--text-dark)] leading-relaxed text-sm md:text-base"
                 >
                   {paragraph}
                 </motion.p>
@@ -202,104 +290,23 @@ const AboutSection = ({
 
             {/* CTA Button */}
             <motion.div
-              className="mt-10"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.6 }}
+              className="mt-8"
+              variants={itemVariants}
             >
-              <Link 
-                href={buttonLink}
-                className="inline-flex items-center px-8 py-4 bg-[var(--primary-color)] text-white rounded-lg
-                         font-semibold hover:bg-[var(--primary-color)]/90 transition-all duration-300 
-                         hover:shadow-lg group"
-              >
-                <span>{buttonText}</span>
-                <svg
-                  className="ml-2 w-5 h-5 transition-transform group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+              <Link href={buttonLink} passHref>
+                <Button
+                  size="lg"
+                  className="bg-[var(--primary-color)] hover:bg-[var(--primary-color)]/90 text-white group rounded-full px-6 py-2.5 text-sm md:text-base"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
+                  {buttonText}
+                  <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5 transition-transform group-hover:translate-x-1" />
+                </Button>
               </Link>
             </motion.div>
           </motion.div>
-
-          {/* Right Column: Image Gallery */}
-          <motion.div
-            ref={imageRef}
-            style={{ scale: imageScale }}
-            className="order-1 lg:order-2 w-full overflow-hidden"
-          >
-            <div className="relative h-[400px] md:h-[500px] lg:h-[600px] rounded-2xl overflow-hidden shadow-2xl">
-              {images.map((image, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute inset-0"
-                  initial={{ opacity: 0 }}
-                  animate={{ 
-                    opacity: i === currentImageIndex ? 1 : 0,
-                    scale: i === currentImageIndex ? 1 : 1.1
-                  }}
-                  transition={{ duration: 0.7 }}
-                >
-                  <OptimizedImage
-                    src={image}
-                    alt={`Naadan Sowkhya - Image ${i + 1}`}
-                    fill
-                    className="object-cover"
-                    priority={i === 0}
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                  />
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                </motion.div>
-              ))}
-
-              {/* Image Navigation Dots */}
-              <motion.div 
-                className="absolute bottom-6 left-0 right-0 flex justify-center space-x-2 z-20"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-              >
-                {images.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentImageIndex(i)}
-                    className={`w-2.5 h-2.5 rounded-full transition-all duration-300 
-                      ${i === currentImageIndex 
-                        ? 'bg-white scale-125' 
-                        : 'bg-white/50 hover:bg-white/75'
-                      }`}
-                    aria-label={`Switch to image ${i + 1}`}
-                  />
-                ))}
-              </motion.div>
-            </div>
-
-            {/* Quality Badge */}
-            <div className="relative">
-              <div
-                className="absolute -bottom-6 -right-6 bg-[var(--primary-color)] text-white 
-                         rounded-full h-24 w-24 flex items-center justify-center shadow-lg z-20"
-              >
-                <div className="text-center">
-                  <div className="text-[11px] uppercase tracking-wider">Pure</div>
-                  <div className="font-serif font-bold text-lg">Ayurveda</div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

@@ -40,7 +40,7 @@ export default function AnimationProvider({
   }, []);
   
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence>
       {children}
     </AnimatePresence>
   );

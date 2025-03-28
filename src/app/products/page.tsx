@@ -23,7 +23,9 @@ export default function ProductsPage() {
 
   // Filter and sort products
   let displayProducts = selectedCategory
-    ? productsData.products.filter(product => product.category?.split(' ').includes(selectedCategory))
+    ? productsData.products.filter(product => 
+        product.category?.split(' ').includes(selectedCategory)
+      )
     : productsData.products;
 
   if (sortBy) {

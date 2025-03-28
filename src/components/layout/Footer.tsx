@@ -159,12 +159,12 @@ const Footer = () => {
         </div>
       </div>
       
-      {/* WhatsApp floating button */}
+      {/* WhatsApp floating button - Only visible on desktop */}
       <a 
         href={contactData.whatsappLink} 
         target="_blank" 
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-50"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-[#25D366] rounded-full hidden md:flex items-center justify-center shadow-lg hover:scale-110 transition-transform z-50"
         aria-label="Contact us on WhatsApp"
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="white" viewBox="0 0 24 24">

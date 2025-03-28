@@ -1,129 +1,205 @@
 'use client';
-
-import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { CheckCircle, FlaskConicalOff, Leaf, ShieldCheck, Info } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
+import { useState } from 'react';
 
+// Enhanced guarantee data with additional properties for visual storytelling
 const guarantees = [
   {
-    icon: (
-      <svg className="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-      </svg>
-    ),
+    icon: <CheckCircle className="w-10 h-10 md:w-12 md:h-12 text-[var(--primary-color)]" />,
     title: '100% Natural',
-    description: 'All our products are made with natural ingredients, free from harmful chemicals'
+    description: 'All our products are made with natural ingredients, free from harmful chemicals',
+    bgPattern: "radial-gradient(circle, rgba(139, 195, 74, 0.1) 0%, rgba(255,255,255,0) 70%)",
+    accentColor: "rgba(139, 195, 74, 0.2)",
+    learnMore: "Our ingredients are sourced from organic farms and sustainable suppliers who share our values."
   },
   {
-    icon: (
-      <svg className="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
-      </svg>
-    ),
+    icon: <FlaskConicalOff className="w-10 h-10 md:w-12 md:h-12 text-[var(--primary-color)]" />,
     title: 'No Preservatives',
-    description: 'Our products contain no artificial preservatives or additives'
+    description: 'Our products contain no artificial preservatives or additives',
+    bgPattern: "radial-gradient(circle, rgba(103, 58, 183, 0.1) 0%, rgba(255,255,255,0) 70%)",
+    accentColor: "rgba(103, 58, 183, 0.2)",
+    learnMore: "We use traditional techniques to ensure product longevity without resorting to synthetic preservatives."
   },
   {
-    icon: (
-      <svg className="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"></path>
-      </svg>
-    ),
+    icon: <Leaf className="w-10 h-10 md:w-12 md:h-12 text-[var(--primary-color)]" />,
     title: 'Eco-Friendly',
-    description: 'Sustainable packaging and environmentally conscious practices'
+    description: 'Sustainable packaging and environmentally conscious practices',
+    bgPattern: "radial-gradient(circle, rgba(76, 175, 80, 0.1) 0%, rgba(255,255,255,0) 70%)",
+    accentColor: "rgba(76, 175, 80, 0.2)",
+    learnMore: "Our packaging is biodegradable, and we've reduced our carbon footprint by 30% in the last year."
   },
   {
-    icon: (
-      <svg className="w-14 h-14" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
-      </svg>
-    ),
+    icon: <ShieldCheck className="w-10 h-10 md:w-12 md:h-12 text-[var(--primary-color)]" />,
     title: 'Quality Assured',
-    description: 'Every product meets our high standards of quality and effectiveness'
+    description: 'Every product meets our high standards of quality and effectiveness',
+    bgPattern: "radial-gradient(circle, rgba(33, 150, 243, 0.1) 0%, rgba(255,255,255,0) 70%)",
+    accentColor: "rgba(33, 150, 243, 0.2)",
+    learnMore: "Our products undergo rigorous testing and quality control before reaching our valued customers."
   }
 ];
 
 const ProductGuarantee = () => {
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      {
-        threshold: 0.1,
+  const [expandedCard, setExpandedCard] = useState<number | null>(null);
+  
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.15,
+        delayChildren: 0.1
+      } 
+    },
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30, scale: 0.95 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: { 
+        type: "spring",
+        stiffness: 100,
+        damping: 12,
+        duration: 0.6 
       }
-    );
-    const element = document.getElementById('product-guarantee');
-    if (element) observer.observe(element);
-    return () => observer.disconnect();
-  }, []);
+    },
+  };
+
+  const toggleExpand = (index: number) => {
+    setExpandedCard(expandedCard === index ? null : index);
+  };
 
   return (
-    <section 
-      id="product-guarantee" 
-      className="relative py-24 lg:py-32 bg-[var(--natural-light)] overflow-hidden max-w-[100vw]"
+    <motion.section
+      id="product-guarantee"
+      className="relative py-12 md:py-20 bg-[var(--natural-light)] overflow-hidden"
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.2 }}
     >
-      {/* Natural texture overlay */}
+      {/* Enhanced natural texture overlay with parallax effect */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"></div>
+        <motion.div 
+          className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"
+          initial={{ scale: 1.1 }}
+          whileInView={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        ></motion.div>
       </div>
       
-      <div className="container mx-auto px-4 relative z-10 max-w-7xl overflow-hidden">
-        <motion.h2 
-          className="text-4xl lg:text-5xl font-bold text-center text-[var(--primary-color)] mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-        >
-          Our Product Guarantee
-        </motion.h2>
+      <div className="container mx-auto px-4 relative z-10 max-w-7xl">
+        <motion.div className="mb-10" variants={itemVariants}>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-center text-[var(--primary-color)] mb-3">
+            Our Product Guarantee
+          </h2>
+          <div className="flex justify-center">
+            <div className="h-1 w-16 bg-[var(--primary-color)] rounded-full mb-4 opacity-80"></div>
+          </div>
+          <p className="text-center text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
+            Experience the difference of our natural and pure products, crafted with care and commitment to quality.
+          </p>
+        </motion.div>
 
-        <motion.p
-          className="text-center text-gray-600 max-w-2xl mx-auto mb-16 text-lg"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          Experience the difference of our natural and pure products, crafted with care and commitment to quality.
-        </motion.p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 md:gap-6">
           {guarantees.map((guarantee, index) => (
-            <motion.div
-              key={guarantee.title}
-              className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 overflow-hidden group w-full"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-              transition={{ 
-                duration: 0.6,
-                delay: index * 0.2
-              }}
+            <motion.div 
+              key={guarantee.title} 
+              variants={itemVariants}
+              className="relative"
+              whileHover={{ y: -5 }}
+              transition={{ type: "spring", stiffness: 300 }}
             >
-              <div className="p-8">
-                <motion.div 
-                  className="text-[var(--primary-color)] mb-6 flex justify-center"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {guarantee.icon}
-                </motion.div>
-                <h3 className="text-2xl font-semibold mb-4 text-[var(--primary-dark)] text-center group-hover:text-[var(--primary-color)] transition-colors">
-                  {guarantee.title}
-                </h3>
-                <p className="text-[var(--text-dark)] leading-relaxed text-center">
-                  {guarantee.description}
-                </p>
-              </div>
-              <div className="h-1 w-full bg-[var(--primary-color)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+              <Card 
+                className={cn(
+                  "h-full text-center border-border/50 hover:shadow-md transition-all duration-300",
+                  "bg-white/90 backdrop-blur-sm overflow-hidden relative rounded-card",
+                  expandedCard === index ? "ring-2 ring-[var(--primary-color)]" : ""
+                )}
+                style={{
+                  background: guarantee.bgPattern,
+                }}
+              >
+                {/* Decorative accents */}
+                <div className="absolute top-0 right-0 w-24 h-24 -mr-12 -mt-12 rounded-full" 
+                  style={{ background: guarantee.accentColor, opacity: 0.3 }}></div>
+                <div className="absolute bottom-0 left-0 w-16 h-16 -ml-8 -mb-8 rounded-full" 
+                  style={{ background: guarantee.accentColor, opacity: 0.2 }}></div>
+                
+                <CardHeader className="items-center pt-5 md:pt-6 pb-2 md:pb-3 relative z-10">
+                  <motion.div
+                    whileHover={{ scale: 1.15, rotate: 5 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                    className="p-3 bg-white rounded-full shadow-sm"
+                  >
+                    {guarantee.icon}
+                  </motion.div>
+                </CardHeader>
+
+                <CardContent className="pb-5 md:pb-6 relative z-10">
+                  <CardTitle className="text-lg md:text-xl font-serif font-semibold mb-2 text-[var(--primary-dark)]">
+                    {guarantee.title}
+                  </CardTitle>
+                  <CardDescription className="text-[var(--text-dark)] leading-relaxed text-sm mb-3">
+                    {guarantee.description}
+                  </CardDescription>
+                  
+                  {/* Learn more expandable content */}
+                  <motion.div 
+                    className="cursor-pointer flex items-center justify-center gap-1 text-xs text-[var(--primary-color)]"
+                    onClick={() => toggleExpand(index)}
+                    whileHover={{ scale: 1.05 }}
+                  >
+                    <Info className="w-3 h-3" /> 
+                    <span>{expandedCard === index ? "Show less" : "Learn more"}</span>
+                  </motion.div>
+                  
+                  {expandedCard === index && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      transition={{ duration: 0.3 }}
+                      className="mt-3 text-xs text-gray-600 bg-[var(--natural-light)]/60 p-3 rounded-md"
+                    >
+                      {guarantee.learnMore}
+                    </motion.div>
+                  )}
+                </CardContent>
+                
+                {/* Badge-like accent */}
+                <div className="absolute top-0 left-0 w-full h-1" 
+                  style={{ background: guarantee.accentColor }}></div>
+              </Card>
             </motion.div>
           ))}
         </div>
+        
+        {/* Trust badge section */}
+        <motion.div 
+          className="mt-10 flex flex-wrap justify-center gap-4 items-center"
+          variants={itemVariants}
+        >
+          <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm flex items-center gap-2 text-xs text-gray-600">
+            <ShieldCheck className="w-4 h-4 text-[var(--primary-color)]" />
+            <span className="font-medium">Ayurvedic Certified</span>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm flex items-center gap-2 text-xs text-gray-600">
+            <CheckCircle className="w-4 h-4 text-[var(--primary-color)]" />
+            <span className="font-medium">Quality Tested</span>
+          </div>
+          <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm flex items-center gap-2 text-xs text-gray-600">
+            <Leaf className="w-4 h-4 text-[var(--primary-color)]" />
+            <span className="font-medium">Sustainably Sourced</span>
+          </div>
+        </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

@@ -4,6 +4,8 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { Button } from '@/components/ui/button'; // Import Shadcn Button
+import { ChevronLeft, ChevronRight } from 'lucide-react'; // Icons for buttons
 
 interface SlideProps {
   id: number;
@@ -203,56 +205,31 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
     }
   }, [currentSlide, previousSlide]);
 
-  // Animation variants
+  // Simplified cross-fade animation variants
   const slideVariants = {
-    enter: {
-      mobile: {
-        opacity: 0,
-      },
-      desktop: {
-        opacity: 0,
-        scale: 1.2,
-      }
+    enter: { // Initial state (invisible)
+      opacity: 0,
     },
-    center: {
-      mobile: {
-        opacity: 1,
-        transition: {
-          duration: 0.4,
-          ease: "easeOut",
-        },
+    center: { // Active state (visible)
+      opacity: 1,
+      transition: {
+        duration: 0.6, // Smooth duration
+        ease: "easeInOut", // Smooth easing
       },
-      desktop: {
-        opacity: 1,
-        scale: 1,
-        transition: {
-          duration: 0.8,
-          ease: [0.4, 0.0, 0.2, 1],
-        },
-      }
     },
-    exit: {
-      mobile: {
-        opacity: 0,
-        transition: { duration: 0.3 },
+    exit: { // Exiting state (invisible)
+      opacity: 0,
+      transition: {
+        duration: 0.5, // Slightly faster exit
+        ease: "easeInOut",
       },
-      desktop: {
-        opacity: 0,
-        scale: 0.9,
-        transition: {
-          duration: 0.8,
-          ease: [0.4, 0.0, 0.2, 1],
-        },
-      }
     }
   };
-
-  const variants = isMobile ? 'mobile' : 'desktop';
 
   return (
     <motion.div
       ref={containerRef}
-      className="swipeable-section relative h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)] w-full touch-pan-y"
+      className="swipeable-section relative h-[400px] md:h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)] w-full touch-pan-y"
       style={{
         y: isMobile ? 0 : parallaxY,
         transition: 'transform 0.3s ease-out',
@@ -266,104 +243,99 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}
       >
-        <AnimatePresence mode="wait">
-          {slides.map((slide, index) => (
-            index === currentSlide && (
-              <motion.div
-                key={slide.id}
-                variants={slideVariants}
-                initial={slideVariants.enter[variants]}
-                animate={slideVariants.center[variants]}
-                exit={slideVariants.exit[variants]}
-                className="absolute inset-0 w-full h-full"
-                onAnimationStart={() => setIsAnimating(true)}
-                onAnimationComplete={() => setIsAnimating(false)}
-              >
-                <div className="relative w-full h-full">
-                  <Image
-                    src={slide.image}
-                    alt={slide.title}
-                    fill
-                    priority={index === 0}
-                    className="object-cover"
-                    sizes="100vw"
-                    quality={90}
-                  />
-                  <motion.div 
-                    className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70"
-                    style={{ opacity: isMobile ? 0.6 : opacity }}
-                  />
-                  
-                  {/* Content */}
-                  <div className="absolute inset-0 flex flex-col items-center justify-center px-6">
-                    <motion.div 
-                      className="max-w-5xl mx-auto text-center"
-                      initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: isMobile ? 0.2 : 0.3, duration: isMobile ? 0.3 : 0.6 }}
-                    >
-                      {/* Brand Label */}
-                      <motion.p
-                        initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: isMobile ? 0.2 : 0.4, duration: isMobile ? 0.3 : 0.6 }}
-                        className="text-base md:text-lg lg:text-xl font-semibold tracking-wider uppercase mb-4 text-white/90 drop-shadow-lg"
-                      >
-                        NAADAN SOWKHYA
-                      </motion.p>
+        {/* Removed mode="wait" for smoother cross-fade */}
+        <AnimatePresence> 
+          <motion.div
+            key={currentSlide}
+            variants={slideVariants}
+            initial="enter" // Use variant names directly
+            animate="center"
+            exit="exit"
+            className="absolute inset-0 w-full h-full"
+            // Removed animation start/complete handlers tied to old variants
+          >
+            <div className="relative w-full h-full">
+              <Image
+                src={slides[currentSlide].image}
+                alt={slides[currentSlide].title}
+                fill
+                priority={currentSlide === 0}
+                className="object-cover"
+                sizes="100vw"
+                quality={90}
+              />
+              <motion.div 
+                className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/40 to-black/70"
+                style={{ opacity: isMobile ? 0.6 : opacity }}
+              />
+              
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center px-4 md:px-6">
+                <motion.div 
+                  className="max-w-5xl mx-auto text-center"
+                  initial={{ opacity: 0, y: isMobile ? 5 : 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: isMobile ? 0.1 : 0.3, duration: isMobile ? 0.2 : 0.6 }}
+                >
+                  {/* Brand Label */}
+                  <motion.p
+                    initial={{ opacity: 0, y: isMobile ? 5 : 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: isMobile ? 0.1 : 0.4, duration: isMobile ? 0.2 : 0.6 }}
+                    className="text-sm md:text-lg lg:text-xl font-semibold tracking-wider uppercase mb-2 md:mb-4 text-white/90 drop-shadow-lg"
+                  >
+                    NAADAN SOWKHYA
+                  </motion.p>
 
-                      {/* Main Heading */}
-                      <motion.h1
-                        initial={{ opacity: 0, y: isMobile ? 15 : 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: isMobile ? 0.3 : 0.5, duration: isMobile ? 0.3 : 0.6 }}
-                        className="font-serif font-bold text-3xl md:text-5xl lg:text-6xl xl:text-7xl mb-6 tracking-wider drop-shadow-lg text-white"
-                      >
-                        <span className="relative inline-block">
-                          {slide.title}
-                          <motion.span
-                            initial={{ scaleX: 0 }}
-                            animate={{ scaleX: 1 }}
-                            transition={{ delay: isMobile ? 0.4 : 0.8, duration: isMobile ? 0.3 : 0.6 }}
-                            className="absolute -bottom-2 left-0 right-0 h-1 bg-[var(--tertiary-color)]"
-                            style={{ transformOrigin: 'left' }}
-                          />
-                        </span>
-                      </motion.h1>
+                  {/* Main Heading */}
+                  <motion.h1
+                    initial={{ opacity: 0, y: isMobile ? 8 : 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: isMobile ? 0.2 : 0.5, duration: isMobile ? 0.2 : 0.6 }}
+                    className="font-serif font-bold text-2xl md:text-5xl lg:text-6xl xl:text-7xl mb-3 md:mb-6 tracking-wider drop-shadow-lg text-white"
+                  >
+                    <span className="relative inline-block">
+                      {slides[currentSlide].title}
+                      <motion.span
+                        initial={{ scaleX: 0 }}
+                        animate={{ scaleX: 1 }}
+                        transition={{ delay: isMobile ? 0.3 : 0.8, duration: isMobile ? 0.2 : 0.6 }}
+                        className="absolute -bottom-1 md:-bottom-2 left-0 right-0 h-1 bg-[var(--tertiary-color)]"
+                        style={{ transformOrigin: 'left' }}
+                      />
+                    </span>
+                  </motion.h1>
 
-                      {/* Subtitle */}
-                      <motion.p
-                        initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: isMobile ? 0.3 : 0.6, duration: isMobile ? 0.3 : 0.6 }}
-                        className="text-white/90 text-base md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg"
-                      >
-                        {slide.subtitle}
-                      </motion.p>
+                  {/* Subtitle */}
+                  <motion.p
+                    initial={{ opacity: 0, y: isMobile ? 5 : 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: isMobile ? 0.3 : 0.6, duration: isMobile ? 0.2 : 0.6 }}
+                    className="text-white/90 text-sm md:text-xl lg:text-2xl mb-6 md:mb-10 max-w-3xl mx-auto leading-relaxed drop-shadow-lg"
+                  >
+                    {slides[currentSlide].subtitle}
+                  </motion.p>
 
-                      {/* Button */}
-                      <motion.div
-                        initial={{ opacity: 0, y: isMobile ? 10 : 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: isMobile ? 0.4 : 0.7, duration: isMobile ? 0.3 : 0.6 }}
-                      >
-                        <Link
-                          href="/products" // Updated link to go to all products page
-                          className="btn-elegant group relative inline-flex items-center justify-center px-8 py-4 text-lg font-semibold text-white bg-[var(--primary-color)] rounded-lg hover:bg-[var(--primary-color)]/90 transition-all duration-300"
-                        >
-                          <span className="relative z-10">{slide.buttonText}</span>
-                          <span className="absolute inset-0 overflow-hidden rounded-lg">
-                            <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
-                          </span>
-                          <span className="absolute bottom-0 left-0 h-[2px] w-full bg-[var(--tertiary-color)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
-                        </Link>
-                      </motion.div>
-                    </motion.div>
-                  </div>
-                </div>
-              </motion.div>
-            )
-          ))}
+                  {/* Button */}
+                  <motion.div
+                    initial={{ opacity: 0, y: isMobile ? 5 : 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: isMobile ? 0.3 : 0.7, duration: isMobile ? 0.2 : 0.6 }}
+                  >
+                    {/* Use Shadcn Button wrapping Link */}
+                    <Button asChild size="lg" className="bg-[var(--primary-color)] hover:bg-[var(--primary-color)]/90 text-white font-semibold text-base md:text-lg px-6 py-3 md:px-8 md:py-4 rounded-lg transition-all duration-300 group relative overflow-hidden">
+                      <Link href={slides[currentSlide].buttonLink || "/products"}>
+                        <span className="relative z-10">{slides[currentSlide].buttonText}</span>
+                         {/* Optional: Recreate hover effects if needed, or rely on Button's default */}
+                         <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
+                         <span className="absolute bottom-0 left-0 h-[2px] w-full bg-[var(--tertiary-color)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
+                      </Link>
+                    </Button>
+                  </motion.div>
+                </motion.div>
+              </div>
+            </div>
+          </motion.div>
         </AnimatePresence>
       </div>
 
@@ -397,63 +369,40 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.8, duration: 0.6 }}
       >
-        {/* Previous/Next buttons */}
-        <button
+        {/* Use Shadcn Buttons for Arrows */}
+        <Button
+          variant="outline"
+          size="icon"
           onClick={goToPrevSlide}
           disabled={isAnimating}
-          className="p-2 md:p-3 rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 
-                   backdrop-blur-[2px] border border-white/10 shadow-sm transform 
-                   transition-all duration-300 hover:scale-105 group
-                   disabled:opacity-50 disabled:cursor-not-allowed
-                   focus:outline-none focus:ring-2 focus:ring-white/20"
+          className="rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 border-white/10 text-white/70 hover:text-white/90 backdrop-blur-[2px] shadow-sm transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed h-10 w-10 md:h-12 md:w-12"
           aria-label="Previous slide"
         >
-          <svg
-            className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white/90 transition-colors"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-        <button
+          <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
+        </Button>
+        <Button
+          variant="outline"
+          size="icon"
           onClick={goToNextSlide}
           disabled={isAnimating}
-          className="p-2 md:p-3 rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 
-                   backdrop-blur-[2px] border border-white/10 shadow-sm transform 
-                   transition-all duration-300 hover:scale-105 group
-                   disabled:opacity-50 disabled:cursor-not-allowed
-                   focus:outline-none focus:ring-2 focus:ring-white/20"
+          className="rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 border-white/10 text-white/70 hover:text-white/90 backdrop-blur-[2px] shadow-sm transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed h-10 w-10 md:h-12 md:w-12"
           aria-label="Next slide"
         >
-          <svg
-            className="w-5 h-5 md:w-6 md:h-6 text-white/70 group-hover:text-white/90 transition-colors"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 5l7 7-7 7"
-            />
-          </svg>
-        </button>
+          <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
+        </Button>
       </motion.div>
 
-      {/* Mobile Swipe Indicator */}
+      {/* Mobile Swipe Indicator - Show briefly and then fade out */}
       <motion.div 
-        className="absolute bottom-16 left-0 right-0 z-30 md:hidden"
+        className="absolute bottom-12 left-0 right-0 z-30 md:hidden"
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.9, duration: 0.6 }}
+        animate={{ opacity: [0, 1, 1, 0], y: [20, 0, 0, 0] }}
+        transition={{ 
+          delay: 0.9, 
+          duration: 5, 
+          times: [0, 0.1, 0.3, 1],
+          ease: "easeInOut" 
+        }}
       >
         <div className="flex justify-center items-center space-x-4 text-white/70">
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
