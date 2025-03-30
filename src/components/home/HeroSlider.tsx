@@ -324,7 +324,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
                   >
                     {/* Use Shadcn Button wrapping Link */}
                     <Button asChild size="lg" className="bg-[var(--primary-color)] hover:bg-[var(--primary-color)]/90 text-white font-semibold text-base md:text-lg px-6 py-3 md:px-8 md:py-4 rounded-lg transition-all duration-300 group relative overflow-hidden">
-                      <Link href={slides[currentSlide].buttonLink || "/products"}>
+                      <Link href="/products"> {/* Always link to /products */}
                         <span className="relative z-10">{slides[currentSlide].buttonText}</span>
                          {/* Optional: Recreate hover effects if needed, or rely on Button's default */}
                          <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
