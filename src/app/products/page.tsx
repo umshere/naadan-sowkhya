@@ -16,6 +16,7 @@ export default function ProductsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [sortBy, setSortBy] = useState<string | null>(null);
+  const [isSortExpanded, setIsSortExpanded] = useState(false);
 
   // Load saved view preference
   useEffect(() => {
@@ -64,6 +65,16 @@ export default function ProductsPage() {
 
   const toggleFilter = () => {
     setIsFilterExpanded(!isFilterExpanded);
+    if (!isFilterExpanded) {
+      setIsSortExpanded(false); // Close sort menu when opening filter
+    }
+  };
+
+  const toggleSort = () => {
+    setIsSortExpanded(!isSortExpanded);
+    if (!isSortExpanded) {
+      setIsFilterExpanded(false); // Close filter menu when opening sort
+    }
   };
 
   const handleCategorySelect = (categorySlug: string | null) => {
@@ -73,6 +84,23 @@ export default function ProductsPage() {
 
   const handleSort = (sortType: string) => {
     setSortBy(sortType);
+    setIsSortExpanded(false); // Close sort dropdown after selection on mobile
+  };
+
+  // Get active sort text
+  const getActiveSortText = () => {
+    switch (sortBy) {
+      case 'price-asc':
+        return 'Price: Low to High';
+      case 'price-desc':
+        return 'Price: High to Low';
+      case 'name-asc':
+        return 'Name: A-Z';
+      case 'name-desc':
+        return 'Name: Z-A';
+      default:
+        return 'Sort by';
+    }
   };
 
   return (
@@ -113,24 +141,44 @@ export default function ProductsPage() {
         </div>
       </motion.div>
 
-      {/* Category Filter & Sort Controls */}
+      {/* Category Filter & Sort Controls - Optimized for Mobile */}
       <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-sm">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1, duration: 0.6 }}
-          className="container mx-auto px-4 py-4"
+          className="container mx-auto px-4 py-2" // Reduced padding
         >
-          {/* Mobile Filter Button */}
-          <div className="md:hidden w-full flex justify-center mb-2">
+          {/* Mobile Filter & Sort Buttons - More Compact Layout */}
+          <div className="md:hidden w-full flex justify-between gap-2 mb-2">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={toggleFilter}
-              className="px-6 py-3 rounded-full text-base font-medium bg-gray-900 text-white shadow-lg w-full max-w-[200px]"
+              className={`px-4 py-2 rounded-full text-sm font-medium flex-1 
+                ${isFilterExpanded 
+                  ? 'bg-gray-900 text-white' 
+                  : 'bg-gray-100 text-gray-700 border border-gray-200'}`}
             >
-              {isFilterExpanded ? 'Hide Filters' : 'Show Filters'}
+              {selectedCategory ? categoriesData.categories.find(c => c.slug === selectedCategory)?.name : 'All Products'}
             </motion.button>
+            
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={toggleSort}
+              className={`px-4 py-2 rounded-full text-sm font-medium flex-1
+                ${isSortExpanded
+                  ? 'bg-gray-900 text-white'
+                  : 'bg-gray-100 text-gray-700 border border-gray-200'}`}
+            >
+              {getActiveSortText()}
+            </motion.button>
+            
+            {/* View Toggle in Mobile - Add directly to header bar */}
+            <div className="self-center">
+              <ViewToggle currentView={viewMode} onViewChange={handleViewChange} />
+            </div>
           </div>
 
           {/* Desktop Filters - Always visible */}
@@ -178,10 +226,10 @@ export default function ProductsPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleCategorySelect(null)}
-                  className={`px-6 py-3 rounded-full text-base font-medium transition-all duration-300 w-full
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 w-full
                     ${!selectedCategory
-                      ? 'bg-gray-900 text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                     }`}
                 >
                   All Products
@@ -192,10 +240,10 @@ export default function ProductsPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => handleCategorySelect(category.slug)}
-                    className={`px-6 py-3 rounded-full text-base font-medium transition-all duration-300 w-full
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 w-full
                       ${selectedCategory === category.slug
-                        ? 'bg-gray-900 text-white shadow-lg'
-                        : 'bg-white text-gray-700 hover:bg-gray-50 shadow-md hover:shadow-lg'
+                        ? 'bg-gray-900 text-white'
+                        : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
                       }`}
                   >
                     {category.name}
@@ -205,8 +253,70 @@ export default function ProductsPage() {
             )}
           </AnimatePresence>
 
-          {/* Sort Controls */}
-          <div className="mt-4 flex flex-wrap justify-center gap-2">
+          {/* Mobile Sort Options - Expandable */}
+          <AnimatePresence>
+            {isSortExpanded && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="md:hidden flex flex-col gap-2 mt-2"
+              >
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleSort('price-asc')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 w-full
+                    ${sortBy === 'price-asc'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    }`}
+                >
+                  Price: Low to High
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleSort('price-desc')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 w-full
+                    ${sortBy === 'price-desc'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    }`}
+                >
+                  Price: High to Low
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleSort('name-asc')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 w-full
+                    ${sortBy === 'name-asc'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    }`}
+                >
+                  Name: A-Z
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => handleSort('name-desc')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 w-full
+                    ${sortBy === 'name-desc'
+                      ? 'bg-gray-900 text-white'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    }`}
+                >
+                  Name: Z-A
+                </motion.button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Desktop Sort Controls */}
+          <div className="mt-4 hidden md:flex flex-wrap justify-center gap-2">
             <span className="text-sm text-gray-500 self-center">Sort by:</span>
             <motion.button
               whileHover={{ scale: 1.05 }}
@@ -244,12 +354,24 @@ export default function ProductsPage() {
             >
               Name: A-Z
             </motion.button>
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => handleSort('name-desc')}
+              className={`px-3 py-1 text-sm rounded-md transition-colors ${
+                sortBy === 'name-desc'
+                  ? 'bg-gray-800 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              Name: Z-A
+            </motion.button>
           </div>
         </motion.div>
       </div>
 
-      {/* View Toggle */}
-      <div className="container mx-auto px-4 py-4 flex justify-end">
+      {/* View Toggle - Only for desktop now since we moved it to header for mobile */}
+      <div className="container mx-auto px-4 py-4 hidden md:flex justify-end">
         <ViewToggle currentView={viewMode} onViewChange={handleViewChange} />
       </div>
 

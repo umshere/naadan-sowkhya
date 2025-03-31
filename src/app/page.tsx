@@ -20,7 +20,7 @@ const ScrollRevealContainer = dynamic(() => import("@/components/ui/ScrollReveal
   ssr: false
 });
 
-const MobileSectionNav = dynamic(() => import("@/components/ui/MobileSectionNav"), {
+const StickyNav = dynamic(() => import("@/components/ui/StickyNav"), {
   ssr: false
 });
 
@@ -29,15 +29,11 @@ const CollapsibleSection = dynamic(() => import("@/components/ui/CollapsibleSect
 });
 
 // Section navigation data
-interface Section {
-  id: string;
-  label: string;
-}
-
-const sections: Section[] = [
+const sections = [
   { id: "hero", label: "Home" },
   { id: "products", label: "Products" },
   { id: "about", label: "About Us" },
+  { id: "reviews", label: "Reviews" },
   { id: "gallery", label: "Gallery" }, 
   { id: "certifications", label: "Certifications" },
 ];
@@ -61,6 +57,9 @@ const HomePage = (): React.ReactElement => {
       <SectionWrapper id="hero">
         <HeroSlider slides={homepageData.slider} />
       </SectionWrapper>
+      
+      {/* Mobile Navigation - StickyNav now contains tab functioanlity from HomePageTabs */}
+      <StickyNav sections={sections} />
       
       {/* Mobile Tab-Based Layout */}
       <div className="md:hidden">
@@ -127,7 +126,7 @@ const HomePage = (): React.ReactElement => {
         </SectionWrapper>
         
         {/* Testimonials */}
-        <SectionWrapper id="testimonials">
+        <SectionWrapper id="reviews">
           <ScrollRevealContainer 
             animation="fade-up" 
             duration={600} 
@@ -159,11 +158,6 @@ const HomePage = (): React.ReactElement => {
             <CertificationsSection certifications={homepageData.certifications} />
           </ScrollRevealContainer>
         </SectionWrapper>
-      </div>
-      
-      {/* Desktop Navigation */}
-      <div className="hidden md:block">
-        <MobileSectionNav sections={sections} />
       </div>
     </>
   );

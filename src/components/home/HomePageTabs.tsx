@@ -2,7 +2,6 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { FaLeaf, FaStar, FaImage, FaInfoCircle, FaAward } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import AboutSection from '@/components/home/AboutSection';
 import ProductGuarantee from '@/components/home/ProductGuarantee';
@@ -18,29 +17,6 @@ interface HomePageTabsProps {
 }
 
 export default function HomePageTabs({ homepageData, productsData }: HomePageTabsProps) {
-  const [activeTab, setActiveTab] = useState('products');
-  
-  // Smooth scroll to the content when tab changes
-  useEffect(() => {
-    // Using setTimeout to ensure the tab content has rendered before scrolling
-    const timer = setTimeout(() => {
-      const tabContent = document.getElementById(`${activeTab}-content`);
-      if (tabContent) {
-        // Get the content start position relative to the viewport
-        const elementPosition = tabContent.getBoundingClientRect().top;
-        // Calculate the absolute position to scroll to, accounting for current scroll and header offset
-        const offsetPosition = elementPosition + window.pageYOffset - 70; // 70px offset for header
-        
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: 'smooth'
-        });
-      }
-    }, 50); // Delay to allow content rendering
-    
-    return () => clearTimeout(timer); // Cleanup timer on unmount or tab change
-  }, [activeTab]); // Rerun only when activeTab changes
-  
   // Define tab content and icons
   const tabItems = [
     {
@@ -123,70 +99,25 @@ export default function HomePageTabs({ homepageData, productsData }: HomePageTab
     },
   ];
 
-  // Tab indicator animation
-  const tabIndicatorVariants = {
-    initial: { opacity: 0 },
-    animate: { opacity: 1, transition: { duration: 0.2 } },
-  };
-
   return (
     <div className="pt-3">
-      {/* Mobile view with tabs */}
-      <Tabs 
-        defaultValue="products" 
-        className="w-full md:hidden"
-        value={activeTab}
-        onValueChange={(value) => setActiveTab(value)}
-      >
-        <TabsList 
-          className="w-full bg-cream mb-1 sticky top-[60px] z-20 flex justify-between shadow-sm overflow-x-auto no-scrollbar"
-        >
-          {tabItems.map((tab) => (
-            <TabsTrigger 
-              key={tab.id} 
-              value={tab.id}
-              className="flex items-center relative px-3 py-2 flex-1 justify-center text-sm transition-all data-[state=active]:font-medium"
-            >
-              <span className="flex items-center">
-                {tab.icon}
-                {tab.label}
-              </span>
-              
-              {/* Active indicator dot */}
-              {activeTab === tab.id && (
-                <motion.div
-                  layoutId="activeTabIndicator"
-                  className="absolute -bottom-0.5 left-0 right-0 mx-auto w-1.5 h-1.5 bg-[var(--primary-color)] rounded-full"
-                  initial="initial"
-                  animate="animate"
-                  variants={tabIndicatorVariants}
-                />
-              )}
-            </TabsTrigger>
-          ))}
-        </TabsList>
-        
+      {/* Mobile view - Content Only (Navigation removed) */}
+      <div className="md:hidden">
         {tabItems.map((tab) => (
-          <TabsContent key={tab.id} value={tab.id}>
-            <AnimatePresence mode="wait">
-              {activeTab === tab.id && (
-                <motion.div
-                  key={tab.id}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.2 }}
-                  className="min-h-[70vh]"
-                >
-                  {tab.content}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </TabsContent>
+          <div key={tab.id} id={tab.id} className="mb-8">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="text-primary-dark p-2 bg-primary/10 rounded-full">{tab.icon}</div>
+              <h2 className="text-xl font-medium text-primary-dark">{tab.label}</h2>
+              <Separator className="flex-1 ml-4" />
+            </div>
+            <div>
+              {tab.content}
+            </div>
+          </div>
         ))}
-      </Tabs>
+      </div>
 
-      {/* Desktop view - all content displayed in full with navigation */}
+      {/* Desktop view - Keep the sticky nav here for desktop only */}
       <div className="hidden md:flex flex-col space-y-4">
         <div className="sticky top-20 z-10 bg-white py-2 border-b">
           <div className="flex justify-center">
