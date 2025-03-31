@@ -3,16 +3,33 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { ViewToggle, type ViewMode } from '@/components/ui/view-toggle';
 import ProductCard from '@/components/ui/ProductCard';
-import AnimatedProductCard from '@/components/ui/AnimatedProductCard';
+import { ProductListItem } from '@/components/ui/product-list-item';
+import { ProductCompactCard } from '@/components/ui/product-compact-card';
 import categoriesData from '@/data/categories.json';
 import productsData from '@/data/products.json';
 
 export default function ProductsPage() {
+  const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [sortBy, setSortBy] = useState<string | null>(null);
+
+  // Load saved view preference
+  useEffect(() => {
+    const savedView = localStorage.getItem('productViewMode');
+    if (savedView) {
+      setViewMode(savedView as ViewMode);
+    }
+  }, []);
+
+  // Save view preference
+  const handleViewChange = (view: ViewMode) => {
+    setViewMode(view);
+    localStorage.setItem('productViewMode', view);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -231,7 +248,12 @@ export default function ProductsPage() {
         </motion.div>
       </div>
 
-      {/* Products Grid */}
+      {/* View Toggle */}
+      <div className="container mx-auto px-4 py-4 flex justify-end">
+        <ViewToggle currentView={viewMode} onViewChange={handleViewChange} />
+      </div>
+
+      {/* Products Display */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -243,22 +265,78 @@ export default function ProductsPage() {
             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-color"></div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {displayProducts.map((product) => (
-              <AnimatedProductCard key={product.id}>
-                <ProductCard
-                  id={product.id}
-                  name={product.name}
-                  slug={product.slug}
-                  image={product.image || '/images/placeholder.jpg'}
-                  price={product.price?.toString() || '0'}
-                  currency={product.currency || '₹'}
-                  whatsappLink={product.whatsappLink || `https://wa.me/?text=I'm interested in ${product.name}`}
-                  category={product.category || ''}
-                />
-              </AnimatedProductCard>
-            ))}
-          </div>
+          <AnimatePresence mode="wait">
+            {viewMode === 'grid' && (
+              <motion.div
+                key="grid"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                {displayProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    slug={product.slug}
+                    image={product.image || '/images/placeholder.jpg'}
+                    price={product.price?.toString() || '0'}
+                    currency={product.currency || '₹'}
+                    whatsappLink={product.whatsappLink || `https://wa.me/?text=I'm interested in ${product.name}`}
+                    category={product.category || ''}
+                  />
+                ))}
+              </motion.div>
+            )}
+
+            {viewMode === 'list' && (
+              <motion.div
+                key="list"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex flex-col gap-4"
+              >
+                {displayProducts.map((product) => (
+                  <ProductListItem
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    slug={product.slug}
+                    image={product.image || '/images/placeholder.jpg'}
+                    price={product.price?.toString() || '0'}
+                    currency={product.currency || '₹'}
+                    whatsappLink={product.whatsappLink || `https://wa.me/?text=I'm interested in ${product.name}`}
+                    category={product.category || ''}
+                  />
+                ))}
+              </motion.div>
+            )}
+
+            {viewMode === 'compact' && (
+              <motion.div
+                key="compact"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3"
+              >
+                {displayProducts.map((product) => (
+                  <ProductCompactCard
+                    key={product.id}
+                    id={product.id}
+                    name={product.name}
+                    slug={product.slug}
+                    image={product.image || '/images/placeholder.jpg'}
+                    price={product.price?.toString() || '0'}
+                    currency={product.currency || '₹'}
+                    whatsappLink={product.whatsappLink || `https://wa.me/?text=I'm interested in ${product.name}`}
+                  />
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         )}
 
         {!isLoading && displayProducts.length === 0 && (

@@ -114,8 +114,7 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
   );
 
   return (
-    <motion.section
-      id="product-categories"
+    <motion.section 
       className="relative py-16 md:py-24 bg-[var(--natural-light)] overflow-hidden"
       variants={sectionVariants}
       initial="hidden"
@@ -133,13 +132,13 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10 max-w-7xl">
-        {/* Section Header - matching style with other sections */}
-        <motion.div className="mb-12 text-center" variants={itemVariants}>
+        {/* Consistent Section Header */}
+        <motion.div className="text-center mb-12" variants={itemVariants}>
           <motion.span
             className="inline-block text-sm font-medium tracking-wider text-[var(--tertiary-color)] uppercase mb-2"
             variants={itemVariants}
           >
-            Explore Our Range
+            Our Categories
           </motion.span>
           <motion.h2
             className="text-3xl md:text-4xl font-serif font-bold text-[var(--primary-color)] mb-3"

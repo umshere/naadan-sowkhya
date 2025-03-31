@@ -1,43 +1,39 @@
-import React from 'react';
-import { notFound } from 'next/navigation';
-import ProductDetails from '@/components/ui/ProductDetails';
-import productsData from '@/data/products.json';
+import productsData from "@/data/products.json";
+import { notFound } from "next/navigation";
+import ProductDetails from "@/components/product/ProductDetailsEnhanced";
 
-// Simple type for generateStaticParams return values
-type Params = {
-  slug: string;
+type Props = {
+  params: {
+    slug: Promise<string> | string;
+  };
 };
 
-// Use any for metadata function parameters as well
-export async function generateMetadata({ params }: any) {
-  const product = productsData.products.find(p => p.slug === params.slug);
-  
+// Generate metadata for the product page
+export async function generateMetadata({ params }: Props) {
+  const slug = await params.slug;
+  const product = productsData.products.find((p) => p.slug === slug);
+
   if (!product) {
     return {
-      title: 'Product Not Found',
+      title: "Product Not Found",
+      description: "The requested product could not be found.",
     };
   }
 
   return {
-    title: `${product.name} - Naadan Sowkhya`,
+    title: `${product.name} | Sowkhya Natural Products`,
     description: product.description,
   };
 }
 
-// Remove type annotations and let Next.js infer them
-export default async function ProductPage({ params }: any) {
-  const { slug } = params;
-  const product = productsData.products.find(p => p.slug === slug);
+// Product page component
+export default async function ProductPage({ params }: Props) {
+  const slug = await params.slug;
+  const product = productsData.products.find((p) => p.slug === slug);
 
   if (!product) {
     notFound();
   }
 
-  return <ProductDetails {...product} />;
-}
-
-export function generateStaticParams(): Params[] {
-  return productsData.products.map((product) => ({
-    slug: product.slug,
-  }));
+  return <ProductDetails product={product} />;
 }

@@ -60,9 +60,17 @@ const contactOptions = [
 ];
 
 export default function ContactOptionsDrawer() {
+  const [open, setOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleOpenDrawer = () => setOpen(true);
+    document.addEventListener('openContactDrawer', handleOpenDrawer);
+    return () => document.removeEventListener('openContactDrawer', handleOpenDrawer);
+  }, []);
+
   return (
-    <Drawer>
-      {/* <DrawerTrigger asChild>
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
         <motion.button
           className="fixed bottom-20 right-4 z-40 rounded-full bg-primary text-white p-3 shadow-lg"
           whileHover={{ scale: 1.1 }}
@@ -78,9 +86,9 @@ export default function ContactOptionsDrawer() {
         >
           <FaEnvelope className="h-6 w-6" />
         </motion.button>
-      </DrawerTrigger> */}
+      </DrawerTrigger>
       
-      {/* <DrawerContent className="max-h-[85vh] overflow-auto">
+      <DrawerContent className="max-h-[85vh] overflow-auto">
         <DrawerHeader className="border-b border-gray-200">
           <DrawerTitle className="text-center text-xl">Contact Us</DrawerTitle>
         </DrawerHeader>
@@ -117,7 +125,7 @@ export default function ContactOptionsDrawer() {
             </button>
           </DrawerClose>
         </DrawerFooter>
-      </DrawerContent> */}
+      </DrawerContent>
     </Drawer>
   );
 }

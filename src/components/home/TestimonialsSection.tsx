@@ -20,6 +20,32 @@ const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) => {
   const sectionRef = useRef<HTMLElement>(null);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
+  // Section animation variants
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.15,
+        delayChildren: 0.1
+      } 
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: "spring",
+        stiffness: 100,
+        damping: 12,
+        duration: 0.6 
+      }
+    }
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -42,49 +68,54 @@ const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) => {
   }, []);
 
   return (
-    <section
+    <motion.section
       ref={sectionRef}
-      className="py-16 md:py-24 lg:py-32 bg-[var(--natural-light)] relative overflow-hidden section-scroll"
+      className="relative py-16 md:py-24 bg-[var(--natural-light)] overflow-hidden"
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
       style={{ touchAction: 'pan-y pinch-zoom' }}
     >
-      {/* Decorative background */}
+      {/* Subtle background texture with parallax effect */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"></div>
+        <motion.div 
+          className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"
+          initial={{ scale: 1.1 }}
+          whileInView={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10 section-content">
-        <motion.h2
-          className="text-4xl lg:text-5xl font-bold text-center text-[var(--primary-color)] mb-6"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: isMobile ? 0.4 : 0.6 }}
-        >
-          What Our Customers Say
-        </motion.h2>
-
-        <motion.p
-          className="text-center text-gray-600 max-w-2xl mx-auto mb-16 text-lg"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          Read authentic testimonials from our valued customers who have experienced the quality of our natural products.
-        </motion.p>
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Consistent Section Header */}
+        <motion.div className="text-center mb-12" variants={itemVariants}>
+          <motion.span
+            className="inline-block text-sm font-medium tracking-wider text-[var(--tertiary-color)] uppercase mb-2"
+            variants={itemVariants}
+          >
+            Customer Experiences
+          </motion.span>
+          <motion.h2
+            className="text-3xl md:text-4xl font-serif font-bold text-[var(--primary-color)] mb-3"
+            variants={itemVariants}
+          >
+            What Our Customers Say
+          </motion.h2>
+          <div className="flex justify-center">
+            <div className="h-1 w-16 bg-[var(--primary-color)] rounded-full mb-4 opacity-80"></div>
+          </div>
+          <motion.p
+            className="text-center text-gray-600 max-w-2xl mx-auto text-base leading-relaxed"
+            variants={itemVariants}
+          >
+            Read authentic testimonials from our valued customers who have experienced the quality of our natural products
+          </motion.p>
+        </motion.div>
 
         <motion.div
           className="max-w-4xl mx-auto"
-          initial="hidden"
-          animate={isVisible ? "show" : "hidden"}
-          variants={{
-            hidden: { opacity: 0 },
-            show: {
-              opacity: 1,
-              transition: {
-                staggerChildren: isMobile ? 0.1 : 0.2,
-                delayChildren: 0.3
-              }
-            }
-          }}
+          variants={itemVariants}
         >
           <TestimonialCarousel 
             testimonials={testimonials}
@@ -94,13 +125,11 @@ const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) => {
 
         <motion.div
           className="text-center mt-12"
-          initial={{ opacity: 0 }}
-          animate={isVisible ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ delay: 0.8 }}
+          variants={itemVariants}
         >
           <Link
             href="/testimonials"
-            className="inline-flex items-center px-6 py-3 bg-[var(--primary-color)] text-white rounded-lg 
+            className="inline-flex items-center px-6 py-3 bg-[var(--primary-color)] text-white rounded-full 
                      hover:bg-opacity-90 transition-all duration-300 touch-target"
           >
             <span className="mr-2">View All Testimonials</span>
@@ -120,7 +149,7 @@ const TestimonialsSection = ({ testimonials }: TestimonialsSectionProps) => {
           </Link>
         </motion.div>
       </div>
-    </section>
+    </motion.section>
   );
 };
 

@@ -9,7 +9,7 @@ import homepageData from '@/data/homepage.json';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#f0f7ff] text-gray-800 pt-16 pb-0 relative overflow-hidden">
+    <footer className="bg-[#f0f7ff] text-gray-800 pb-0 relative overflow-hidden">
       {/* Wave Background */}
       <div className="absolute bottom-0 left-0 w-full h-60 sm:h-40 overflow-hidden z-0">
         <svg 
@@ -30,7 +30,7 @@ const Footer = () => {
         </svg>
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative z-10 mt-16">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-16">
           {/* Map Section - Now on the left */}
           <div className="lg:col-span-5">

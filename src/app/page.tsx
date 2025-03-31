@@ -44,8 +44,11 @@ const sections: Section[] = [
 
 // Consistent spacing wrapper component
 const SectionWrapper = ({ id, children }: SectionWrapperProps): React.ReactElement => (
-  <div id={id} className="section-scroll">
-    <div className="section-content">
+  <div id={id} className="section-scroll py-16 first:pt-0 bg-[var(--natural-light)] relative">
+    <div className="absolute inset-0 pointer-events-none">
+      <div className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5" />
+    </div>
+    <div className="section-content relative z-10">
       {children}
     </div>
   </div>
@@ -67,8 +70,8 @@ const HomePage = (): React.ReactElement => {
         />
       </div>
       
-      {/* Desktop Layout - Updated with consistent spacing */}
-      <div className="hidden md:block space-y-12 md:space-y-16">
+      {/* Desktop Layout */}
+      <div className="hidden md:block">
         {/* Product Guarantee */}
         <SectionWrapper id="guarantee">
           <ScrollRevealContainer animation="fade-up" duration={800} offset={120}>
@@ -99,7 +102,7 @@ const HomePage = (): React.ReactElement => {
             animation="fade-up" 
             duration={600} 
             offset={100}
-            className="bg-white py-8 md:py-10"
+            className="w-full"
           >
             <ProductCategories data={homepageData.productCategoriesSection} />
           </ScrollRevealContainer>
@@ -111,28 +114,38 @@ const HomePage = (): React.ReactElement => {
             animation="fade-up" 
             duration={600} 
             offset={100}
-            className="bg-gray-50 py-8 md:py-10"
+            className="w-full"
           >
             <FeaturedProducts 
               title="Our Products"
               subtitle="Experience Our Natural & Chemical-Free Products"
               productIds={homepageData.productCategoriesSection.featuredProducts}
               allProducts={productsData.products}
-              showAsCards={false} // Use carousel for desktop
+              showAsCards={false}
             />
           </ScrollRevealContainer>
         </SectionWrapper>
         
         {/* Testimonials */}
         <SectionWrapper id="testimonials">
-          <ScrollRevealContainer animation="fade-up" duration={600} offset={100}>
+          <ScrollRevealContainer 
+            animation="fade-up" 
+            duration={600} 
+            offset={100}
+            className="w-full"
+          >
             <TestimonialsSection testimonials={homepageData.testimonials} />
           </ScrollRevealContainer>
         </SectionWrapper>
         
         {/* Gallery */}
         <SectionWrapper id="gallery">
-          <ScrollRevealContainer animation="fade-up" duration={600} offset={100}>
+          <ScrollRevealContainer 
+            animation="fade-up" 
+            duration={600} 
+            offset={100}
+            className="w-full"
+          >
             <GallerySection 
               title={homepageData.gallery.title}
               images={homepageData.gallery.images}

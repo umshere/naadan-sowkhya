@@ -106,8 +106,8 @@ const AboutSection = ({
       />
 
       <div className="container max-w-7xl mx-auto px-4 relative z-10 section-content">
-        {/* Section Header - Aligned with ProductGuarantee */}
-        <motion.div className="mb-12" variants={itemVariants}>
+        {/* Section Header - Center-aligned for consistency */}
+        <motion.div className="text-center mb-12" variants={itemVariants}>
           <motion.span
             className="inline-block text-sm font-medium tracking-wider text-[var(--tertiary-color)] uppercase mb-2"
             variants={itemVariants}

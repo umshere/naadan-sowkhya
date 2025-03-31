@@ -32,6 +32,32 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
     startTime: 0
   });
 
+  // Section animation variants
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.15,
+        delayChildren: 0.1
+      } 
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: "spring",
+        stiffness: 100,
+        damping: 12,
+        duration: 0.6 
+      }
+    }
+  };
+
   // Updated Intersection Observer with lower threshold and rootMargin
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -193,31 +219,55 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
   };
 
   return (
-    <section 
+    <motion.section 
       ref={sectionRef} 
-      className="py-24 bg-gradient-to-b from-white to-gray-50"
+      className="relative py-24 bg-[var(--natural-light)] overflow-hidden"
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
     >
-      <div className="container mx-auto px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
+      {/* Subtle background texture with parallax effect */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div 
+          className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"
+          initial={{ scale: 1.1 }}
+          whileInView={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        />
+      </div>
+
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Consistent Section Header */}
+        <motion.div className="text-center mb-16" variants={itemVariants}>
+          <motion.span
+            className="inline-block text-sm font-medium tracking-wider text-[var(--tertiary-color)] uppercase mb-2"
+            variants={itemVariants}
+          >
+            Our Credentials
+          </motion.span>
+          <motion.h2
+            className="text-3xl md:text-4xl font-serif font-bold text-[var(--primary-color)] mb-3"
+            variants={itemVariants}
+          >
             Professional Certifications
-          </h2>
-          <div className="w-24 h-1 bg-green-600 mx-auto mb-6"></div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Credentials that validate expertise and commitment to professional growth
-          </p>
+          </motion.h2>
+          <div className="flex justify-center">
+            <div className="h-1 w-16 bg-[var(--primary-color)] rounded-full mb-4 opacity-80"></div>
+          </div>
+          <motion.p
+            className="text-center text-gray-600 max-w-2xl mx-auto text-base leading-relaxed"
+            variants={itemVariants}
+          >
+            Credentials that validate our expertise and commitment to maintaining the highest quality standards
+          </motion.p>
         </motion.div>
         
         <div className="relative max-w-7xl mx-auto px-4 overflow-hidden">
           {/* Navigation buttons */}
           <button 
             onClick={goToPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-green-700 p-3 rounded-full shadow-lg transition-all hover:scale-110"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[var(--primary-color)] p-3 rounded-full shadow-lg transition-all hover:scale-110"
             aria-label="Previous certification"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -227,7 +277,7 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
           
           <button 
             onClick={goToNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-green-700 p-3 rounded-full shadow-lg transition-all hover:scale-110"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:bg-white text-[var(--primary-color)] p-3 rounded-full shadow-lg transition-all hover:scale-110"
             aria-label="Next certification"
           >
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -280,7 +330,7 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
                 >
                   <motion.div 
                     className={`relative w-[280px] h-[380px] bg-white rounded-xl overflow-hidden
-                      ${position === 0 ? 'shadow-2xl border-2 border-green-500' : 'shadow-lg'}
+                      ${position === 0 ? 'shadow-2xl border-2 border-[var(--primary-color)]' : 'shadow-lg'}
                       transition-all duration-300 hover:shadow-xl cursor-pointer`}
                     layoutId={`cert-${cert.id}`}
                   >
@@ -309,7 +359,7 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
                 key={idx}
                 className={`w-3 h-3 rounded-full transition-all ${
                   idx === currentIndex % certifications.length 
-                    ? "bg-green-600 w-6" 
+                    ? "bg-[var(--primary-color)] w-6" 
                     : "bg-gray-300 hover:bg-gray-400"
                 }`}
                 onClick={() => setCurrentIndex(idx)}
@@ -376,7 +426,7 @@ const CertificationsSection = ({ certifications }: CertificationsSectionProps) =
           </motion.div>
         )}
       </AnimatePresence>
-    </section>
+    </motion.section>
   );
 };
 

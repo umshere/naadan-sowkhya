@@ -32,6 +32,32 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
   const [isScrolling, setIsScrolling] = useState(false);
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
 
+  // Section animation variants
+  const sectionVariants = {
+    hidden: { opacity: 0 },
+    visible: { 
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.15,
+        delayChildren: 0.1
+      } 
+    }
+  };
+  
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        type: "spring",
+        stiffness: 100,
+        damping: 12,
+        duration: 0.6 
+      }
+    }
+  };
+
   // Intersection Observer for animations
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -128,54 +154,60 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
     touchStartY.current = 0;
   };
 
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0 }
-  };
-
   return (
-    <section ref={sectionRef} className="py-8 relative overflow-hidden">
-      <motion.div 
-        className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: isVisible ? 0.05 : 0 }}
-        transition={{ duration: 1 }}
-      />
+    <motion.section 
+      ref={sectionRef} 
+      className="relative py-16 md:py-24 bg-[var(--natural-light)] overflow-hidden"
+      variants={sectionVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.1 }}
+    >
+      {/* Subtle background texture with parallax effect */}
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div 
+          className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5"
+          initial={{ scale: 1.1 }}
+          whileInView={{ scale: 1 }}
+          transition={{ duration: 1.5 }}
+        />
+      </div>
       
-      <div className="container mx-auto px-4 relative">
-        {title && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-8"
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Consistent Section Header */}
+        <motion.div className="text-center mb-12" variants={itemVariants}>
+          <motion.span
+            className="inline-block text-sm font-medium tracking-wider text-[var(--tertiary-color)] uppercase mb-2"
+            variants={itemVariants}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-primary-color">{title}</h2>
-          </motion.div>
-        )}
+            Visual Journey
+          </motion.span>
+          <motion.h2
+            className="text-3xl md:text-4xl font-serif font-bold text-[var(--primary-color)] mb-3"
+            variants={itemVariants}
+          >
+            {title}
+          </motion.h2>
+          <div className="flex justify-center">
+            <div className="h-1 w-16 bg-[var(--primary-color)] rounded-full mb-4 opacity-80"></div>
+          </div>
+          <motion.p
+            className="text-center text-gray-600 max-w-2xl mx-auto text-base leading-relaxed"
+            variants={itemVariants}
+          >
+            Explore our facility and products through our carefully curated image gallery
+          </motion.p>
+        </motion.div>
 
         {/* Thumbnail Grid */}
         <motion.div
-          variants={container}
-          initial="hidden"
-          animate={isVisible ? "show" : "hidden"}
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
+          variants={itemVariants}
         >
           {images.slice(0, 8).map((image, index) => (
             <motion.div
               key={image.id}
-              variants={item}
+              variants={itemVariants}
               className="group relative overflow-hidden rounded-xl shadow-sm hover:shadow-xl 
                         transition-all duration-300 cursor-pointer touch-pan-y"
               onHoverStart={() => setHoveredImage(image.id)}
@@ -255,7 +287,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
               {/* Close Button */}
               <button
                 onClick={closeLightbox}
-                className="absolute -top-12 right-0 text-primary-color hover:text-gray-700 focus:outline-none"
+                className="absolute -top-12 right-0 text-white hover:text-gray-300 focus:outline-none"
                 aria-label="Close lightbox"
               >
                 <svg
@@ -281,7 +313,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
                   draggable={false}
                 />
                 {/* Image Caption */}
-                <div className="absolute bottom-4 left-4 right-4 text-primary-color text-center bg-black/60 p-3 rounded-lg">
+                <div className="absolute bottom-4 left-4 right-4 text-white text-center bg-black/60 p-3 rounded-lg">
                   <span className="text-white">{selectedImage.alt}</span>
                 </div>
               </div>
@@ -325,7 +357,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
           </motion.div>
         )}
       </AnimatePresence>
-    </section>
+    </motion.section>
   );
 };
 

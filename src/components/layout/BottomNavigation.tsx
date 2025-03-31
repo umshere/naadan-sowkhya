@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaHome, FaLeaf, FaInfoCircle, FaEnvelope } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import ContactOptionsDrawer from '../ui/ContactOptionsDrawer';
+import { Drawer } from '../ui/drawer';
 
 const navItems = [
   {
@@ -63,7 +64,6 @@ export default function BottomNavigation() {
   return (
     <>
       <ContactOptionsDrawer />
-      
       <AnimatePresence>
         {isVisible && (
           <motion.div
@@ -86,12 +86,7 @@ export default function BottomNavigation() {
                       <div
                         key={item.href}
                         onClick={() => {
-                          // The drawer is triggered by button in the ContactOptionsDrawer component
-                          // This is just to make the nav icon clickable
-                          const drawerTrigger = document.querySelector('[data-drawer-trigger="contact"]');
-                          if (drawerTrigger instanceof HTMLElement) {
-                            drawerTrigger.click();
-                          }
+                          document.dispatchEvent(new CustomEvent('openContactDrawer'))
                         }}
                         className="flex flex-col items-center justify-center py-2 px-3 text-green-600 hover:text-green-800 cursor-pointer"
                       >
