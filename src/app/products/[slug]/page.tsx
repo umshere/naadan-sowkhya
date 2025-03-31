@@ -1,17 +1,16 @@
+import { Metadata } from "next";
 import productsData from "@/data/products.json";
 import { notFound } from "next/navigation";
 import ProductDetails from "@/components/product/ProductDetailsEnhanced";
 
-type Props = {
-  params: {
-    slug: Promise<string> | string;
-  };
+// Simple type for generateStaticParams
+type Params = {
+  slug: string;
 };
 
-// Generate metadata for the product page
-export async function generateMetadata({ params }: Props) {
-  const slug = await params.slug;
-  const product = productsData.products.find((p) => p.slug === slug);
+// Generate metadata with any type to avoid type conflicts
+export async function generateMetadata({ params }: any): Promise<Metadata> {
+  const product = productsData.products.find(p => p.slug === params.slug);
 
   if (!product) {
     return {
@@ -26,14 +25,21 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-// Product page component
-export default async function ProductPage({ params }: Props) {
-  const slug = await params.slug;
-  const product = productsData.products.find((p) => p.slug === slug);
+// Product page component with any type for params
+export default async function ProductPage({ params }: any) {
+  const { slug } = params;
+  const product = productsData.products.find(p => p.slug === slug);
 
   if (!product) {
     notFound();
   }
 
   return <ProductDetails product={product} />;
+}
+
+// Add generateStaticParams for static site generation
+export function generateStaticParams(): Params[] {
+  return productsData.products.map((product) => ({
+    slug: product.slug,
+  }));
 }
