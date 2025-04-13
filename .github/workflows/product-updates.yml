@@ -1,10 +1,14 @@
-name: Product Updates Workflow
+name: Content Updates Workflow
 
 on:
   push:
     paths:
       - "src/data/products.json"
       - "src/data/new-products.json"
+      - "src/data/gallery.json"
+      - "src/data/testimonial-images.json"
+      - "public/images/gallery/*"
+      - "public/images/testimonials/*"
     branches-ignore:
       - main
 
@@ -22,36 +26,63 @@ jobs:
       - name: Install dependencies
         run: npm ci # Use npm ci for reliable installs in CI
 
-      - name: Validate JSON files and structure
+      - name: Validate Content Files
         run: |
           echo "Validating JSON files..."
-          npm run validate:products # Use the npm script
+          npm run validate:products
+          npm run validate:gallery
+          npm run validate:testimonials
 
           if [ $? -eq 0 ]; then
-            echo "✓ All JSON files are valid"
+            echo "✓ All content files are valid"
           else
-            echo "✗ JSON validation failed"
+            echo "✗ Content validation failed"
+            exit 1
+          fi
+
+      - name: Optimize Images
+        run: |
+          echo "Optimizing gallery images..."
+          npm run optimize:images
+
+          if [ $? -eq 0 ]; then
+            echo "✓ Images optimized successfully"
+          else
+            echo "✗ Image optimization failed"
             exit 1
           fi
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          title: "Update: Product Catalog Changes"
+          title: "Update: Content Changes"
           body: |
-            ## Product Catalog Update
+            ## Content Update
 
-            This PR contains updates to the product catalog.
+            This PR contains updates to site content.
 
             ### Changed Files:
-            - src/data/products.json
-            - src/data/new-products.json
+            $(git diff --name-only origin/main)
 
-            Please review the changes and ensure:
+            ### Review Checklist:
+
+            #### Products (if applicable):
             - [ ] Prices are correct
             - [ ] Product descriptions are accurate
             - [ ] Images are properly linked
             - [ ] Categories are valid
+
+            #### Gallery (if applicable):
+            - [ ] Images are high quality
+            - [ ] Images are correctly sized (max 2MB)
+            - [ ] Image descriptions are accurate
+            - [ ] All images are relevant to content
+
+            #### Testimonials (if applicable):
+            - [ ] Content is appropriate
+            - [ ] Customer names are correct
+            - [ ] Images are optimized
+            - [ ] All required fields are filled
           branch: product-updates
           branch-suffix: timestamp
           delete-branch: true

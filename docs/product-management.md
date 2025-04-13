@@ -1,185 +1,184 @@
-# Product Management Guide
+# Content Management Guide
 
-This guide explains how to manage product information in the system.
+This guide explains how to manage all site content, including products, gallery, and testimonials.
+
+---
 
 ## Overview
 
-Products are managed through JSON files in the `src/data` directory:
+Content is managed through JSON files and images in the `src/data` and `public/images` directories:
 
-1. `products.json` - Main product catalog
-2. `config.json` - Common settings and categories
-3. `new-products.json` - Featured products list
+- `products.json` - Main product catalog
+- `new-products.json` - Featured products list
+- `gallery.json` - Gallery image metadata
+- `testimonial-images.json` - Testimonial image metadata
+- `config.json` - Common settings and categories
+- `public/images/gallery/` - Gallery images
+- `public/images/testimonials/` - Testimonial images
 
-## Adding/Updating Products
+---
 
-### Step 1: Create a New Branch
+## Automated Update Flow
 
-```bash
-git checkout -b product-update-[description]
-# Example:
-git checkout -b product-update-new-soap
-```
+When you push changes to any content files (products, gallery, testimonials, or related images), GitHub Actions will:
 
-### Step 2: Update Product Files
+1. Validate all JSON files and content structure
+2. Optimize images (gallery/testimonials)
+3. Create a pull request with a detailed review checklist
+4. Deploy changes automatically after PR merge
 
-Edit `src/data/products.json` following this format:
+### Triggering Automation
 
-```json
-{
-  "id": "natural-soap-lavender", // lowercase, hyphenated
-  "name": "Natural Lavender Soap", // display name
-  "category": ["natural-cosmetics"], // from allowed categories
-  "price": "150", // as string
-  "weight": "100GM", // must end with GM or ML
-  "description": "Handmade natural soap with lavender essential oil",
-  "image": "natural-soap-lavender.jpg" // .jpg, .jpeg, or .png
-}
-```
+- Edit any of the following:
+  - `src/data/products.json`
+  - `src/data/new-products.json`
+  - `src/data/gallery.json`
+  - `src/data/testimonial-images.json`
+  - Any image in `public/images/gallery/` or `public/images/testimonials/`
+- Push to a new branch (never directly to main)
 
-### Step 3: Commit and Push Changes
+### Review Checklist
 
-```bash
-git add src/data/products.json
-git commit -m "add: new lavender soap product"
-git push origin product-update-new-soap
-```
+The automated PR will include a checklist for all content types:
 
-## Automated Validation & PR Creation
+#### Products
 
-When you push changes to product files, GitHub Actions automatically:
-
-1. Validates JSON structure
-2. Checks product data format
-3. Creates a pull request
-
-### Testing the Automation
-
-To test the GitHub Actions workflow:
-
-1. Make a test product change:
-
-```json
-{
-  "id": "test-product-1",
-  "name": "Test Product",
-  "category": ["natural-cosmetics"],
-  "price": "100",
-  "weight": "50GM",
-  "description": "Test product description",
-  "image": "test-product-1.jpg"
-}
-```
-
-2. Push to trigger automation:
-
-```bash
-git add src/data/products.json
-git commit -m "test: add test product"
-git push origin product-update-test
-```
-
-3. Watch the automation:
-
-- Go to repository's "Actions" tab
-- Find your workflow run
-- Review validation results
-- Check auto-created PR
-
-### Common Validation Errors
-
-1. Invalid JSON format:
-
-```json
-{
-  "id": "test-product", // Missing comma
-  "name": "Test"
-  "price": "100"
-}
-```
-
-2. Wrong category:
-
-```json
-{
-  "category": ["invalid-category"] // Must be from allowed list
-}
-```
-
-3. Invalid price format:
-
-```json
-{
-  "price": 100 // Must be string: "100"
-}
-```
-
-4. Wrong weight format:
-
-```json
-{
-  "weight": "100g" // Must be "100GM" or "100ML"
-}
-```
-
-## Pull Request Review
-
-The automated PR includes:
-
-1. Validation status
-2. Changed files list
-3. Review checklist:
-
-```markdown
 - [ ] Prices are correct
 - [ ] Product descriptions are accurate
 - [ ] Images are properly linked
 - [ ] Categories are valid
-```
 
-## Featured Products
+#### Gallery
 
-To feature products:
+- [ ] Images are high quality
+- [ ] Images are correctly sized (max 2MB)
+- [ ] Image descriptions are accurate
+- [ ] All images are relevant to content
 
-1. Edit `src/data/new-products.json`:
+#### Testimonials
 
-```json
-{
-  "featured": ["product-id-1", "product-id-2"]
-}
-```
+- [ ] Content is appropriate
+- [ ] Customer names are correct
+- [ ] Images are optimized
+- [ ] All required fields are filled
 
-2. Push changes to trigger automation
+---
+
+## Manual Update Flow
+
+Manual updates may be needed for:
+
+- Emergency fixes
+- Bulk content/image updates
+- Bypassing automation (not recommended)
+
+**Steps:**
+
+1. Create a new branch:  
+   `git checkout -b content-update-[description]`
+2. Make changes to relevant files/images
+3. Commit and push:  
+   `git add .`  
+   `git commit -m "manual: [describe changes]"`  
+   `git push origin content-update-[description]`
+4. Open a pull request and request review
+
+---
+
+## Adding/Updating Products
+
+1. Edit `src/data/products.json` using this format:
+   ```json
+   {
+     "id": "natural-soap-lavender",
+     "name": "Natural Lavender Soap",
+     "category": ["natural-cosmetics"],
+     "price": "150",
+     "weight": "100GM",
+     "description": "Handmade natural soap with lavender essential oil",
+     "image": "natural-soap-lavender.jpg"
+   }
+   ```
+2. Commit and push changes as described above.
+
+---
+
+## Adding/Updating Gallery
+
+1. Add images to `public/images/gallery/` (JPG, JPEG, PNG, max 2MB, high quality)
+2. Edit `src/data/gallery.json` to include metadata:
+   ```json
+   {
+     "filename": "event-1.jpg",
+     "title": "Event 1",
+     "description": "Product launch event"
+   }
+   ```
+3. Commit and push changes.
+
+---
+
+## Adding/Updating Testimonials
+
+1. Add images to `public/images/testimonials/` (JPG, JPEG, PNG, max 2MB)
+2. Edit `src/data/testimonial-images.json`:
+   ```json
+   {
+     "filename": "testimonial-1.jpeg",
+     "name": "Customer Name",
+     "testimonial": "This is a testimonial."
+   }
+   ```
+3. Commit and push changes.
+
+---
 
 ## Validation Rules
 
-- `id`: Lowercase letters, numbers, and hyphens only
-- `name`: Cannot be empty
-- `category`: One or more from:
-  - natural-cosmetics
-  - food-products
-  - natural-hair-care
-  - herbal-products
-- `price`: Numbers only, as string (e.g., "100")
-- `weight`: Optional. Must end with GM or ML (e.g., "100GM" or "30ML")
-- `description`: Cannot be empty
-- `image`: Filename only (.jpg, .jpeg, or .png)
+- **Products**
+
+  - `id`: Lowercase, hyphens, numbers only
+  - `name`: Required
+  - `category`: Must be from allowed list
+  - `price`: String, numbers only
+  - `weight`: Optional, ends with GM or ML
+  - `description`: Required
+  - `image`: Filename only (.jpg, .jpeg, .png)
+
+- **Gallery**
+
+  - `filename`: Must match file in `public/images/gallery/`
+  - `title`: Required
+  - `description`: Required
+  - Image: JPG, JPEG, PNG, max 2MB
+
+- **Testimonials**
+  - `filename`: Must match file in `public/images/testimonials/`
+  - `name`: Required
+  - `testimonial`: Required
+  - Image: JPG, JPEG, PNG, max 2MB
+
+---
 
 ## Troubleshooting
 
 If validation fails:
 
 1. Check GitHub Actions error log
-2. Verify JSON formatting
-3. Confirm all required fields
-4. Check category names
-5. Validate image paths
+2. Verify JSON formatting and required fields
+3. Confirm image file exists and is correct format/size
+4. Check category names (for products)
+
+---
 
 ## Auto-deployment
 
 After PR approval and merge:
 
-1. Changes deploy automatically
-2. Live within 5 minutes
-3. No manual deployment needed
+- Changes deploy automatically
+- Live within 5 minutes
+- No manual deployment needed
 
-Note: Always create changes on a new branch, never directly on main.
+---
+
+**Note:** Always create changes on a new branch, never directly on main.
