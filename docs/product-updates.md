@@ -20,15 +20,11 @@ The product catalog is managed through JSON files in the `src/data` directory:
 {
   "id": "product-id",
   "name": "Product Name",
-  "slug": "product-slug",
-  "category": "product-category",
-  "image": "/images/products/image-name.jpg",
+  "category": ["natural-cosmetics"],
   "price": "100",
-  "currency": "Rs",
+  "weight": "100GM",
   "description": "Product description",
-  "benefits": "",
-  "ingredients": "",
-  "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Product%20Name"
+  "image": "product-image-name.jpg"
 }
 ```
 
@@ -38,12 +34,16 @@ The product catalog is managed through JSON files in the `src/data` directory:
 ## Validation Rules
 
 - `id`: Lowercase letters, numbers, and hyphens only
-- `slug`: Lowercase letters, numbers, and hyphens only
-- `category`: Lowercase letters and hyphens only
-- `price`: Numbers only
-- `image`: Must be in `/images/products/` directory with .jpg, .jpeg, .png, or .svg extension
+- `name`: Cannot be empty
+- `category`: Must be one or more of the following:
+  - natural-cosmetics
+  - food-products
+  - natural-hair-care
+  - herbal-products
+- `price`: Numbers only as string (e.g., "100")
+- `weight`: Optional. Must end with GM (grams) or ML (milliliters) (e.g., "100GM" or "30ML")
 - `description`: Cannot be empty
-- `whatsappLink`: Must start with "https://wa.me/" followed by phone number and message
+- `image`: Just the filename with .jpg, .jpeg, or .png extension (files must be placed in `/public/images/products/`)
 
 ## Bulk Updates
 
@@ -57,30 +57,32 @@ For multiple product updates:
 
 The system will automatically:
 
-- Validate your changes
+- Validate your changes against the schema
 - Create a pull request
-- Notify reviewers
+- Add the repository owner as reviewer
 
 ## Best Practices
 
 1. Keep descriptions concise and accurate
 2. Double-check prices and weights
-3. Ensure product images exist in the correct directory
-4. Use proper category names from the existing list
-5. Test WhatsApp links after updating
+3. Ensure product images exist in the `/public/images/products/` directory
+4. Use proper category names from the allowed list
+5. Test the product display on the website after updates are merged
 
 ## Need Help?
 
 If you encounter any issues or have questions:
 
 1. Check the validation error messages
-2. Review the format examples
+2. Review the format examples in existing products
 3. Contact the development team for assistance
 
 ## Auto-deployment
 
-Once your changes are approved and merged:
+When your changes are approved and merged:
 
-- The website will automatically update
-- New products will be live within minutes
-- No additional action required
+1. The website will automatically update
+2. New products will be live within minutes
+3. No additional action required
+
+Note: Changes must be made on a branch other than main to trigger the automated workflow.
