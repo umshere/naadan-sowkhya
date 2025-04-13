@@ -10,27 +10,145 @@ Products are managed through JSON files in the `src/data` directory:
 2. `config.json` - Common settings and categories
 3. `new-products.json` - Featured products list
 
-## Quick Start
+## Adding/Updating Products
 
-1. Go to GitHub repository
-2. Navigate to `src/data/products.json` (or `new-products.json`)
-3. Click edit button (✏️)
-4. Make changes following this format:
+### Step 1: Create a New Branch
+
+```bash
+git checkout -b product-update-[description]
+# Example:
+git checkout -b product-update-new-soap
+```
+
+### Step 2: Update Product Files
+
+Edit `src/data/products.json` following this format:
 
 ```json
 {
-  "id": "product-id",
-  "name": "Product Name",
-  "category": ["natural-cosmetics"],
-  "price": "100",
-  "weight": "100GM",
-  "description": "Product description",
-  "image": "product-image-name.jpg"
+  "id": "natural-soap-lavender", // lowercase, hyphenated
+  "name": "Natural Lavender Soap", // display name
+  "category": ["natural-cosmetics"], // from allowed categories
+  "price": "150", // as string
+  "weight": "100GM", // must end with GM or ML
+  "description": "Handmade natural soap with lavender essential oil",
+  "image": "natural-soap-lavender.jpg" // .jpg, .jpeg, or .png
 }
 ```
 
-5. Commit changes with a description
-6. Pull request will be created automatically
+### Step 3: Commit and Push Changes
+
+```bash
+git add src/data/products.json
+git commit -m "add: new lavender soap product"
+git push origin product-update-new-soap
+```
+
+## Automated Validation & PR Creation
+
+When you push changes to product files, GitHub Actions automatically:
+
+1. Validates JSON structure
+2. Checks product data format
+3. Creates a pull request
+
+### Testing the Automation
+
+To test the GitHub Actions workflow:
+
+1. Make a test product change:
+
+```json
+{
+  "id": "test-product-1",
+  "name": "Test Product",
+  "category": ["natural-cosmetics"],
+  "price": "100",
+  "weight": "50GM",
+  "description": "Test product description",
+  "image": "test-product-1.jpg"
+}
+```
+
+2. Push to trigger automation:
+
+```bash
+git add src/data/products.json
+git commit -m "test: add test product"
+git push origin product-update-test
+```
+
+3. Watch the automation:
+
+- Go to repository's "Actions" tab
+- Find your workflow run
+- Review validation results
+- Check auto-created PR
+
+### Common Validation Errors
+
+1. Invalid JSON format:
+
+```json
+{
+  "id": "test-product", // Missing comma
+  "name": "Test"
+  "price": "100"
+}
+```
+
+2. Wrong category:
+
+```json
+{
+  "category": ["invalid-category"] // Must be from allowed list
+}
+```
+
+3. Invalid price format:
+
+```json
+{
+  "price": 100 // Must be string: "100"
+}
+```
+
+4. Wrong weight format:
+
+```json
+{
+  "weight": "100g" // Must be "100GM" or "100ML"
+}
+```
+
+## Pull Request Review
+
+The automated PR includes:
+
+1. Validation status
+2. Changed files list
+3. Review checklist:
+
+```markdown
+- [ ] Prices are correct
+- [ ] Product descriptions are accurate
+- [ ] Images are properly linked
+- [ ] Categories are valid
+```
+
+## Featured Products
+
+To feature products:
+
+1. Edit `src/data/new-products.json`:
+
+```json
+{
+  "featured": ["product-id-1", "product-id-2"]
+}
+```
+
+2. Push changes to trigger automation
 
 ## Validation Rules
 
@@ -46,64 +164,22 @@ Products are managed through JSON files in the `src/data` directory:
 - `description`: Cannot be empty
 - `image`: Filename only (.jpg, .jpeg, or .png)
 
-The system automatically adds:
-
-- Currency symbol
-- WhatsApp link
-- Image base path
-- Default benefits/ingredients
-
-## Common Tasks
-
-### Add New Product
-
-1. Open `products.json`
-2. Add new entry following the format above
-3. Ensure image exists in `/public/images/products/`
-4. Commit changes
-
-### Update Prices
-
-1. Find product in `products.json`
-2. Update "price" value (keep quotes)
-3. Commit changes
-
-### Feature Products
-
-1. Open `new-products.json`
-2. Add product ID to "featured" array
-3. Commit changes
-
-### Bulk Updates
-
-1. Edit `products.json`
-2. Copy entire content
-3. Make changes in text editor
-4. Paste back and commit
-
-## Best Practices
-
-1. Keep descriptions concise and accurate
-2. Double-check prices and weights
-3. Verify image files exist before updating
-4. Use correct category names
-5. Test on website after updates merge
-
 ## Troubleshooting
 
-If you get errors:
+If validation fails:
 
-1. Check validation error messages
-2. Verify JSON format (commas, quotes)
-3. Confirm image path matches exactly
-4. Ensure categories are from allowed list
+1. Check GitHub Actions error log
+2. Verify JSON formatting
+3. Confirm all required fields
+4. Check category names
+5. Validate image paths
 
 ## Auto-deployment
 
-After approval and merge:
+After PR approval and merge:
 
-1. Website updates automatically
-2. Changes live within minutes
-3. No additional action needed
+1. Changes deploy automatically
+2. Live within 5 minutes
+3. No manual deployment needed
 
-Note: Make changes on a branch other than main.
+Note: Always create changes on a new branch, never directly on main.
