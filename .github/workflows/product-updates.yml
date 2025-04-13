@@ -20,14 +20,12 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        run: |
-          npm install ajv
-          npm install --save-dev typescript @types/node
+        run: npm ci # Use npm ci for reliable installs in CI
 
       - name: Validate JSON files and structure
         run: |
           echo "Validating JSON files..."
-          node scripts/validate-products.js
+          npm run validate:products # Use the npm script
 
           if [ $? -eq 0 ]; then
             echo "✓ All JSON files are valid"
