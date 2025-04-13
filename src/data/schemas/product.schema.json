@@ -12,15 +12,10 @@
                 "required": [
                     "id",
                     "name",
-                    "slug",
                     "category",
-                    "image",
                     "price",
-                    "currency",
                     "description",
-                    "benefits",
-                    "ingredients",
-                    "whatsappLink"
+                    "image"
                 ],
                 "properties": {
                     "id": {
@@ -31,41 +26,34 @@
                         "type": "string",
                         "minLength": 1
                     },
-                    "slug": {
-                        "type": "string",
-                        "pattern": "^[a-z0-9-]+$"
-                    },
                     "category": {
-                        "type": "string",
-                        "pattern": "^[a-z-\\s]+$"
-                    },
-                    "image": {
-                        "type": "string",
-                        "pattern": "^/images/products/.+\\.(jpg|jpeg|png|svg)$"
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "natural-cosmetics",
+                                "food-products",
+                                "natural-hair-care",
+                                "herbal-products"
+                            ]
+                        },
+                        "minItems": 1
                     },
                     "price": {
                         "type": "string",
                         "pattern": "^[0-9]+$"
                     },
-                    "currency": {
+                    "weight": {
                         "type": "string",
-                        "enum": [
-                            "Rs"
-                        ]
+                        "pattern": "^[0-9]+(GM|ML)$"
                     },
                     "description": {
                         "type": "string",
                         "minLength": 1
                     },
-                    "benefits": {
-                        "type": "string"
-                    },
-                    "ingredients": {
-                        "type": "string"
-                    },
-                    "whatsappLink": {
+                    "image": {
                         "type": "string",
-                        "pattern": "^https://wa\\.me/[0-9]+\\?text=.+"
+                        "pattern": "^[a-zA-Z0-9-]+\\.(jpg|jpeg|png)$"
                     }
                 },
                 "additionalProperties": false

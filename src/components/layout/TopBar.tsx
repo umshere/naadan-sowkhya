@@ -1,7 +1,7 @@
 'use client';
 
 // Removed useState, useEffect, useRef as they are now handled in Header.tsx
-import Link from 'next/link';
+// import Link from 'next/link'; // Removed unused import
 import {
   FaEnvelope,
   FaPhoneAlt,

@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { FaHome, FaLeaf, FaInfoCircle, FaEnvelope } from 'react-icons/fa';
 import { cn } from '@/lib/utils';
 import ContactOptionsDrawer from '../ui/ContactOptionsDrawer';
-import { Drawer } from '../ui/drawer';
+// import { Drawer } from '../ui/drawer'; // Removed unused import
 
 const navItems = [
   {
@@ -36,7 +36,7 @@ export default function BottomNavigation() {
   const pathname = usePathname();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  // const [drawerOpen, setDrawerOpen] = useState(false); // Removed unused state
 
   // Handle scroll behavior - hide on scroll down, show on scroll up
   useEffect(() => {

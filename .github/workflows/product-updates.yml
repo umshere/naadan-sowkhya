@@ -20,10 +20,21 @@ jobs:
           node-version: "18"
 
       - name: Install dependencies
-        run: npm install ajv
+        run: |
+          npm install ajv
+          npm install --save-dev typescript @types/node
 
-      - name: Validate JSON
-        run: node scripts/validate-products.js
+      - name: Validate JSON files and structure
+        run: |
+          echo "Validating JSON files..."
+          node scripts/validate-products.js
+
+          if [ $? -eq 0 ]; then
+            echo "✓ All JSON files are valid"
+          else
+            echo "✗ JSON validation failed"
+            exit 1
+          fi
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5

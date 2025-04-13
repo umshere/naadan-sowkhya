@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
+// import Link from 'next/link'; // Removed unused import
 import { ViewToggle, type ViewMode } from '@/components/ui/view-toggle';
 import ProductCard from '@/components/ui/ProductCard';
 import { ProductListItem } from '@/components/ui/product-list-item';
 import { ProductCompactCard } from '@/components/ui/product-compact-card';
 import categoriesData from '@/data/categories.json';
-import productsData from '@/data/products.json';
+import { getAllProducts, FullProduct, getCategoryName } from '@/lib/productUtils'; // Import utility, type, and getCategoryName
 
 export default function ProductsPage() {
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -17,9 +17,12 @@ export default function ProductsPage() {
   const [isFilterExpanded, setIsFilterExpanded] = useState(false);
   const [sortBy, setSortBy] = useState<string | null>(null);
   const [isSortExpanded, setIsSortExpanded] = useState(false);
+  const [allProcessedProducts, setAllProcessedProducts] = useState<FullProduct[]>([]);
 
-  // Load saved view preference
+  // Load processed products and saved view preference
   useEffect(() => {
+    setAllProcessedProducts(getAllProducts()); // Get processed products
+
     const savedView = localStorage.getItem('productViewMode');
     if (savedView) {
       setViewMode(savedView as ViewMode);
@@ -39,12 +42,12 @@ export default function ProductsPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Filter and sort products
+  // Filter and sort products using processed data
   let displayProducts = selectedCategory
-    ? productsData.products.filter(product => 
-        product.category?.split(' ').includes(selectedCategory)
+    ? allProcessedProducts.filter(product => 
+        product.category.includes(selectedCategory) // Use category array
       )
-    : productsData.products;
+    : allProcessedProducts;
 
   if (sortBy) {
     displayProducts = [...displayProducts].sort((a, b) => {
@@ -406,7 +409,7 @@ export default function ProductsPage() {
                     price={product.price?.toString() || '0'}
                     currency={product.currency || '₹'}
                     whatsappLink={product.whatsappLink || `https://wa.me/?text=I'm interested in ${product.name}`}
-                    category={product.category || ''}
+                    category={product.category.length > 0 ? getCategoryName(product.category[0]) : 'Uncategorized'} // Pass first category name
                   />
                 ))}
               </motion.div>
@@ -430,7 +433,7 @@ export default function ProductsPage() {
                     price={product.price?.toString() || '0'}
                     currency={product.currency || '₹'}
                     whatsappLink={product.whatsappLink || `https://wa.me/?text=I'm interested in ${product.name}`}
-                    category={product.category || ''}
+                    category={product.category.length > 0 ? getCategoryName(product.category[0]) : 'Uncategorized'} // Pass first category name
                   />
                 ))}
               </motion.div>

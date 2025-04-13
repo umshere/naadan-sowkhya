@@ -1,175 +1,113 @@
 import React from 'react';
-import { notFound } from 'next/navigation';
+import { getAllProducts, getCategoryName } from '@/lib/productUtils';
 import Link from 'next/link';
-import ProductCard from '@/components/ui/ProductCard';
-import AnimatedCategoryPage from '@/components/ui/AnimatedCategoryPage';
-import AnimatedProductCard from '@/components/ui/AnimatedProductCard';
+import Image from 'next/image';
+import { Metadata } from 'next';
+import Breadcrumbs from '@/components/ui/Breadcrumbs';
 
-// Import data
-import categoriesData from '@/data/categories.json';
-import productsData from '@/data/products.json';
+interface PageProps {
+  params: { category: string };
+}
 
-// Simple type for generateStaticParams return values
-type Params = {
-  category: string;
-};
+// Generate metadata for each category page
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const categoryName = getCategoryName(params.category);
+  
+  return {
+    title: `${categoryName} - Naadan Sowkhya`,
+    description: `Browse our collection of ${categoryName.toLowerCase()} products. Natural and authentic products from Naadan Sowkhya.`
+  };
+}
 
-export function generateStaticParams(): Params[] {
-  return categoriesData.categories.map((category) => ({
-    category: category.slug,
+// Generate static paths for all categories
+export async function generateStaticParams() {
+  const products = getAllProducts();
+  const categories = Array.from(
+    new Set(products.flatMap(product => product.category))
+  );
+  
+  return categories.map((category) => ({
+    category: category,
   }));
 }
 
-// Remove type annotations and let Next.js infer them
-export default async function CategoryPage({ params, searchParams }: any) {
-  const { category } = params;
-  
-  // Use searchParams directly as it's now properly passed in
-  const sortBy = searchParams?.sort as string | undefined;
-
-  // Find the category
-  const categoryData = categoriesData.categories.find(
-    (cat) => cat.slug === category
+export default function CategoryPage({ params }: PageProps) {
+  const products = getAllProducts().filter(product =>
+    product.category.includes(params.category)
   );
 
-  // If category not found, return 404
-  if (!categoryData) {
-    notFound();
-  }
+  // Default sort by name
+  const sortedProducts = [...products].sort((a, b) => 
+    a.name.localeCompare(b.name)
+  );
 
-  // Filter products by category and validate required fields
-  const categoryProducts = productsData.products
-    .filter(product => product.category?.split(' ').includes(category))
-    .filter(product => {
-      // Ensure required fields exist
-      return product.id && product.name && product.slug;
-    })
-    .map(product => {
-      // Ensure all required fields have default values if missing
-      return {
-        ...product,
-        price: product.price || 0,
-        currency: product.currency || '₹',
-        image: product.image || '/images/placeholder.jpg',
-        whatsappLink: product.whatsappLink || `https://wa.me/?text=I'm interested in ${product.name}`
-      };
-    });
-  
-  // Featured categories for quick navigation
-  const featuredCategories = [
-    { name: "Natural Hair Care", slug: "natural-hair-care" },
-    { name: "Natural Cosmetics", slug: "natural-cosmetics" },
-    { name: "Herbal Products", slug: "herbal-products" },
-    { name: "Food Products", slug: "food-products" }
+  const categoryName = getCategoryName(params.category);
+
+  const breadcrumbItems = [
+    {
+      label: 'Products',
+      href: '/products'
+    },
+    {
+      label: categoryName
+    }
   ];
-  
-  // Sort products or apply filters based on searchParams
-  let sortedProducts = [...categoryProducts];
-  
-  if (sortBy === 'price-asc') {
-    sortedProducts.sort((a, b) => Number(a.price) - Number(b.price));
-  } else if (sortBy === 'price-desc') {
-    sortedProducts.sort((a, b) => Number(b.price) - Number(a.price));
-  } else if (sortBy === 'name-asc') {
-    sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (sortBy === 'name-desc') {
-    sortedProducts.sort((a, b) => b.name.localeCompare(a.name));
-  }
-  
+
   return (
-    <AnimatedCategoryPage 
-      category={category}
-      featuredCategories={featuredCategories}
-    >
-      {/* Breadcrumbs */}
-      <div className="mb-8 text-sm">
-        <Link href="/" className="text-gray-500 hover:text-black-500">
-          Home
-        </Link>
-        <span className="mx-2 text-gray-400">/</span>
-        <span className="text-primary-color">Products</span>
-        <span className="mx-2 text-gray-400">/</span>
-        <span className="text-primary-color">{categoryData.name}</span>
-      </div>
-      
-      {/* Category Header */}
-      <div className="mb-12 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold text-primary-color mb-4">
-          {categoryData.name}
-        </h1>
-        {categoryData.description && (
-          <p className="text-gray-600 max-w-3xl mx-auto">
-            {categoryData.description}
+    <div className="bg-gray-50 min-h-screen">
+      <Breadcrumbs items={breadcrumbItems} />
+
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">
+            {categoryName}
+          </h1>
+          <p className="text-gray-600">
+            {sortedProducts.length} Products
           </p>
-        )}
-        
-        {/* Sorting controls - new modern addition */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
-          <span className="text-sm text-gray-500">Sort by:</span>
-          <div className="flex flex-wrap gap-2">
-            <Link 
-              href={`/product_category/${category}?sort=price-asc`}
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
-                sortBy === 'price-asc' 
-                  ? 'bg-gray-800 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Price: Low to High
-            </Link>
-            <Link 
-              href={`/product_category/${category}?sort=price-desc`}
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
-                sortBy === 'price-desc' 
-                  ? 'bg-gray-800 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Price: High to Low
-            </Link>
-            <Link 
-              href={`/product_category/${category}?sort=name-asc`}
-              className={`px-3 py-1 text-sm rounded-md transition-colors ${
-                sortBy === 'name-asc' 
-                  ? 'bg-gray-800 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Name: A-Z
-            </Link>
-          </div>
         </div>
-      </div>
-      
-      {/* Products Grid Content */}
-      <>
-        {sortedProducts.length > 0 ? (
-          sortedProducts.map((product) => (
-            <AnimatedProductCard key={product.id}>
-              <ProductCard
-                id={product.id}
-                name={product.name}
-                slug={product.slug}
-                image={product.image}
-                price={product.price.toString()}
-                currency={product.currency}
-                whatsappLink={product.whatsappLink}
-                category={product.category}
-              />
-            </AnimatedProductCard>
-          ))
-        ) : (
-          <div className="col-span-full text-center py-12">
-            <p className="text-gray-500">No products found in this category.</p>
-            <Link 
-              href="/"
-              className="mt-4 inline-block px-6 py-2 bg-primary-color text-white rounded-md hover:bg-opacity-90 transition-colors"
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {sortedProducts.map(product => (
+            <div
+              key={product.id}
+              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
             >
-              Back to Home
-            </Link>
+              <Link href={`/products/${product.id}`}>
+                <div className="relative h-64 w-full">
+                  <Image
+                    src={product.image}
+                    alt={product.name}
+                    fill
+                    style={{ objectFit: 'cover' }}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+                  <p className="text-gray-600 mb-2 line-clamp-2">
+                    {product.description}
+                  </p>
+                  <p className="text-green-600 font-semibold">
+                    {product.currency} {product.price}
+                  </p>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        {sortedProducts.length === 0 && (
+          <div className="text-center py-12">
+            <h2 className="text-2xl font-semibold text-gray-600">
+              No products found in this category
+            </h2>
+            <p className="mt-2 text-gray-500">
+              Please check back later or browse other categories
+            </p>
           </div>
         )}
-      </>
-    </AnimatedCategoryPage>
+      </div>
+    </div>
   );
 }

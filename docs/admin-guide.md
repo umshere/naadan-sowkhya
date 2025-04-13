@@ -1,5 +1,15 @@
 # Admin Guide: How to Update Products
 
+## Overview
+
+Products are managed through three main files:
+
+1. `src/data/products.json` - Main product catalog
+2. `src/data/config.json` - Common settings and categories
+3. `src/data/new-products.json` - List of featured product IDs
+
+All updates are automatically validated to ensure data consistency.
+
 ## Quick Start Guide
 
 ### 1. Access the Repository
@@ -18,25 +28,30 @@
    - Click on `new-products.json` for featured products
 
 2. Edit the file:
+
    - Click the pencil icon (✏️) in the top right
    - Find the product you want to update
    - Update the information
    - Follow the format exactly:
+
    ```json
    {
      "id": "product-name",
      "name": "Product Name",
-     "slug": "product-name",
-     "category": "category-name",
-     "image": "/images/products/image-name.jpg",
+     "category": ["category-name"],
      "price": "100",
-     "currency": "Rs",
+     "weight": "100GM",
      "description": "Product description",
-     "benefits": "",
-     "ingredients": "",
-     "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Product%20Name"
+     "image": "image-name.jpg"
    }
    ```
+
+   Note: The following values are automatically added:
+
+   - Currency (Rs)
+   - WhatsApp link
+   - Benefits and ingredients
+   - Full image path
 
 ### 3. Save Your Changes
 
@@ -60,6 +75,24 @@
 - Once approved, changes will go live automatically
 
 ## Common Tasks
+
+### Valid Categories
+
+The following categories are available:
+
+- `natural-cosmetics` - Natural Cosmetics
+- `food-products` - Food Products
+- `natural-hair-care` - Natural Hair Care
+- `herbal-products` - Herbal Products
+
+Products can belong to multiple categories.
+
+### Image Guidelines
+
+- All product images must be in `/public/images/products/`
+- Use lowercase letters, numbers, and hyphens in filenames
+- Supported formats: jpg, jpeg, png
+- Image size: 800x800px recommended
 
 ### Add a New Product
 
@@ -88,10 +121,15 @@
 
 ### Add to Featured Products
 
-1. Open `new-products.json`
-2. Copy the product's entire JSON object from `products.json`
-3. Add it to the `newProducts` array
-4. Save changes
+1. Open `src/data/new-products.json`.
+2. Find the `"featured"` array.
+3. Add the `id` of the product you want to feature as a new string in the array. Make sure to add a comma after the previous ID if it's not the last one. Example:
+   ```json
+   {
+     "featured": ["product-id-1", "product-id-2", "newly-featured-product-id"]
+   }
+   ```
+4. Save changes as described above. The product details will be automatically pulled from `products.json`.
 
 ## Troubleshooting
 
