@@ -1,0 +1,86 @@
+# Task Context Management Rules
+
+**⚠️ CRITICAL INSTRUCTIONS - YOU MUST FOLLOW THESE GUIDELINES ⚠️**
+
+## Context Window Monitoring (MANDATORY)
+
+You **MUST** monitor the context window usage displayed in environment details. When usage exceeds 50% of the available context window, you **MUST**:
+
+1. Complete your current logical step
+2. Use `ask_followup_question` to offer creating a new task
+3. If approved, use the `new_task` tool with comprehensive handoff instructions
+
+## Context Structure (REQUIRED)
+
+When using the `new_task` tool, you **MUST** include:
+
+### Mandatory Context Sections
+
+```xml
+<new_task>
+<context>
+# Task Continuation: [Brief Task Title]
+
+## Completed Work
+- [Detailed list of completed items]
+- [Files modified/created]
+- [Key decisions made]
+
+## Current State
+- [Project status]
+- [Running processes]
+- [Key file states]
+
+## Next Steps
+- [Remaining tasks]
+- [Implementation details]
+- [Known challenges]
+
+## Reference Information
+- [Documentation links]
+- [Code snippets]
+- [User preferences]
+
+Please continue by [specific next action].
+</context>
+</new_task>
+```
+
+## Handoff Triggers (REQUIRED)
+
+Initiate task handoffs when:
+
+1. Context window usage exceeds 50%
+2. Completing a major component/feature
+3. Switching between different project areas
+4. Before starting complex operations
+5. When accumulating significant context
+
+## Best Practices (MANDATORY)
+
+1. **Context Preservation**
+
+   - Include all relevant file paths
+   - Document key decisions
+   - Maintain consistent terminology
+
+2. **Clear Next Actions**
+
+   - Specify immediate next steps
+   - Include any necessary setup instructions
+   - Note any pending decisions
+
+3. **Project Continuity**
+   - Reference related files and components
+   - Maintain implementation patterns
+   - Track overall progress
+
+## User Interaction (REQUIRED)
+
+Before creating a new task:
+
+1. Summarize completed work
+2. Present clear next steps
+3. Use `ask_followup_question` for approval
+4. Package context according to template above
+5. Ensure smooth transition to new task

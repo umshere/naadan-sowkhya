@@ -182,6 +182,41 @@ Contact the development team when:
 - You need to add new features or sections
 - Your changes aren't showing up after trying the solutions above
 
+## Context Management System
+
+The project includes a sophisticated context management system that helps maintain continuity across development sessions and ensures efficient handling of complex tasks.
+
+### Task Handoff System
+
+This project uses a `.clinerules`-based task handoff system that:
+
+- Monitors context window usage
+- Manages task continuity
+- Preserves development context
+- Ensures smooth transitions between sessions
+
+### When Task Handoffs Occur
+
+The system initiates task handoffs when:
+
+1. Context window usage exceeds 50%
+2. Completing major components/features
+3. Switching between project areas
+4. Before complex operations
+5. When accumulating significant context
+
+### Context Structure
+
+Each task handoff includes:
+
+- Completed work summary
+- Current project state
+- Next steps and implementation details
+- Reference information and documentation
+- Clear continuation instructions
+
+For detailed implementation, refer to the `.clinerules` file in the project root.
+
 ## Project Structure
 
 - `/src/app/*` - Next.js pages and routing
@@ -189,6 +224,19 @@ Contact the development team when:
 - `/src/data/*` - JSON data files for content
 - `/public/images/*` - Optimized image assets
 - `/styles/*` - Global styles and CSS modules
+- `/docs/*` - Project documentation
+- `/scripts/*` - Utility scripts
+- `/.github/workflows/*` - GitHub Actions workflows
+
+## Product Updates
+
+For detailed instructions on updating product information, please refer to the [Product Updates Guide](docs/product-updates.md). The guide includes:
+
+- Step-by-step instructions for making updates
+- JSON format guidelines
+- Validation rules
+- Best practices
+- Troubleshooting tips
 
 ## Tech Stack
 

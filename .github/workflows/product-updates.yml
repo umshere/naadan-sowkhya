@@ -1,0 +1,52 @@
+name: Product Updates Workflow
+
+on:
+  push:
+    paths:
+      - "src/data/products.json"
+      - "src/data/new-products.json"
+    branches-ignore:
+      - main
+
+jobs:
+  validate-and-create-pr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install dependencies
+        run: npm install ajv
+
+      - name: Validate JSON
+        run: node scripts/validate-products.js
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          title: "Update: Product Catalog Changes"
+          body: |
+            ## Product Catalog Update
+
+            This PR contains updates to the product catalog.
+
+            ### Changed Files:
+            - src/data/products.json
+            - src/data/new-products.json
+
+            Please review the changes and ensure:
+            - [ ] Prices are correct
+            - [ ] Product descriptions are accurate
+            - [ ] Images are properly linked
+            - [ ] Categories are valid
+          branch: product-updates
+          branch-suffix: timestamp
+          delete-branch: true
+          labels: |
+            product-update
+            automated-pr
+          reviewers: ${{ github.repository_owner }}
