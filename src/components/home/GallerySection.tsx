@@ -204,7 +204,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
           variants={itemVariants}
         >
-          {images.slice(0, 8).map((image, index) => (
+          {images.map((image, index) => (
             <motion.div
               key={image.id}
               variants={itemVariants}
