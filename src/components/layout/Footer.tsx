@@ -1,11 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
+// import Image from 'next/image'; // Removed unused import
 
 // Import data
 import contactData from '@/data/contact.json';
-import homepageData from '@/data/homepage.json';
+// import homepageData from '@/data/homepage.json'; // Removed unused import
 
 const Footer = () => {
   return (

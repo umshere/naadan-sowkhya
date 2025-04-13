@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { MenuItem } from '@/data/menuItems';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion'; // Removed AnimatePresence
 
 type MobileMenuProps = {
   isMenuOpen: boolean;

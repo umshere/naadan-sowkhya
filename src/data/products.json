@@ -3,366 +3,332 @@
         {
             "id": "baamboo-tooth-brush-soft",
             "name": "Baamboo Tooth Brush Soft",
-            "slug": "baamboo-tooth-brush-soft",
-            "category": "natural-cosmetics",
-            "image": "/images/products/baamboo-tooth-brush-soft.jpeg",
+            "category": [
+                "natural-cosmetics"
+            ],
             "price": "49",
-            "currency": "Rs",
+            "weight": "",
             "description": "Eco-friendly bamboo toothbrush with soft bristles, perfect for gentle oral care.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Baamboo%20Tooth%20Brush%20Soft"
+            "image": "baamboo-tooth-brush-soft.jpeg"
         },
         {
             "id": "banana-powder-naadan-nendra-250gm",
             "name": "Banana Powder (Naadan Nendra) 250gm",
-            "slug": "banana-powder-naadan-nendra-250gm",
-            "category": "food-products",
-            "image": "/images/products/banana-powder-naadan-nendra-250gm.jpg",
+            "category": [
+                "food-products"
+            ],
             "price": "260",
-            "currency": "Rs",
+            "weight": "250GM",
             "description": "Banana powder made from Naadan Nendra variety, a traditional Kerala banana. Rich in nutrients and perfect for healthy dietary supplements.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Banana%20Powder%20(Naadan%20Nendra)%20250gm"
+            "image": "banana-powder-naadan-nendra-250gm.jpg"
         },
         {
             "id": "beetroot-lip-balm",
             "name": "Beetroot Lip Balm Chap Stick",
-            "slug": "beetroot-lip-balm-chap-stick",
-            "category": "natural-cosmetics",
-            "image": "/images/products/beatruit-lipbalm-1568x3484.jpg",
+            "category": [
+                "natural-cosmetics"
+            ],
             "price": "290",
-            "currency": "Rs",
+            "weight": "8GM",
             "description": "Natural lip balm made with beetroot extract for natural color and moisturization.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Beetroot%20Lip%20Balm%20Chap%20Stick"
+            "image": "beatruit-lipbalm-1568x3484.jpg"
         },
         {
             "id": "black-seed-oil-30ml",
             "name": "Black Seed Oil (Pure & Original)",
-            "slug": "black-seed-oil-30ml",
-            "category": "natural-hair-care herbal-products",
-            "image": "/images/products/black-seed-oil-30ml.jpg",
+            "category": [
+                "natural-hair-care",
+                "herbal-products"
+            ],
             "price": "270",
-            "currency": "Rs",
+            "weight": "30ML",
             "description": "Black Seed Oil is extracted from the seeds of Nigella sativa, a plant native to southwest Asia. The oil is commonly used in cooking and has been used in traditional medicine for centuries.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Black%20Seed%20Oil%20(Pure%20&%20Original)"
+            "image": "black-seed-oil-30ml.jpg"
         },
         {
             "id": "carrot-lip-balm",
             "name": "Carrot Lip Balm",
-            "slug": "carrot-lip-balm",
-            "category": "natural-cosmetics",
-            "image": "/images/products/carrot-lip-balm.jpeg",
-            "price": "290",
-            "currency": "Rs",
+            "category": [
+                "natural-cosmetics"
+            ],
+            "price": "200",
+            "weight": "6GM",
             "description": "Carrot Lip Balm moisturises your lips and helps to get rid of pigmentation. It is a perfect skin tonic. NAADAN SOWKHYA Lip Balm can use by any age group.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Carrot%20Lip%20Balm"
+            "image": "carrot-lip-balm.jpeg"
         },
         {
             "id": "carrot-oil",
             "name": "Carrot Oil",
-            "slug": "carrot-oil",
-            "category": "natural-hair-care",
-            "image": "/images/products/carrot-oil.jpg",
+            "category": [
+                "natural-hair-care"
+            ],
             "price": "390",
-            "currency": "Rs",
+            "weight": "100ML",
             "description": "Natural carrot oil for hair growth and nourishment.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Carrot%20Oil"
+            "image": "carrot-oil.jpg"
         },
         {
             "id": "cheruthen",
             "name": "Cheruthen (Stingless Honey)",
-            "slug": "cheruthen",
-            "category": "food-products herbal-products",
-            "image": "/images/products/cheruthen.jpeg",
+            "category": [
+                "food-products",
+                "herbal-products"
+            ],
             "price": "280",
-            "currency": "Rs",
+            "weight": "100GM",
             "description": "Special honey collected from stingless bees, known for its unique medicinal properties.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Cheruthen%20(Stingless%20Honey)"
+            "image": "cheruthen.jpeg"
         },
         {
             "id": "chia-seed-120gm",
             "name": "Chia Seed 120gm",
-            "slug": "chia-seed-120gm",
-            "category": "food-products herbal-products",
-            "image": "/images/products/chia-seed-120gm.jpg",
-            "price": "160",
-            "currency": "Rs",
+            "category": [
+                "food-products",
+                "herbal-products"
+            ],
+            "price": "140",
+            "weight": "120GM",
             "description": "Premium quality chia seeds rich in omega-3 fatty acids and fiber.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Chia%20Seed%20120gm"
+            "image": "chia-seed-120gm.jpg"
         },
         {
             "id": "danthapala-hair-skin-oil",
             "name": "Danthapala Hair & Skin Oil",
-            "slug": "danthapala-hair-skin-oil",
-            "category": "natural-hair-care natural-cosmetics",
-            "image": "/images/products/danthapala-hair-skin-oil.jpeg",
-            "price": "220",
-            "currency": "Rs",
+            "category": [
+                "natural-hair-care",
+                "natural-cosmetics"
+            ],
+            "price": "250",
+            "weight": "200ML",
             "description": "Traditional oil blend for hair growth and skin care using Danthapala herb.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Danthapala%20Hair%20%26%20Skin%20Oil"
+            "image": "danthapala-hair-skin-oil.jpeg"
         },
         {
             "id": "goat-milk-honey-soap",
             "name": "Goat Milk & Honey Soap",
-            "slug": "goat-milk-honey-soap",
-            "category": "natural-cosmetics",
-            "image": "/images/products/IMG_3380-Copy-Copy-Copy-1568x1867.jpg",
+            "category": [
+                "natural-cosmetics"
+            ],
             "price": "190",
-            "currency": "Rs",
+            "weight": "100GM",
             "description": "Natural soap made with goat milk and honey, known for its moisturizing and nourishing properties.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Goat%20Milk%20&%20Honey%20Soap"
+            "image": "IMG_3380-Copy-Copy-Copy-1568x1867.jpg"
         },
         {
             "id": "golden-glow-oil",
             "name": "Golden Glow Oil (for tan removal)",
-            "slug": "golden-glow-oil",
-            "category": "natural-cosmetics herbal-products",
-            "image": "/images/products/golden-glow-oil.jpg",
+            "category": [
+                "natural-cosmetics",
+                "herbal-products"
+            ],
             "price": "250",
-            "currency": "Rs",
+            "weight": "100ML",
             "description": "Natural oil blend specially formulated for tan removal and skin brightening.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Golden%20Glow%20Oil%20(for%20tan%20removal)"
+            "image": "golden-glow-oil.jpg"
         },
         {
             "id": "lemon-grass-essential-oil-30ml",
             "name": "Lemon Grass Essential Oil 30ml",
-            "slug": "lemon-grass-essential-oil-30ml",
-            "category": "natural-cosmetics herbal-products",
-            "image": "/images/products/lemon-grass-essential-oil-30ml.jpg",
+            "category": [
+                "natural-cosmetics",
+                "herbal-products"
+            ],
             "price": "95",
-            "currency": "Rs",
+            "weight": "30ML",
             "description": "Lemon Grass Essential Oil is extracted from the leaves and stalks of the lemongrass plant. It has a fresh, lemony aroma and is used in aromatherapy.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Lemon%20Grass%20Essential%20Oil%2030ml"
+            "image": "lemon-grass-essential-oil-30ml.jpg"
         },
         {
             "id": "naadan-kannan-kaya-powder-250gm",
             "name": "Naadan Kannan Kaya Powder 250gm",
-            "slug": "naadan-kannan-kaya-powder-250gm",
-            "category": "food-products",
-            "image": "/images/products/naadan-kannan-kaya-powder-250gm.jpg",
+            "category": [
+                "food-products"
+            ],
             "price": "220",
-            "currency": "Rs",
+            "weight": "250GM",
             "description": "Traditional Kerala Kannan Kaya (Banana) powder known for its nutritional benefits.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Naadan%20Kannan%20Kaya%20Powder%20250gm"
+            "image": "naadan-kannan-kaya-powder-250gm.jpg"
         },
         {
             "id": "natural-alovera-gel",
             "name": "Natural Alovera Gel",
-            "slug": "natural-alovera-gel",
-            "category": "natural-cosmetics herbal-products",
-            "image": "/images/products/natural-alovera-gel.jpeg",
-            "price": "180",
-            "currency": "Rs",
+            "category": [
+                "natural-cosmetics",
+                "herbal-products"
+            ],
+            "price": "200",
+            "weight": "100GM",
             "description": "Pure aloe vera gel for skin care and hair treatment. Natural and preservative-free.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Alovera%20Gel"
+            "image": "natural-alovera-gel.jpeg"
         },
         {
             "id": "natural-cane-sugar-500gm",
             "name": "Natural Cane Sugar 500gm",
-            "slug": "natural-cane-sugar-500gm",
-            "category": "food-products",
-            "image": "/images/products/palm-candy-pana-kalkandam-200gm.jpg",
+            "category": [
+                "food-products"
+            ],
             "price": "90",
-            "currency": "Rs",
+            "weight": "500GM",
             "description": "Natural Cane Sugar is made from sugar cane and is less processed than white sugar. It retains some of the natural molasses and has a richer flavor.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Cane%20Sugar%20500gm"
+            "image": "palm-candy-pana-kalkandam-200gm.jpg"
         },
         {
             "id": "natural-henna-60gm",
             "name": "Natural Henna Powder",
-            "slug": "natural-henna-60gm",
-            "category": "natural-hair-care",
-            "image": "/images/products/natural-henna-60gm.jpg",
+            "category": [
+                "natural-hair-care"
+            ],
             "price": "100",
-            "currency": "Rs",
+            "weight": "60GM",
             "description": "Pure natural henna powder for hair coloring and conditioning.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Henna%20Powder"
+            "image": "natural-henna-60gm.jpg"
         },
         {
             "id": "natural-herbal-dye",
             "name": "Natural Herbal Dye (Hair Dye)",
-            "slug": "natural-herbal-dye-90gm",
-            "category": "natural-hair-care",
-            "image": "/images/products/natural-herbal-dye-90gm.jpg",
+            "category": [
+                "natural-hair-care"
+            ],
             "price": "150",
-            "currency": "Rs",
+            "weight": "90GM",
             "description": "Natural hair dye made from herbal ingredients, safe and gentle on hair.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Herbal%20Dye%20(Hair%20Dye)"
+            "image": "natural-herbal-dye-90gm.jpg"
         },
         {
             "id": "natural-pure-honey-500gm",
             "name": "Natural Honey 500gm",
-            "slug": "natural-pure-honey-500gm",
-            "category": "food-products herbal-products",
-            "image": "/images/products/cheruthen.jpeg",
+            "category": [
+                "food-products",
+                "herbal-products"
+            ],
             "price": "350",
-            "currency": "Rs",
+            "weight": "500GM",
             "description": "Natural Honey is collected from beehives and is a natural sweetener. It has various health benefits and is used in cooking and as a natural remedy.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Honey%20500gm"
+            "image": "cheruthen.jpeg"
         },
         {
             "id": "natural-indigo-60gm",
             "name": "Natural Indigo Powder",
-            "slug": "natural-indigo-60gm",
-            "category": "natural-hair-care herbal-products",
-            "image": "/images/products/natural-herbal-dye-90gm.jpg",
+            "category": [
+                "natural-hair-care",
+                "herbal-products"
+            ],
             "price": "100",
-            "currency": "Rs",
+            "weight": "60GM",
             "description": "Natural Indigo Powder is made from the leaves of the indigo plant. It is used as a natural hair dye and gives a blue-black color to hair.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Indigo%20Powder"
+            "image": "natural-indigo-60gm.jpg"
         },
         {
-            "id": "natural-kajal",
-            "name": "Natural Kajal Round/Stick",
-            "slug": "natural-kajal-round-stick",
-            "category": "natural-cosmetics",
-            "image": "/images/products/natural-kajal-round-stick.jpg",
+            "id": "natural-kajal-round",
+            "name": "Natural Kajal Round",
+            "category": [
+                "natural-cosmetics"
+            ],
             "price": "130",
-            "currency": "Rs",
+            "weight": "6GM",
             "description": "Natural kajal made with traditional ingredients, safe for daily use.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Kajal%20Round/Stick"
+            "image": "natural-kajal-round-stick.jpg"
+        },
+        {
+            "id": "natural-kajal-stick",
+            "name": "Natural Kajal Stick",
+            "category": [
+                "natural-cosmetics"
+            ],
+            "price": "290",
+            "weight": "8GM",
+            "description": "Natural kajal made with traditional ingredients, in convenient stick form for easy application.",
+            "image": "natural-kajal-round-stick.jpg"
         },
         {
             "id": "natural-lip-stick",
             "name": "Natural Lip Stick (5 Natural Colors)",
-            "slug": "natural-lip-stick-5natural-colors",
-            "category": "natural-cosmetics",
-            "image": "/images/products/natural-lip-stick-5natural-colors.jpg",
+            "category": [
+                "natural-cosmetics"
+            ],
             "price": "470",
-            "currency": "Rs",
+            "weight": "",
             "description": "Natural lipstick made with organic ingredients, available in 5 different natural colors. Free from harmful chemicals.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Lip%20Stick%20(5Natural%20Colors)"
+            "image": "natural-lip-stick-5natural-colors.jpg"
         },
         {
             "id": "navara-rice-500gm",
             "name": "Navara Rice 500gm",
-            "slug": "navara-rice-500gm",
-            "category": "food-products herbal-products",
-            "image": "/images/products/navara-rice-500gm.jpg",
+            "category": [
+                "food-products",
+                "herbal-products"
+            ],
             "price": "90",
-            "currency": "Rs",
+            "weight": "500GM",
             "description": "Navara Rice is a medicinal rice variety from Kerala, India. It is known for its health benefits and is used in Ayurvedic treatments.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Navara%20Rice%20500gm"
+            "image": "navara-rice-500gm.jpg"
         },
         {
             "id": "palm-candy-pana-kalkandam-200gm",
             "name": "Palm Candy (Pana Kalkandam) 200gm",
-            "slug": "palm-candy-pana-kalkandam-200gm",
-            "category": "food-products",
-            "image": "/images/products/palm-candy-pana-kalkandam-200gm.jpg",
+            "category": [
+                "food-products"
+            ],
             "price": "149",
-            "currency": "Rs",
+            "weight": "200GM",
             "description": "Natural palm sugar candy known for its medicinal properties and traditional uses.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Palm%20Candy%20(Pana%20Kalkandam)%20200gm"
+            "image": "palm-candy-pana-kalkandam-200gm.jpg"
         },
         {
             "id": "pure-cow-ghee-200gm",
             "name": "Pure Cow Ghee 200ml",
-            "slug": "pure-cow-ghee-200gm",
-            "category": "food-products",
-            "image": "/images/products/pure-cow-ghee-200gm.jpeg",
+            "category": [
+                "food-products"
+            ],
             "price": "280",
-            "currency": "Rs",
+            "weight": "200ML",
             "description": "Pure Cow Ghee is made from cow's milk and is a staple in Indian cooking. It has a rich, nutty flavor and is used in various dishes.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Pure%20Cow%20Ghee%20200ml"
+            "image": "pure-cow-ghee-200gm.jpeg"
         },
         {
             "id": "ragi-finger-millet-powder-500gm",
             "name": "Ragi (Finger Millet) Powder 500gm",
-            "slug": "ragi-finger-millet-powder-500gm",
-            "category": "food-products",
-            "image": "/images/products/naadan-kannan-kaya-powder-250gm.jpg",
+            "category": [
+                "food-products"
+            ],
             "price": "90",
-            "currency": "Rs",
+            "weight": "500GM",
             "description": "Ragi (Finger Millet) Powder is made from finger millet and is a nutritious grain. It is rich in calcium and iron and is used in various dishes.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Ragi%20(Finger%20Millet)%20Powder%20500gm"
+            "image": "naadan-kannan-kaya-powder-250gm.jpg"
         },
         {
             "id": "rosemary-50gm",
             "name": "Rosemary Dried Leaves 50gm",
-            "slug": "rosemary-50gm",
-            "category": "food-products herbal-products",
-            "image": "/images/products/rosemary-50gm.jpg",
-            "price": "120",
-            "currency": "Rs",
+            "category": [
+                "food-products",
+                "herbal-products"
+            ],
+            "price": "95",
+            "weight": "50GM",
             "description": "Dried rosemary leaves for culinary and medicinal use.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Rosemary%20Dried%20Leaves%2050gm"
+            "image": "rosemary-50gm.jpg"
         },
         {
             "id": "shampoo-natural",
             "name": "Shampoo Natural 100ml",
-            "slug": "shampoo-natural-100ml",
-            "category": "natural-hair-care",
-            "image": "/images/products/shampoo-natural-100ml.jpg",
+            "category": [
+                "natural-hair-care"
+            ],
             "price": "179",
-            "currency": "Rs",
+            "weight": "100ML",
             "description": "Natural shampoo made with herbal ingredients for healthy hair care.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Shampoo%20Natural%20100ml"
+            "image": "shampoo-natural-100ml.jpg"
         },
         {
             "id": "virgin-coconut-oil-100ml",
             "name": "Virgin Coconut Oil 100ml",
-            "slug": "virgin-coconut-oil-100ml",
-            "category": "natural-hair-care",
-            "image": "/images/products/virgin-coconut-oil-100ml.jpg",
+            "category": [
+                "natural-hair-care"
+            ],
             "price": "270",
-            "currency": "Rs",
+            "weight": "100ML",
             "description": "Virgin Coconut Oil is extracted from fresh coconut meat without using high temperatures or chemicals. It retains the natural scent and taste of coconut.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Virgin%20Coconut%20Oil%20100ml"
+            "image": "virgin-coconut-oil-100ml.jpg"
         }
     ]
 }

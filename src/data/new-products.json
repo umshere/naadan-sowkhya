@@ -1,82 +1,12 @@
 {
-    "newProducts": [
-        {
-            "id": "baamboo-tooth-brush-soft",
-            "name": "Baamboo Tooth Brush Soft",
-            "slug": "baamboo-tooth-brush-soft",
-            "category": "natural-cosmetics",
-            "image": "/images/products/baamboo-tooth-brush-soft.jpeg",
-            "price": "49",
-            "currency": "Rs",
-            "description": "Eco-friendly bamboo toothbrush with soft bristles, perfect for gentle oral care.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Baamboo%20Tooth%20Brush%20Soft"
-        },
-        {
-            "id": "natural-alovera-gel",
-            "name": "Natural Alovera Gel",
-            "slug": "natural-alovera-gel",
-            "category": "natural-cosmetics herbal-products",
-            "image": "/images/products/natural-alovera-gel.jpeg",
-            "price": "180",
-            "currency": "Rs",
-            "description": "Pure aloe vera gel for skin care and hair treatment. Natural and preservative-free.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Alovera%20Gel"
-        },
-        {
-            "id": "chia-seed-120gm",
-            "name": "Chia Seed 120gm",
-            "slug": "chia-seed-120gm",
-            "category": "food-products herbal-products",
-            "image": "/images/products/chia-seed-120gm.jpg",
-            "price": "160",
-            "currency": "Rs",
-            "description": "Premium quality chia seeds rich in omega-3 fatty acids and fiber.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Chia%20Seed%20120gm"
-        },
-        {
-            "id": "rosemary-50gm",
-            "name": "Rosemary Dried Leaves 50gm",
-            "slug": "rosemary-50gm",
-            "category": "food-products herbal-products",
-            "image": "/images/products/rosemary-50gm.jpg",
-            "price": "120",
-            "currency": "Rs",
-            "description": "Dried rosemary leaves for culinary and medicinal use.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Rosemary%20Dried%20Leaves%2050gm"
-        },
-        {
-            "id": "danthapala-hair-skin-oil",
-            "name": "Danthapala Hair & Skin Oil",
-            "slug": "danthapala-hair-skin-oil",
-            "category": "natural-hair-care natural-cosmetics",
-            "image": "/images/products/danthapala-hair-skin-oil.jpeg",
-            "price": "220",
-            "currency": "Rs",
-            "description": "Traditional oil blend for hair growth and skin care using Danthapala herb.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Danthapala%20Hair%20%26%20Skin%20Oil"
-        },
-        {
-            "id": "natural-henna-60gm",
-            "name": "Natural Henna Powder",
-            "slug": "natural-henna-60gm",
-            "category": "natural-hair-care",
-            "image": "/images/products/natural-henna-60gm.jpg",
-            "price": "100",
-            "currency": "Rs",
-            "description": "Pure natural henna powder for hair coloring and conditioning.",
-            "benefits": "",
-            "ingredients": "",
-            "whatsappLink": "https://wa.me/919846981231?text=Hi,%20i%20would%20like%20to%20order%20Natural%20Henna%20Powder"
-        }
+    "featured": [
+        "carrot-lip-balm",
+        "chia-seed-120gm",
+        "danthapala-hair-skin-oil",
+        "natural-alovera-gel",
+        "natural-kajal-round",
+        "rosemary-50gm",
+        "golden-glow-oil",
+        "cheruthen"
     ]
 }

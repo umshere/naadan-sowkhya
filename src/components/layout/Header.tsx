@@ -40,7 +40,7 @@ export const Header = () => {
       document.body.style.overflowY = '';
       // No scrollTo on unmount to avoid jump on page leave
     };
-  }, [isMenuOpen]);
+  }, [isMenuOpen, scrollPosition]); // Added scrollPosition to dependencies
 
   // Control visibility based on scroll direction (moved from TopBar)
   const controlHeaderVisibility = () => {

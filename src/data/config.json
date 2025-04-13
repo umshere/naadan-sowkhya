@@ -1,0 +1,15 @@
+{
+    "defaults": {
+        "currency": "Rs",
+        "whatsappNumber": "919846981231",
+        "imageBasePath": "/images/products/",
+        "benefits": "",
+        "ingredients": ""
+    },
+    "categories": {
+        "natural-cosmetics": "Natural Cosmetics",
+        "food-products": "Food Products",
+        "natural-hair-care": "Natural Hair Care",
+        "herbal-products": "Herbal Products"
+    }
+}

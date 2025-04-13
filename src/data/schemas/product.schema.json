@@ -1,0 +1,64 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": [
+        "products"
+    ],
+    "properties": {
+        "products": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "required": [
+                    "id",
+                    "name",
+                    "category",
+                    "price",
+                    "description",
+                    "image"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "pattern": "^[a-z0-9-]+$"
+                    },
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "category": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "natural-cosmetics",
+                                "food-products",
+                                "natural-hair-care",
+                                "herbal-products"
+                            ]
+                        },
+                        "minItems": 1
+                    },
+                    "price": {
+                        "type": "string",
+                        "pattern": "^[0-9]+$"
+                    },
+                    "weight": {
+                        "type": "string",
+                        "pattern": "^[0-9]+(GM|ML)$"
+                    },
+                    "description": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "image": {
+                        "type": "string",
+                        "pattern": "^[a-zA-Z0-9-]+\\.(jpg|jpeg|png)$"
+                    }
+                },
+                "additionalProperties": false
+            }
+        }
+    },
+    "additionalProperties": false
+}

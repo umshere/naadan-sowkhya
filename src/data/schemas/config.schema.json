@@ -1,0 +1,72 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "required": [
+        "defaults",
+        "categories"
+    ],
+    "properties": {
+        "defaults": {
+            "type": "object",
+            "required": [
+                "currency",
+                "whatsappNumber",
+                "imageBasePath",
+                "benefits",
+                "ingredients"
+            ],
+            "properties": {
+                "currency": {
+                    "type": "string",
+                    "enum": [
+                        "Rs"
+                    ]
+                },
+                "whatsappNumber": {
+                    "type": "string",
+                    "pattern": "^[0-9]+$"
+                },
+                "imageBasePath": {
+                    "type": "string",
+                    "pattern": "^/[a-zA-Z0-9/-]+/$"
+                },
+                "benefits": {
+                    "type": "string"
+                },
+                "ingredients": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        },
+        "categories": {
+            "type": "object",
+            "required": [
+                "natural-cosmetics",
+                "food-products",
+                "natural-hair-care",
+                "herbal-products"
+            ],
+            "properties": {
+                "natural-cosmetics": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "food-products": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "natural-hair-care": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "herbal-products": {
+                    "type": "string",
+                    "minLength": 1
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "additionalProperties": false
+}

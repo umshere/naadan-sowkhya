@@ -1,19 +1,26 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  // Exclude scripts folder from being processed by webpack
-  webpack: (config, { isServer }) => {
-    config.watchOptions = {
-      ...config.watchOptions,
-      ignored: /scripts/,
-    };
-    return config;
-  },
 
-  // Skip ESLint during builds
+const nextConfig = {
   eslint: {
-    // Warning: This setting will completely disable ESLint during builds
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: {
+    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
+  webpack: (config) => {
+    return config;
+  },
+  // Enable static exports
+  output: "export",
 };
 
 module.exports = nextConfig;

@@ -1,128 +1,64 @@
-'use client';
-
-import { useState } from 'react';
-import Link from 'next/link';
+import React from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { getAllProducts, getCategoryName } from '@/lib/productUtils';
 
-interface Category {
-  id: string | number;
-  name: string;
-  slug: string;
-  image: string;
-  description?: string;
-}
+export default function CategoryGrid() {
+  const products = getAllProducts();
+  
+  // Get all unique categories
+  const categories = Array.from(
+    new Set(products.flatMap(product => product.category))
+  );
 
-interface CategoryGridProps {
-  categories: Category[];
-  variant?: 'grid' | 'row';
-  className?: string;
-}
-
-export default function CategoryGrid({
-  categories,
-  variant = 'grid',
-  className = '',
-}: CategoryGridProps) {
-  const [isScrolling, setIsScrolling] = useState(false);
-  const touchStartRef = { current: { x: 0, time: 0 } };
-
-  // Touch event handlers for improved mobile interaction
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartRef.current = {
-      x: e.touches[0].clientX,
-      time: Date.now(),
-    };
-  };
-
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!touchStartRef.current.time) return;
-    
-    const deltaX = Math.abs(e.touches[0].clientX - touchStartRef.current.x);
-    
-    // If horizontal scrolling is detected, mark as scrolling to prevent card interactions
-    if (deltaX > 10) {
-      setIsScrolling(true);
-    }
-  };
-
-  const handleTouchEnd = () => {
-    // Reset scroll state after a short delay
-    setTimeout(() => setIsScrolling(false), 100);
-    touchStartRef.current = { x: 0, time: 0 };
-  };
-
-  // Container classes based on variant
-  const containerClasses = {
-    grid: "grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4",
-    row: "flex overflow-x-auto hide-scrollbar space-x-4 pb-4",
-  };
-
-  // Card classes based on variant
-  const cardClasses = {
-    grid: "w-full",
-    row: "min-w-[160px] w-[160px]",
-  };
+  // Group products by category
+  const productsByCategory = categories.reduce((acc, category) => {
+    acc[category] = products.filter(product => 
+      product.category.includes(category)
+    );
+    return acc;
+  }, {} as Record<string, typeof products>);
 
   return (
-    <div
-      className={cn(variant === 'row' ? "px-4" : "", className)}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      <div className={cn(containerClasses[variant], variant === 'row' ? "snap-x snap-mandatory" : "")}>
-        {categories.map((category) => (
-          <motion.div
-            key={category.id}
-            className={cn(cardClasses[variant], variant === 'row' ? "snap-start" : "")}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            <Link
-              href={`/product_category/${category.slug}`}
-              className={cn(
-                isScrolling ? 'pointer-events-none' : '',
-                "block rounded-lg overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-200"
-              )}
-              onClick={(e) => isScrolling && e.preventDefault()}
-            >
-              <div className="relative">
-                {/* Category Image */}
-                <div className="relative aspect-square overflow-hidden bg-cream">
-                  <Image
-                    src={category.image}
-                    alt={category.name}
-                    fill
-                    sizes="(max-width: 768px) 160px, 200px"
-                    className="object-contain p-2"
-                  />
+    <div className="py-12">
+      <div className="container mx-auto px-4">
+        {categories.map(category => (
+          <div key={category} className="mb-12">
+            <h2 className="text-2xl font-bold mb-6">
+              {getCategoryName(category)}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {productsByCategory[category].map(product => (
+                <div
+                  key={product.id}
+                  className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                >
+                  <Link href={`/products/${product.id}`}>
+                    <div className="relative h-64 w-full">
+                      <Image
+                        src={product.image}
+                        alt={product.name}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+                      <p className="text-gray-600 mb-2 line-clamp-2">
+                        {product.description}
+                      </p>
+                      <p className="text-green-600 font-semibold">
+                        {product.currency} {product.price}
+                      </p>
+                    </div>
+                  </Link>
                 </div>
-
-                {/* Category Info */}
-                <div className="bg-white p-3">
-                  <h3 className="font-medium text-gray-900 line-clamp-1">{category.name}</h3>
-                  {category.description && (
-                    <p className="text-xs text-gray-600 mt-1 line-clamp-2">{category.description}</p>
-                  )}
-                </div>
-              </div>
-            </Link>
-          </motion.div>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
-
-      {/* Styles for hiding scrollbar while keeping functionality */}
-      <style jsx global>{`
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-      `}</style>
     </div>
   );
 }

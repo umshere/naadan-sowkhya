@@ -39,3 +39,11 @@ next-env.d.ts
 
 # Exclude scripts directory
 /scripts
+
+# Planning files
+mobile-optimization-plan.md
+product-navigation-plan.md
+sowkhya-improvement-plan.md
+sowkhya-next-plan.md
+sowkhya-todo-list.md
+visual-redesign-plan.md

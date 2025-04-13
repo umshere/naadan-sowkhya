@@ -260,6 +260,41 @@ Contact the development team when:
 - You need to add new features or sections
 - Your changes aren't showing up after trying the solutions above
 
+## Context Management System
+
+The project includes a sophisticated context management system that helps maintain continuity across development sessions and ensures efficient handling of complex tasks.
+
+### Task Handoff System
+
+This project uses a `.clinerules`-based task handoff system that:
+
+- Monitors context window usage
+- Manages task continuity
+- Preserves development context
+- Ensures smooth transitions between sessions
+
+### When Task Handoffs Occur
+
+The system initiates task handoffs when:
+
+1. Context window usage exceeds 50%
+2. Completing major components/features
+3. Switching between project areas
+4. Before complex operations
+5. When accumulating significant context
+
+### Context Structure
+
+Each task handoff includes:
+
+- Completed work summary
+- Current project state
+- Next steps and implementation details
+- Reference information and documentation
+- Clear continuation instructions
+
+For detailed implementation, refer to the `.clinerules` file in the project root.
+
 ## Project Structure
 
 ```mermaid
@@ -295,6 +330,48 @@ graph TD
 - `/src/data/*` - JSON data files for content
 - `/public/images/*` - Optimized image assets
 - `/styles/*` - Global styles and CSS modules
+- `/docs/*` - Project documentation
+- `/scripts/*` - Utility scripts
+- `/.github/workflows/*` - GitHub Actions workflows
+
+## Product Updates
+
+For detailed instructions on updating product information, please refer to the [Product Updates Guide](docs/product-updates.md). The guide includes:
+
+- Step-by-step instructions for making updates
+- JSON format guidelines
+- Validation rules
+- Best practices
+- Troubleshooting tips
+
+### Automated Validation System
+
+The project includes an automated product validation system that:
+
+1. Validates JSON structure and data types
+2. Ensures product categories are valid
+3. Verifies product images exist
+4. Cross-validates featured products
+
+Run validation locally:
+
+```bash
+npm run validate:products
+```
+
+### GitHub Actions Workflow
+
+Product updates are protected by an automated GitHub Actions workflow that:
+
+1. Triggers when changes are made to:
+   - `src/data/products.json`
+   - `src/data/new-products.json`
+2. Runs the validation script
+3. Creates a pull request if validation passes
+4. Adds validation status and checklist
+5. Assigns reviewers automatically
+
+This ensures all product updates are validated and reviewed before going live.
 
 ## Tech Stack
 
@@ -407,13 +484,28 @@ flowchart LR
 1. Test locally:
 
 ```bash
+# Start the development server
 npm run dev
+
+# In another terminal, validate your changes
+npm run validate:products
 ```
 
 2. Verify changes at http://localhost:3000
-3. Commit and push changes:
+3. Commit and push changes to a new branch:
 
 ```bash
+git checkout -b product-updates
 git add .
 git commit -m "Update content: [describe changes]"
-git push
+git push origin product-updates
+```
+
+4. The GitHub Actions workflow will:
+
+   - Validate your changes
+   - Create a pull request
+   - Add validation status
+   - Request reviews
+
+5. After approval and merge, your changes will go live

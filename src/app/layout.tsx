@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "../styles/typography.css";
-import { Header } from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import FloatingButtons from "@/components/layout/FloatingButtons";
-import BottomNavigation from "@/components/layout/BottomNavigation";
-import AnimationProvider from "@/components/layout/AnimationProvider";
+import { Header } from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+// import FloatingButtons from '@/components/layout/FloatingButtons'; // Removed unused import
+import BottomNavigation from '@/components/layout/BottomNavigation';
+import AnimationProvider from '@/components/layout/AnimationProvider';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
