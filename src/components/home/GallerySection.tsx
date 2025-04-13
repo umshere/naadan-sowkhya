@@ -21,7 +21,21 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [hoveredImage, setHoveredImage] = useState<number | null>(null);
+  const [displayedImages, setDisplayedImages] = useState<GalleryImage[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Update displayed images when prop changes
+  useEffect(() => {
+    setDisplayedImages(images);
+    setHoveredImage(null); // Reset hover state
+    if (selectedImage) {
+      // If an image was selected, find it in new array or close lightbox
+      const stillExists = images.find(img => img.id === selectedImage.id);
+      if (!stillExists) {
+        closeLightbox();
+      }
+    }
+  }, [images]);
   const touchStartX = useRef(0);
   const touchStartY = useRef(0);
   const minSwipeDistance = 50;
@@ -204,7 +218,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
           variants={itemVariants}
         >
-          {images.map((image, index) => (
+          {displayedImages.map((image, index) => (
             <motion.div
               key={image.id}
               variants={itemVariants}

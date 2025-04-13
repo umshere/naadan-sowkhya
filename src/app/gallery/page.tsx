@@ -176,7 +176,6 @@ export default function GalleryPage() {
           </div>
         ) : (
           <GallerySection 
-            key={selectedCategory || 'all'} // Force re-render on category change
             images={filteredImages.map((img) => ({
               id: img.id,
               src: img.src,
