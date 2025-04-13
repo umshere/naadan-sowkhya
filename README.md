@@ -238,6 +238,35 @@ For detailed instructions on updating product information, please refer to the [
 - Best practices
 - Troubleshooting tips
 
+### Automated Validation System
+
+The project includes an automated product validation system that:
+
+1. Validates JSON structure and data types
+2. Ensures product categories are valid
+3. Verifies product images exist
+4. Cross-validates featured products
+
+Run validation locally:
+
+```bash
+npm run validate:products
+```
+
+### GitHub Actions Workflow
+
+Product updates are protected by an automated GitHub Actions workflow that:
+
+1. Triggers when changes are made to:
+   - `src/data/products.json`
+   - `src/data/new-products.json`
+2. Runs the validation script
+3. Creates a pull request if validation passes
+4. Adds validation status and checklist
+5. Assigns reviewers automatically
+
+This ensures all product updates are validated and reviewed before going live.
+
 ## Tech Stack
 
 - Next.js 14
@@ -312,14 +341,28 @@ For detailed instructions on updating product information, please refer to the [
 1. Test locally:
 
 ```bash
+# Start the development server
 npm run dev
+
+# In another terminal, validate your changes
+npm run validate:products
 ```
 
 2. Verify changes at http://localhost:3000
-3. Commit and push changes:
+3. Commit and push changes to a new branch:
 
 ```bash
+git checkout -b product-updates
 git add .
 git commit -m "Update content: [describe changes]"
-git push
+git push origin product-updates
 ```
+
+4. The GitHub Actions workflow will:
+
+   - Validate your changes
+   - Create a pull request
+   - Add validation status
+   - Request reviews
+
+5. After approval and merge, your changes will go live
