@@ -4,6 +4,29 @@ Modern Next.js implementation of the Naadan Sowkhya e-commerce website, migrated
 
 ## WordPress to Next.js Migration Benefits
 
+```mermaid
+graph LR
+    subgraph "WordPress"
+        WP[WordPress CMS] --> WPD[(Database)]
+        WP --> WPP[PHP Processing]
+        WP --> WPPlugins[Plugins]
+    end
+    
+    subgraph "Next.js"
+        NJ[Next.js] --> SSR[Server-Side Rendering]
+        NJ --> SSG[Static Generation]
+        NJ --> JSON[JSON Data]
+        NJ --> IMG[Image Optimization]
+    end
+    
+    WP -->|Migration| NJ
+    
+    style WordPress fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style Next.js fill:#f0f0ff,stroke:#333,stroke-width:2px
+    style WP fill:#f5d8a3,stroke:#333,stroke-width:1px
+    style NJ fill:#a3d1f5,stroke:#333,stroke-width:1px
+```
+
 ### Before (WordPress)
 
 - Slower page loads due to database queries and PHP processing
@@ -67,6 +90,23 @@ Modern Next.js implementation of the Naadan Sowkhya e-commerce website, migrated
 
 ### First-Time Setup (One-Time Process)
 
+```mermaid
+flowchart TD
+    A[Start Setup] --> B[Install Git for Windows]
+    B --> C[Install Visual Studio Code]
+    C --> D[Install Node.js]
+    D --> E[Restart Computer]
+    E --> F[Create naadan-website folder]
+    F --> G[Open with VS Code]
+    G --> H[Open Terminal with Ctrl+`]
+    H --> I[Clone Repository]
+    I --> J[Run npm install]
+    J --> K[Setup Complete]
+    
+    style A fill:#a3f5b9,stroke:#333,stroke-width:1px
+    style K fill:#a3f5b9,stroke:#333,stroke-width:1px
+```
+
 1. Install Required Software (Windows):
 
    - Download and install Git for Windows: https://git-scm.com/download/win
@@ -93,6 +133,18 @@ Modern Next.js implementation of the Naadan Sowkhya e-commerce website, migrated
 
 ### Running the Website Locally (Windows)
 
+```mermaid
+flowchart LR
+    A[Open VS Code] --> B[Start Terminal]
+    B --> C[Run npm run dev]
+    C --> D[Wait for Ready]
+    D --> E[Open Browser]
+    E --> F[http://localhost:3000]
+    
+    style A fill:#f5d8a3,stroke:#333,stroke-width:1px
+    style F fill:#a3d1f5,stroke:#333,stroke-width:1px
+```
+
 1. Opening the Website:
 
    - Double-click the "naadan-website" folder on your Desktop
@@ -117,6 +169,32 @@ Modern Next.js implementation of the Naadan Sowkhya e-commerce website, migrated
    - Type 'y' and press Enter if asked to terminate
 
 ### Making Content Updates (Windows)
+
+```mermaid
+flowchart TD
+    A[Open VS Code] --> B[Find Content Files]
+    B --> C{Choose File}
+    C -->|Products| D[Edit products.json]
+    C -->|Gallery| E[Edit gallery.json]
+    C -->|Testimonials| F[Edit testimonial-images.json]
+    
+    G[Adding Images] --> H[Open public/images folder]
+    H --> I{Choose Folder}
+    I -->|Products| J[Add to products folder]
+    I -->|Gallery| K[Add to gallery folder]
+    I -->|Testimonials| L[Add to testimonials folder]
+    
+    D --> M[Save Changes Ctrl+S]
+    E --> M
+    F --> M
+    J --> M
+    K --> M
+    L --> M
+    M --> N[View Changes on localhost:3000]
+    
+    style A fill:#f5d8a3,stroke:#333,stroke-width:1px
+    style N fill:#a3d1f5,stroke:#333,stroke-width:1px
+```
 
 1. Finding Content Files:
 
@@ -184,6 +262,34 @@ Contact the development team when:
 
 ## Project Structure
 
+```mermaid
+graph TD
+    A[naadan-sowkhya] --> B[src]
+    A --> C[public]
+    A --> D[styles]
+    
+    B --> E[app]
+    B --> F[components]
+    B --> G[data]
+    
+    E --> E1[Pages and Routing]
+    F --> F1[Reusable Components]
+    G --> G1[JSON Data Files]
+    
+    C --> H[images]
+    H --> H1[products]
+    H --> H2[gallery]
+    H --> H3[testimonials]
+    
+    D --> D1[Global Styles]
+    D --> D2[CSS Modules]
+    
+    style A fill:#f5f5f5,stroke:#333,stroke-width:2px
+    style B fill:#e6f7ff,stroke:#333,stroke-width:1px
+    style C fill:#e6f7ff,stroke:#333,stroke-width:1px
+    style D fill:#e6f7ff,stroke:#333,stroke-width:1px
+```
+
 - `/src/app/*` - Next.js pages and routing
 - `/src/components/*` - Reusable React components
 - `/src/data/*` - JSON data files for content
@@ -191,6 +297,20 @@ Contact the development team when:
 - `/styles/*` - Global styles and CSS modules
 
 ## Tech Stack
+
+```mermaid
+graph LR
+    A[Next.js 14] --> E[Website]
+    B[TypeScript] --> E
+    C[Tailwind CSS] --> E
+    D[React 18] --> E
+    
+    style A fill:#a3d1f5,stroke:#333,stroke-width:1px
+    style B fill:#f5d8a3,stroke:#333,stroke-width:1px
+    style C fill:#d9a3f5,stroke:#333,stroke-width:1px
+    style D fill:#a3f5b9,stroke:#333,stroke-width:1px
+    style E fill:#f5f5f5,stroke:#333,stroke-width:2px
+```
 
 - Next.js 14
 - TypeScript
@@ -200,6 +320,17 @@ Contact the development team when:
 ## Content Update Guide for Developers
 
 ### Updating Products
+
+```mermaid
+flowchart LR
+    A[Edit products.json] --> B[Add Product Images]
+    B --> C[Update categories.json]
+    C --> D[Test Locally]
+    D --> E[Commit & Push]
+    
+    style A fill:#f5d8a3,stroke:#333,stroke-width:1px
+    style E fill:#a3d1f5,stroke:#333,stroke-width:1px
+```
 
 1. Navigate to `src/data/products.json`
 2. Add/modify product entries following this structure:
@@ -261,6 +392,18 @@ Contact the development team when:
 
 ### After Updates
 
+```mermaid
+flowchart LR
+    A[Make Changes] --> B[Test Locally]
+    B --> C[Verify at localhost:3000]
+    C --> D[Git Add]
+    D --> E[Git Commit]
+    E --> F[Git Push]
+    
+    style A fill:#f5d8a3,stroke:#333,stroke-width:1px
+    style F fill:#a3d1f5,stroke:#333,stroke-width:1px
+```
+
 1. Test locally:
 
 ```bash
@@ -274,4 +417,3 @@ npm run dev
 git add .
 git commit -m "Update content: [describe changes]"
 git push
-```
