@@ -160,10 +160,11 @@ const AboutTabs = () => {
             </motion.div>
           </div>
           
+          {/* Team Activities Grid */}
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto"
           >
             {teamImages.map((image: GalleryImage, idx: number) => (
               <motion.div 
@@ -173,28 +174,30 @@ const AboutTabs = () => {
                 transition={{ duration: 0.3, delay: idx * 0.1 }}
                 className="group"
               >
-                <Card className="overflow-hidden border-none shadow-md transition-all duration-300 group-hover:shadow-xl">
-                  <CardContent className="p-0">
-                    <div className="aspect-[3/4] relative overflow-hidden">
+                <Card className="overflow-hidden border-none shadow-md transition-all duration-300 group-hover:shadow-xl h-full">
+                  <CardContent className="p-0 h-full">
+                    <div className="aspect-[4/3] relative overflow-hidden">
                       <Image 
                         src={image.src}
-                        alt={image.alt || "Team member"}
+                        alt={image.alt || "Team activity"}
                         fill
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                        <div className="p-4 w-full">
-                          {image.alt && (
-                            <h3 className="text-white font-medium text-center">{image.alt}</h3>
-                          )}
+                      {/* Permanent semi-transparent overlay with text */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex flex-col justify-end p-6">
+                        <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4 mx-auto">
+                          <FaUsers className="h-7 w-7 text-white" />
                         </div>
+                        <h3 className="text-xl font-medium text-white text-center mb-3">
+                          {image.alt?.split('-')[0].trim()}
+                        </h3>
+                        <p className="text-white/90 text-base text-center leading-relaxed">
+                          {image.alt?.split('-')[1].trim()}
+                        </p>
                       </div>
+                      {/* Additional hover effect */}
+                      <div className="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
-                    {image.alt && (
-                      <div className="p-3 text-center bg-white">
-                        <p className="font-medium text-primary-dark">{image.alt}</p>
-                      </div>
-                    )}
                   </CardContent>
                 </Card>
               </motion.div>

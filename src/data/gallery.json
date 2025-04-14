@@ -73,27 +73,21 @@
             "category": "manufacturing"
         },
         {
-            "id": 13,
-            "src": "/images/gallery/manufacturing-3.jpg",
-            "alt": "Quality assurance process",
-            "category": "manufacturing"
-        },
-        {
-            "id": 14,
-            "src": "/images/gallery/team-1.jpg",
-            "alt": "Team gathering",
+            "id": 17,
+            "src": "/images/gallery/event-1.jpg",
+            "alt": "Team Recreation - Team building activities and outdoor events",
             "category": "team"
         },
         {
             "id": 15,
             "src": "/images/gallery/team-2.jpg",
-            "alt": "Team collaboration",
+            "alt": "Team Collaboration - Cross functional team working on product development",
             "category": "team"
         },
         {
             "id": 16,
             "src": "/images/gallery/team-3.jpg",
-            "alt": "Team celebration",
+            "alt": "Team Celebration - Annual achievement celebration with the entire team",
             "category": "team"
         }
     ],
