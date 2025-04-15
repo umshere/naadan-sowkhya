@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
 import Image from 'next/image';
-import { Card, CardContent } from "@/components/ui/Card";
-import { Badge } from '@/components/ui/Badge';
-import { Separator } from "@/components/ui/Separator";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from '@/components/ui/badge';
+import { Separator } from "@/components/ui/separator";
 
 interface CEOProfileProps {
   name: string;
