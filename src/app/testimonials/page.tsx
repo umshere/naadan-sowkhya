@@ -4,8 +4,8 @@ import { useState } from 'react';
 import Image from 'next/image'; // Import Next.js Image for optimization
 import homepage from '@/data/homepage.json';
 import testimonialImages from '@/data/testimonial-images.json';
-import { Badge } from "@/components/ui/Badge"; // Import Badge with consistent casing
-import { Card, CardContent } from "@/components/ui/Card"; // Import Card with consistent casing
+import { Badge } from "@/components/ui/Badge";
+import { Card, CardContent } from "@/components/ui/Card";
 import {
   Carousel,
   CarouselContent,
@@ -17,9 +17,9 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
-  DialogClose, // Import DialogClose
-} from "@/components/ui/Dialog"; // Import Dialog components
-import { Button } from '@/components/ui/Button'; // Import Button for close icon
+  DialogClose,
+} from "@/components/ui/Dialog";
+import { Button } from '@/components/ui/Button';
 
 interface Testimonial {
   id: number;

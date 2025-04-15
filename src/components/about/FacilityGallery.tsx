@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Badge } from '@/components/ui/Badge';
-import { Card, CardContent } from "@/components/ui/Card"; // Update import to use correct casing for Card component
+import { Card, CardContent } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { MapPin, Image as ImageIcon } from 'lucide-react';
 
