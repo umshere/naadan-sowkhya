@@ -6,8 +6,8 @@ import { motion } from 'framer-motion';
 import { FaLeaf, FaUsers, FaAward, FaMapMarkerAlt, FaUser } from 'react-icons/fa';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from '@/components/ui/Badge';
+import { Card, CardContent } from "@/components/ui/Card";
 import { cn } from "@/lib/utils";
 
 // Import components

@@ -22,7 +22,7 @@ export default function HomePageTabs({ homepageData, productsData }: HomePageTab
     {
       id: 'products',
       label: 'Products',
-      icon: <FaLeaf className="w-4 h-4 mr-1.5" />,
+      icon: <FaLeaf className="w-4 h-4 mr-1.5 text-primary" />,
       content: (
         <div id="products-content" className="space-y-4">
           {/* Product Guarantee */}
@@ -51,7 +51,7 @@ export default function HomePageTabs({ homepageData, productsData }: HomePageTab
     {
       id: 'about',
       label: 'About Us',
-      icon: <FaInfoCircle className="w-4 h-4 mr-1.5" />,
+      icon: <FaInfoCircle className="w-4 h-4 mr-1.5 text-primary" />,
       content: (
         <div id="about-content">
           <AboutSection 
@@ -67,7 +67,7 @@ export default function HomePageTabs({ homepageData, productsData }: HomePageTab
     {
       id: 'reviews',
       label: 'Reviews',
-      icon: <FaStar className="w-4 h-4 mr-1.5" />,
+      icon: <FaStar className="w-4 h-4 mr-1.5 text-primary" />,
       content: (
         <div id="reviews-content">
           <TestimonialsSection testimonials={homepageData.testimonials} />
@@ -77,7 +77,7 @@ export default function HomePageTabs({ homepageData, productsData }: HomePageTab
     {
       id: 'gallery',
       label: 'Gallery',
-      icon: <FaImage className="w-4 h-4 mr-1.5" />,
+      icon: <FaImage className="w-4 h-4 mr-1.5 text-primary" />,
       content: (
         <div id="gallery-content" className="space-y-4">
           <GallerySection 
@@ -90,7 +90,7 @@ export default function HomePageTabs({ homepageData, productsData }: HomePageTab
     {
       id: 'certifications',
       label: 'Certifications',
-      icon: <FaAward className="w-4 h-4 mr-1.5" />,
+      icon: <FaAward className="w-4 h-4 mr-1.5 text-primary" />,
       content: (
         <div id="certifications-content">
           <CertificationsSection certifications={homepageData.certifications} />
@@ -105,14 +105,7 @@ export default function HomePageTabs({ homepageData, productsData }: HomePageTab
       <div className="md:hidden">
         {tabItems.map((tab) => (
           <div key={tab.id} id={tab.id} className="mb-8">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="text-primary-dark p-2 bg-primary/10 rounded-full">{tab.icon}</div>
-              <h2 className="text-xl font-medium text-primary-dark">{tab.label}</h2>
-              <Separator className="flex-1 ml-4" />
-            </div>
-            <div>
-              {tab.content}
-            </div>
+            {tab.content}
           </div>
         ))}
       </div>
@@ -126,7 +119,8 @@ export default function HomePageTabs({ homepageData, productsData }: HomePageTab
                 <a
                   key={tab.id}
                   href={`#${tab.id}`}
-                  className="flex items-center px-5 py-2 text-gray-700 hover:text-primary rounded-full transition-colors whitespace-nowrap hover:bg-white/80"
+                  className="flex items-center px-5 py-2 text-gray-700 hover:text-primary rounded-full transition-colors whitespace-nowrap hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-primary"
+                  aria-label={`Go to ${tab.label} tab`}
                 >
                   <span className="mr-2">{tab.icon}</span>
                   <span>{tab.label}</span>
@@ -137,12 +131,7 @@ export default function HomePageTabs({ homepageData, productsData }: HomePageTab
         </div>
         
         {tabItems.map((tab) => (
-          <section key={tab.id} id={tab.id} className="scroll-mt-24 mb-4">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="text-primary-dark p-2 bg-primary/10 rounded-full">{tab.icon}</div>
-              <h2 className="text-3xl font-serif font-bold text-primary-dark">{tab.label}</h2>
-              <Separator className="flex-1 ml-4" />
-            </div>
+          <section key={tab.id} id={tab.id} className="bg-section-bg py-16 md:py-24 scroll-mt-24 mb-4">
             <div>
               {tab.content}
             </div>

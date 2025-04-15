@@ -149,6 +149,15 @@
   .reveal-on-scroll.visible {
     @apply opacity-100 translate-y-0;
   }
+
+  /* === Section Background & Card Shadow Utilities === */
+  .bg-section-bg {
+    background-color: #f8faf3;
+  }
+  .shadow-card {
+    /* Soft, premium shadow */
+    box-shadow: 0 2px 16px 0 rgba(44, 62, 80, 0.08), 0 1.5px 6px 0 rgba(44, 62, 80, 0.07);
+  }
 }
 
 /* Scrollbar styles */

@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/Card'; 
+import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge'; 
 import { cn } from '@/lib/utils';
 import { 
   ArrowRight, 
@@ -67,56 +68,70 @@ const categoryStyles = {
   }
 };
 
+const categoryVariants = {
+  hidden: { opacity: 0 },
+  visible: { 
+    opacity: 1,
+    transition: { 
+      staggerChildren: 0.15,
+      delayChildren: 0.1
+    } 
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      type: "spring",
+      stiffness: 100,
+      damping: 12,
+      duration: 0.6 
+    }
+  },
+};
+
+const headingVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { 
+    opacity: 1, 
+    y: 0,
+    transition: { 
+      type: "spring",
+      stiffness: 100,
+      damping: 12,
+      duration: 0.6 
+    }
+  },
+};
+
+// Custom icon component with animation
+const CategoryIcon = ({ icon: Icon, style }: { icon: React.ElementType, style: any }) => (
+  <motion.div 
+    className="mx-auto relative z-10"
+    whileHover={{ scale: 1.05, rotate: 5 }}
+    transition={{ type: "spring", stiffness: 300 }}
+  >
+    <div className="rounded-full p-6 shadow-lg mb-4" style={{ background: style.iconBg }}>
+      <Icon className="h-10 w-10 text-white" />
+    </div>
+  </motion.div>
+);
+
 const CategoryFeature = ({ icon: Icon, text }: { icon: React.ElementType, text: string }) => (
-  <div className="flex items-center space-x-2 text-xs md:text-sm text-[var(--text-dark)]">
-    <Icon className="h-3.5 w-3.5 text-[var(--primary-color)]" />
+  <div className="flex items-center space-x-2 text-xs md:text-sm text-gray-600">
+    <Icon className="h-3.5 w-3.5 text-primary" />
     <span>{text}</span>
   </div>
 );
 
 const ProductCategories = ({ data }: ProductCategoriesProps) => {
-  const sectionVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        staggerChildren: 0.15,
-        delayChildren: 0.1
-      } 
-    },
-  };
-  
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { 
-        type: "spring",
-        stiffness: 100,
-        damping: 12,
-        duration: 0.6 
-      }
-    },
-  };
-
-  // Custom icon component with animation
-  const CategoryIcon = ({ icon: Icon, style }: { icon: React.ElementType, style: any }) => (
-    <motion.div 
-      className="mx-auto relative z-10"
-      whileHover={{ scale: 1.05, rotate: 5 }}
-      transition={{ type: "spring", stiffness: 300 }}
-    >
-      <div className="rounded-full p-6 shadow-lg mb-4" style={{ background: style.iconBg }}>
-        <Icon className="h-10 w-10 text-white" />
-      </div>
-    </motion.div>
-  );
-
   return (
     <motion.section 
-      className="relative py-16 md:py-24 bg-[var(--natural-light)] overflow-hidden"
-      variants={sectionVariants}
+      className="relative bg-section-bg py-16 md:py-24 overflow-hidden"
+      variants={categoryVariants}
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, amount: 0.1 }}
@@ -132,30 +147,15 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
       </div>
 
       <div className="container mx-auto px-4 relative z-10 max-w-7xl">
-        {/* Consistent Section Header */}
-        <motion.div className="text-center mb-12" variants={itemVariants}>
-          <motion.span
-            className="inline-block text-sm font-medium tracking-wider text-[var(--tertiary-color)] uppercase mb-2"
-            variants={itemVariants}
-          >
-            Our Categories
-          </motion.span>
-          <motion.h2
-            className="text-3xl md:text-4xl font-serif font-bold text-[var(--primary-color)] mb-3"
-            variants={itemVariants}
-          >
-            {data.title}
-          </motion.h2>
-          <div className="flex justify-center">
-            <div className="h-1 w-16 bg-[var(--primary-color)] rounded-full mb-4 opacity-80"></div>
-          </div>
-          <motion.p
-            className="text-center text-gray-600 max-w-2xl mx-auto text-base leading-relaxed"
-            variants={itemVariants}
-          >
+        {/* Section Heading - match ProductCategories style */}
+        <div className="flex flex-col items-center mb-8">
+          <span className="inline-block px-3 py-1 mb-2 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-widest uppercase">Our Product Categories</span>
+          <h2 className="text-3xl font-serif font-bold text-primary-dark mb-2 tracking-tight">Our Product Categories</h2>
+          <div className="mx-auto w-24 h-1 bg-primary rounded-full mb-2" />
+          <p className="text-center text-gray-600 max-w-2xl mx-auto text-base leading-relaxed">
             {data.subtitle}
-          </motion.p>
-        </motion.div>
+          </p>
+        </div>
 
         {/* Categories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
@@ -173,7 +173,7 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
               >
                 <Card 
                   className={cn(
-                    "h-full border-border/50 hover:shadow-md transition-all duration-300",
+                    "h-full border border-gray-200 hover:shadow-md transition-all duration-300",
                     "bg-white/90 backdrop-blur-sm overflow-hidden relative rounded-card flex flex-col"
                   )}
                   style={{ background: style.gradient }}
@@ -194,11 +194,11 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
                   </CardHeader>
                   
                   <CardContent className="p-5 md:p-6 flex-grow text-center">
-                    <CardTitle className="font-serif text-xl font-semibold text-[var(--primary-dark)] mb-3">
+                    <CardTitle className="font-serif text-xl font-semibold text-primary-dark mb-3">
                       {category.name}
                     </CardTitle>
                     
-                    <CardDescription className="text-sm text-[var(--text-dark)] mb-6">
+                    <CardDescription className="text-sm text-gray-600 mb-6">
                       {category.description}
                     </CardDescription>
                     
@@ -219,8 +219,8 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
                   <CardFooter className="px-5 pb-5 md:px-6 md:pb-6 pt-0">
                     <Button
                       asChild
-                      className="w-full bg-white border border-[var(--primary-color)] text-[var(--primary-color)] 
-                              hover:bg-[var(--primary-color)] hover:text-white transition-colors group rounded-full"
+                      className="w-full bg-primary text-white hover:bg-primary-dark transition-colors rounded-full"
+                      aria-label={`View ${category.name} products`}
                     >
                       <Link href={category.link}>
                         View Products
@@ -240,11 +240,11 @@ const ProductCategories = ({ data }: ProductCategoriesProps) => {
           variants={itemVariants}
         >
           <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm flex items-center gap-2 text-xs text-gray-600">
-            <ShieldCheck className="w-4 h-4 text-[var(--primary-color)]" />
+            <ShieldCheck className="w-4 h-4 text-primary" />
             <span className="font-medium">100% Authentic Products</span>
           </div>
           <div className="bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm flex items-center gap-2 text-xs text-gray-600">
-            <Star className="w-4 h-4 text-[var(--primary-color)]" />
+            <Star className="w-4 h-4 text-primary" />
             <span className="font-medium">Premium Quality</span>
           </div>
         </motion.div>

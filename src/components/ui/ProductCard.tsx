@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import Link from 'next/link';
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/Card";
 import { FaWhatsapp } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 

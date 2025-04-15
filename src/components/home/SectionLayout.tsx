@@ -41,7 +41,7 @@ export default function SectionLayout({ children }: SectionLayoutProps) {
   }, [activeSection]);
 
   return (
-    <>
+    <section className="bg-section-bg py-16 md:py-24">
       <SectionObserver 
         sections={sections}
         onVisibilityChange={handleVisibilityChange}
@@ -53,6 +53,6 @@ export default function SectionLayout({ children }: SectionLayoutProps) {
           Active: {activeSection || 'none'}
         </div>
       )}
-    </>
+    </section>
   );
 }

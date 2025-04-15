@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/Button';
 import { FaWhatsapp } from "react-icons/fa";
 import { useState } from "react";
 

@@ -14,6 +14,7 @@ import homepageData from "@/data/homepage.json";
 import productsData from "@/data/products.json";
 import HeroSlider from "@/components/home/HeroSlider";
 import type { ScrollRevealProps, CollapsibleSectionProps, SectionWrapperProps } from "@/types/ui";
+import cn from 'classnames';
 
 // Dynamically import components that use client-side features
 const ScrollRevealContainer = dynamic(() => import("@/components/ui/ScrollRevealContainer") as LoaderComponent<ScrollRevealProps>, {
@@ -39,8 +40,22 @@ const sections = [
 ];
 
 // Consistent spacing wrapper component
-const SectionWrapper = ({ id, children }: SectionWrapperProps): React.ReactElement => (
-  <div id={id} className="section-scroll py-16 first:pt-0 bg-[var(--natural-light)] relative">
+interface SectionWrapperProps {
+  id: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+const SectionWrapper = ({ id, children, className = "" }: SectionWrapperProps): React.ReactElement => (
+  <div
+    id={id}
+    className={cn(
+      "section-scroll",
+      id === "hero" ? "pb-8 md:pb-12" : "pt-8 md:pt-12",
+      className,
+      "bg-[var(--natural-light)] relative"
+    )}
+  >
     <div className="absolute inset-0 pointer-events-none">
       <div className="absolute inset-0 bg-[url('/images/backgrounds/subtle-leaf-bg.svg')] bg-repeat opacity-5" />
     </div>
@@ -71,8 +86,8 @@ const HomePage = (): React.ReactElement => {
       
       {/* Desktop Layout */}
       <div className="hidden md:block">
-        {/* Product Guarantee */}
-        <SectionWrapper id="guarantee">
+        {/* Product Guarantee - final polish: extra top padding for modern separation */}
+        <SectionWrapper id="guarantee" className="pt-20 md:pt-32 scroll-mt-32 md:scroll-mt-[112px]">
           <ScrollRevealContainer animation="fade-up" duration={800} offset={120}>
             <ProductGuarantee />
           </ScrollRevealContainer>

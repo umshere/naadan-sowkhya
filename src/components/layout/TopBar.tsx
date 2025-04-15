@@ -13,7 +13,7 @@ import {
   FaTelegram
 } from 'react-icons/fa';
 import contactData from '@/data/contact.json';
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/Button';
 import {
   Tooltip,
   TooltipContent,

@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
-import { Button } from '@/components/ui/button'; // Import Shadcn Button
+import { Button } from '@/components/ui/Button'; // Import Shadcn Button
 import { ChevronLeft, ChevronRight } from 'lucide-react'; // Icons for buttons
 
 interface SlideProps {
@@ -229,7 +229,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
   return (
     <motion.div
       ref={containerRef}
-      className="swipeable-section relative h-[400px] md:h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)] w-full touch-pan-y"
+      className="relative h-[400px] md:h-[600px] lg:h-[750px] xl:h-[850px] overflow-hidden bg-[var(--primary-light)] w-full touch-pan-y"
       style={{
         y: isMobile ? 0 : parallaxY,
         transition: 'transform 0.3s ease-out',
@@ -323,12 +323,9 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
                     transition={{ delay: isMobile ? 0.3 : 0.7, duration: isMobile ? 0.2 : 0.6 }}
                   >
                     {/* Use Shadcn Button wrapping Link */}
-                    <Button asChild size="lg" className="bg-[var(--primary-color)] hover:bg-[var(--primary-color)]/90 text-white font-semibold text-base md:text-lg px-6 py-3 md:px-8 md:py-4 rounded-lg transition-all duration-300 group relative overflow-hidden">
-                      <Link href="/products"> {/* Always link to /products */}
+                    <Button asChild size="lg" className="bg-[var(--primary-color)] hover:bg-[var(--primary-color)]/90 text-white font-semibold text-base md:text-lg px-6 py-3 md:px-8 md:py-4 rounded-lg transition-all duration-300 group relative overflow-hidden" aria-label={slides[currentSlide].buttonText}>
+                      <Link href={slides[currentSlide].buttonLink}>
                         <span className="relative z-10">{slides[currentSlide].buttonText}</span>
-                         {/* Optional: Recreate hover effects if needed, or rely on Button's default */}
-                         <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300"></span>
-                         <span className="absolute bottom-0 left-0 h-[2px] w-full bg-[var(--tertiary-color)] transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                       </Link>
                     </Button>
                   </motion.div>
@@ -375,8 +372,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
           size="icon"
           onClick={goToPrevSlide}
           disabled={isAnimating}
-          className="rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 border-white/10 text-white/70 hover:text-white/90 backdrop-blur-[2px] shadow-sm transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed h-10 w-10 md:h-12 md:w-12"
-          aria-label="Previous slide"
+          className="rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 border-white/10 text-white/70 hover:text-white/90 backdrop-blur-[2px] shadow-sm transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed h-10 w-10 md:h-12 md:w-12" aria-label="Previous slide"
         >
           <ChevronLeft className="h-5 w-5 md:h-6 md:w-6" />
         </Button>
@@ -385,8 +381,7 @@ const HeroSlider = ({ slides }: HeroSliderProps) => {
           size="icon"
           onClick={goToNextSlide}
           disabled={isAnimating}
-          className="rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 border-white/10 text-white/70 hover:text-white/90 backdrop-blur-[2px] shadow-sm transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed h-10 w-10 md:h-12 md:w-12"
-          aria-label="Next slide"
+          className="rounded-full bg-black/10 hover:bg-black/20 active:bg-black/30 border-white/10 text-white/70 hover:text-white/90 backdrop-blur-[2px] shadow-sm transition-all duration-300 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed h-10 w-10 md:h-12 md:w-12" aria-label="Next slide"
         >
           <ChevronRight className="h-5 w-5 md:h-6 md:w-6" />
         </Button>

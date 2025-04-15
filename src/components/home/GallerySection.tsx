@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Badge } from '@/components/ui/Badge'; // Assuming Badge component is in a separate file
 
 interface GalleryImage {
   id: number;
@@ -171,7 +172,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
   return (
     <motion.section 
       ref={sectionRef} 
-      className="relative py-16 md:py-24 bg-[var(--natural-light)] overflow-hidden"
+      className="py-0 overflow-hidden relative"
       variants={sectionVariants}
       initial="hidden"
       whileInView="visible"
@@ -190,21 +191,18 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
       <div className="container mx-auto px-4 relative z-10">
         {/* Consistent Section Header */}
         <motion.div className="text-center mb-12" variants={itemVariants}>
-          <motion.span
-            className="inline-block text-sm font-medium tracking-wider text-[var(--tertiary-color)] uppercase mb-2"
-            variants={itemVariants}
-          >
-            Visual Journey
-          </motion.span>
+          <div className="flex justify-center mb-2 md:mb-3">
+            <Badge variant="outline" className="text-sm font-medium tracking-wider uppercase text-[var(--subheading-color)]">
+              Visual Journey
+            </Badge>
+          </div>
           <motion.h2
-            className="text-3xl md:text-4xl font-serif font-bold text-[var(--primary-color)] mb-3"
+            className="text-3xl md:text-4xl font-serif font-bold text-center mb-2 md:mb-3 text-[var(--primary-color)] relative"
             variants={itemVariants}
           >
             {title}
+            <span className="block mx-auto mt-2 w-12 h-1 rounded-full bg-[var(--primary-color)]"></span>
           </motion.h2>
-          <div className="flex justify-center">
-            <div className="h-1 w-16 bg-[var(--primary-color)] rounded-full mb-4 opacity-80"></div>
-          </div>
           <motion.p
             className="text-center text-gray-600 max-w-2xl mx-auto text-base leading-relaxed"
             variants={itemVariants}
@@ -223,10 +221,9 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
               key={image.id}
               variants={itemVariants}
               className="group relative overflow-hidden rounded-xl shadow-sm hover:shadow-xl 
-                        transition-all duration-300 cursor-pointer touch-pan-y"
-              onHoverStart={() => setHoveredImage(image.id)}
-              onHoverEnd={() => setHoveredImage(null)}
+                        transition-all duration-300 cursor-pointer"
               onClick={() => openLightbox(image)}
+              aria-label={`View ${image.alt}`}
             >
               <motion.div
                 className="relative h-64 w-full"
@@ -242,10 +239,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
                   className="object-cover"
                 />
                 <motion.div
-                  className="absolute inset-0 bg-black"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: hoveredImage === image.id ? 0.3 : 0 }}
-                  transition={{ duration: 0.2 }}
+                  className="absolute inset-0 bg-gray-900 opacity-0 group-hover:opacity-50 transition-all duration-200"
                 />
                 <motion.div
                   className="absolute inset-0 flex items-center justify-center"
@@ -290,7 +284,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
       <AnimatePresence>
         {selectedImage && (
           <motion.div 
-            className="fixed inset-0 z-50 bg-black bg-opacity-90 flex items-center justify-center p-4 touch-pan-y"
+            className="fixed inset-0 z-50 bg-gray-900 bg-opacity-90 flex items-center justify-center p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -327,7 +321,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
                   draggable={false}
                 />
                 {/* Image Caption */}
-                <div className="absolute bottom-4 left-4 right-4 text-white text-center bg-black/60 p-3 rounded-lg">
+                <div className="absolute bottom-4 left-4 right-4 text-white text-center bg-gray-900/60 p-3 rounded-lg">
                   <span className="text-white">{selectedImage.alt}</span>
                 </div>
               </div>
@@ -336,7 +330,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
               <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 md:-translate-x-8">
                 <button
                   onClick={goToPrevious}
-                  className="p-4 md:p-3 rounded-full bg-white/20 hover:bg-white/30 focus:outline-none transition-all hover:scale-110"
+                  className="p-4 md:p-3 rounded-full bg-gray-900/20 hover:bg-gray-900/30 focus:outline-none transition-all hover:scale-110"
                   aria-label="Previous image"
                 >
                   <svg
@@ -353,7 +347,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
               <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 md:translate-x-8">
                 <button
                   onClick={goToNext}
-                  className="p-4 md:p-3 rounded-full bg-white/20 hover:bg-white/30 focus:outline-none transition-all hover:scale-110"
+                  className="p-4 md:p-3 rounded-full bg-gray-900/20 hover:bg-gray-900/30 focus:outline-none transition-all hover:scale-110"
                   aria-label="Next image"
                 >
                   <svg

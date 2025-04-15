@@ -134,18 +134,23 @@ Due to multiple refactors and the use of different component libraries and styli
 The home page is being revamped to align with the new style guide, ensure mobile-first responsiveness, and create a cohesive brand experience. The plan includes:
 
 1. **Unify Layout Logic**
+
    - Use responsive Tailwind CSS classes to manage layout for mobile and desktop, reducing code duplication.
 
 2. **Component Audit & Update**
+
    - Ensure all home page sections and components (Hero, Guarantee, About, Categories, Products, Testimonials, Gallery, Certifications) use only Tailwind CSS and follow the style guide for colors, spacing, border radius, and typography.
 
 3. **Modernize Navigation**
+
    - Refine StickyNav and HomePageTabs for a more cohesive, brand-aligned look and improved mobile usability.
 
 4. **Enhance Mobile Experience**
+
    - Optimize touch targets, stacking, and spacing for mobile users.
 
 5. **Accessibility**
+
    - Use semantic HTML, alt text, and ARIA roles where needed.
 
 6. **Testing & Iteration**
@@ -156,18 +161,21 @@ The home page is being revamped to align with the new style guide, ensure mobile
 ### Home Page: Current Analysis
 
 **Current State:**
+
 - The home page is composed of multiple sections (Hero, Guarantee, About, Categories, Products, Testimonials, Gallery, Certifications), each implemented as a separate component and wrapped with SectionWrapper for consistent spacing and background.
 - Uses both mobile tab-based navigation (HomePageTabs) and desktop section stacking, with duplicated logic and some code redundancy.
 - Styling is a mix of Tailwind CSS, custom classes, and possibly shadcn/ui or other libraries, leading to inconsistencies.
 - Dynamic imports and custom backgrounds add visual interest, but may impact performance and maintainability.
 
 **Branding & UI/UX Gaps:**
+
 - Inconsistent use of color, spacing, and typography across sections.
 - Navigation and interaction patterns differ between mobile and desktop.
 - Not all components fully leverage the new style guide or brand assets.
 - Some sections may lack clear call-to-action or brand storytelling.
 
 **Suggestions:**
+
 - Unify layout and navigation logic using Tailwind’s responsive utilities.
 - Refactor all sections to use only Tailwind CSS and follow the style guide for color, spacing, and typography.
 - Standardize all CTAs, buttons, and interactive elements for brand consistency.
@@ -189,12 +197,14 @@ For detailed analysis, branding assessment, and actionable recommendations for e
 - [Products Page](pages/products.md)
 
 Each page document includes:
+
 - Current structure and components
 - Branding and UI/UX assessment (strengths and gaps)
 - Suggestions and action items for aligning with the brand and style guide
 - Next steps for refactoring and documentation
 
 **Next Steps:**
+
 - Use these per-page documents as a checklist for your revamp and refactor process.
 - Update each document as you make changes, noting before/after for major sections.
 - Ensure all updates reinforce mobile-first, brand-consistent, and accessible design.
@@ -204,6 +214,7 @@ For overall standards, always refer to this architecture document and the [Style
 ---
 
 **Next Steps:**
+
 - Begin refactoring the home page section-by-section, checking in changes incrementally for review and feedback.
 
 ---

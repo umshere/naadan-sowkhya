@@ -9,7 +9,7 @@ import contactData from '@/data/contact.json';
 
 const Footer = () => {
   return (
-    <footer className="bg-[#f0f7ff] text-gray-800 pb-0 relative overflow-hidden">
+    <footer className="bg-[var(--natural-light)] text-gray-800 pb-0 relative overflow-hidden">
       {/* Wave Background */}
       <div className="absolute bottom-0 left-0 w-full h-60 sm:h-40 overflow-hidden z-0">
         <svg 
@@ -147,12 +147,12 @@ const Footer = () => {
         </div>
 
         {/* Bottom Footer */}
-        <div className="text-center pb-16 relative z-10 mb-4">
-          <div className="inline-block bg-white/90 px-4 py-2 rounded-lg shadow-sm">
-            <p className="text-gray-800 font-medium">
+        <div className="text-center pb-8 sm:pb-12 relative z-10 mb-4">
+          <div className="inline-block bg-[var(--natural-light)] px-3 py-2 rounded-lg shadow-none w-full sm:w-auto">
+            <p className="text-gray-800 font-medium text-xs sm:text-base">
               &copy; {new Date().getFullYear()} NAADAN SOWKHYA. All rights reserved.
             </p>
-            <p className="text-gray-800 text-sm mt-1 opacity-80">
+            <p className="text-gray-800 text-xs sm:text-sm mt-1 opacity-80">
               Natural products free from preservatives and artificial colours or chemicals
             </p>
           </div>

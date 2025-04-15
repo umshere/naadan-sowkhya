@@ -1,13 +1,19 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Badge } from '@/components/ui/Badge'; // Import Badge component
 import { getFeaturedProducts } from '@/lib/productUtils';
 
 interface Props {
   className?: string;
+  title: string;
+  subtitle: string;
+  productIds: any;
+  allProducts: any;
+  showAsCards: boolean;
 }
 
-export default function FeaturedProducts({ className = '' }: Props) {
+export default function FeaturedProducts({ className = '', title, subtitle, productIds, allProducts, showAsCards }: Props) {
   const [activeCategory, setActiveCategory] = useState('all');
   const featuredProducts = getFeaturedProducts();
 
@@ -27,23 +33,30 @@ export default function FeaturedProducts({ className = '' }: Props) {
   );
 
   return (
-    <div className={`py-12 ${className}`}>
+    <section className={`bg-section-bg py-16 md:py-24 ${className}`}>
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Featured Products</h2>
+        {/* Section Heading - match ProductCategories style */}
+        <div className="text-center mb-8">
+          <span className="inline-block px-3 py-1 mb-2 rounded-full bg-primary/10 text-primary text-xs font-semibold tracking-widest uppercase">Featured Products</span>
+          <h2 className="text-3xl font-serif font-bold text-primary-dark mb-2 tracking-tight">Featured Products</h2>
+          <div className="mx-auto w-24 h-1 bg-primary rounded-full mb-2" />
+          {subtitle && <p className="text-lg text-gray-600 max-w-2xl mx-auto">{subtitle}</p>}
+        </div>
 
         {/* Category filter */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 mb-6 md:mb-8">
           {categories.map(category => (
             <button
               key={category}
+              className={`px-4 py-2 rounded-full font-bold text-sm transition-colors
+                ${activeCategory === category
+                  ? 'bg-primary text-primary-foreground shadow'
+                  : 'bg-primary/10 text-primary hover:bg-primary/20'}
+              `}
+              aria-label={`Filter by ${category}`}
               onClick={() => setActiveCategory(category)}
-              className={`px-4 py-2 rounded-full transition-colors ${
-                activeCategory === category
-                  ? 'bg-green-500 text-white'
-                  : 'bg-gray-100 hover:bg-gray-200'
-              }`}
             >
-              {category.charAt(0).toUpperCase() + category.slice(1).replace('-', ' ')}
+              {category.replace('-', ' ').replace(/\b\w/g, c => c.toUpperCase())}
             </button>
           ))}
         </div>
@@ -66,11 +79,11 @@ export default function FeaturedProducts({ className = '' }: Props) {
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{product.name}</h3>
+                  <h3 className="text-lg font-bold mb-2">{product.name}</h3>
                   <p className="text-gray-600 mb-2 line-clamp-2">
                     {product.description}
                   </p>
-                  <p className="text-green-600 font-semibold">
+                  <p className="text-brand-500 font-bold">
                     {product.currency} {product.price}
                   </p>
                 </div>
@@ -79,6 +92,6 @@ export default function FeaturedProducts({ className = '' }: Props) {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

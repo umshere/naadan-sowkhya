@@ -39,7 +39,7 @@ export default function ImageTestimonialsSection({ imageTestimonials }: ImageTes
   return (
     <section
       ref={sectionRef}
-      className="relative py-16 bg-white"
+      className="bg-section-bg py-16 md:py-24"
       id="image-gallery-section"
     >
       <div className="container mx-auto px-4 relative z-20">

@@ -140,7 +140,7 @@ export const MobileMenu = ({ isMenuOpen, isAnimating, toggleMenu, menuItems }: M
           
           {/* Contact Info */}
           <motion.div 
-            className={`p-4 border-t border-gray-200 transform transition-all duration-300 bg-gray-50 ${
+            className={`p-4 border-t border-gray-200 transform transition-all duration-300 ${
               isMenuOpen && !isAnimating 
                 ? 'translate-y-0 opacity-100' 
                 : 'translate-y-4 opacity-0'
