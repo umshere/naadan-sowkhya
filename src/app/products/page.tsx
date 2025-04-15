@@ -3,10 +3,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 // import Link from 'next/link'; // Removed unused import
-import { ViewToggle, type ViewMode } from '@/components/ui/view-toggle';
+import { ViewToggle, type ViewMode } from '@/components/ui/ViewToggle';
 import ProductCard from '@/components/ui/ProductCard';
-import { ProductListItem } from '@/components/ui/product-list-item';
-import { ProductCompactCard } from '@/components/ui/product-compact-card';
+import { ProductListItem } from '@/components/ui/ProductListItem';
+import { ProductCompactCard } from '@/components/ui/ProductCompactCard';
 import categoriesData from '@/data/categories.json';
 import { getAllProducts, FullProduct, getCategoryName } from '@/lib/productUtils'; // Import utility, type, and getCategoryName
 

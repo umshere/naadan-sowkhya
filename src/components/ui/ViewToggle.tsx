@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { Grid2X2, List, LayoutGrid } from "lucide-react";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/ToggleGroup";
 
 export type ViewMode = "grid" | "list" | "compact";
 

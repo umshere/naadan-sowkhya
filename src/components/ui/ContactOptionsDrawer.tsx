@@ -18,7 +18,7 @@ import {
   DrawerClose,
   DrawerHeader,
   DrawerFooter,
-} from '@/components/ui/drawer';
+} from '@/components/ui/Drawer';
 
 // Contact options data
 const contactOptions = [

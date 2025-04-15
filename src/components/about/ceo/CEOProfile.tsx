@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { Card, CardContent } from "@/components/ui/Card";
 import { Badge } from '@/components/ui/Badge';
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/Separator";
 
 interface CEOProfileProps {
   name: string;

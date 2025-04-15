@@ -2,7 +2,7 @@
 import { ReactNode, useEffect, useState } from 'react';
 import { FaLeaf, FaStar, FaImage, FaInfoCircle, FaAward } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Separator } from "@/components/ui/separator";
+import { Separator } from "@/components/ui/Separator";
 import AboutSection from '@/components/home/AboutSection';
 import ProductGuarantee from '@/components/home/ProductGuarantee';
 import ProductCategories from '@/components/home/ProductCategories';

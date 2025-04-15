@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useSectionVisibility } from '@/hooks/useSectionVisibility';
 import { cn } from '@/lib/utils';
 import { FaLeaf, FaStar, FaImage, FaInfoCircle, FaAward, FaHome, FaCheck } from 'react-icons/fa';
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/Tabs";
 
 interface Section {
   id: string;
