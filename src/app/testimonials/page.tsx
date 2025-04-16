@@ -4,22 +4,22 @@ import { useState } from 'react';
 import Image from 'next/image'; // Import Next.js Image for optimization
 import homepage from '@/data/homepage.json';
 import testimonialImages from '@/data/testimonial-images.json';
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/Badge";
+import { Card, CardContent } from "@/components/ui/Card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/components/ui/Carousel";
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
   DialogClose,
-} from "@/components/ui/dialog";
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/Dialog";
+import { Button } from '@/components/ui/Button';
 import type { Metadata } from 'next';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 

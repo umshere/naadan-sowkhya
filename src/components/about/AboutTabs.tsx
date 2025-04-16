@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaLeaf, FaUsers, FaAward, FaMapMarkerAlt, FaUser } from 'react-icons/fa';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent } from "@/components/ui/card";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/Tabs';
+import { Badge } from '@/components/ui/Badge';
+import { Card, CardContent } from "@/components/ui/Card";
 
 // Import components
 import CEOProfile from '@/components/about/ceo/CEOProfile';
