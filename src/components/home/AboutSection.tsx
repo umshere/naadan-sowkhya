@@ -7,7 +7,7 @@ import { motion, useScroll, useTransform } from 'framer-motion';
 import { Button } from '@/components/ui/Button';
 import { ArrowRight, Award, Leaf } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent } from '../ui/Card';
-
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@/components/ui/Carousel';
 interface AboutSectionProps {
   title: string;
   description: string[];
@@ -91,8 +91,32 @@ const AboutSection = ({
   return (
     <section
       ref={sectionRef}
-      className="relative py-16 md:py-24 bg-section-bg overflow-hidden"
+      className="relative pt-16 md:pt-24 pb-8 md:pb-12 bg-section-bg overflow-hidden"
     >
+      {/* Section Header - styled like ProductCategories */}
+      <motion.div
+        className="mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.7 }}
+      >
+        <div className="flex justify-center">
+          <span className="inline-block bg-gray-100 text-gray-700 text-xs md:text-sm font-semibold px-5 py-1 rounded-full tracking-wide mb-3 shadow-sm">
+            ABOUT US
+          </span>
+        </div>
+        <h2 className="text-3xl md:text-4xl font-serif font-bold text-center text-[var(--primary-dark)]">
+          {title}
+        </h2>
+        <div className="flex justify-center mt-2">
+          <span className="block w-16 h-1 bg-[var(--primary-dark)] rounded-full"></span>
+        </div>
+        {description?.[0] && (
+          <p className="mt-4 text-center text-base md:text-lg text-[var(--text-dark)] mx-auto max-w-2xl">
+            {description[0]}
+          </p>
+        )}
+      </motion.div>
       <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-12">
         {/* Text Content */}
         <motion.div
@@ -130,7 +154,7 @@ const AboutSection = ({
               </CardHeader>
               <CardContent className="pb-5 md:pb-6 relative z-10">
                 <p className="text-[var(--text-dark)] leading-relaxed text-sm md:text-base">
-                  {description[0]}
+                  {description[1]}
                 </p>
               </CardContent>
             </Card>
@@ -179,7 +203,7 @@ const AboutSection = ({
             className="space-y-4 prose prose-sm md:prose-base max-w-none"
             variants={{ visible: { transition: { staggerChildren: 0.1 } } }}
           >
-            {description.slice(1).map((paragraph, index) => (
+            {description.slice(2).map((paragraph, index) => (
               <motion.p 
                 key={index} 
                 variants={itemVariants}
@@ -209,49 +233,29 @@ const AboutSection = ({
         </motion.div>
 
         {/* Image Carousel */}
-        <motion.div
-          className="flex-1 relative z-10 flex items-center justify-center min-h-[320px]"
-          style={{ scale: imageScale }}
-        >
-          {images && images.length > 0 && (
-            <>
-              <motion.div
-                className="relative w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-card"
-                key={currentImageIndex}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.5 }}
-              >
-                <OptimizedImage
-                  src={images[currentImageIndex]}
-                  alt={title}
-                  fill
-                  className="object-cover"
-                  priority={currentImageIndex === 0}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1024px) 80vw, 50vw"
-                />
-                {/* Simplified gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/5"></div>
-              </motion.div>
-              {/* Image Navigation Dots */}
-              <motion.div
-                className="absolute bottom-5 left-0 right-0 flex justify-center space-x-2.5 z-20"
-              >
-                {images.map((_, i) => (
-                  <button
-                    key={i}
-                    className={`h-2.5 w-2.5 rounded-full border border-white bg-white/80 ${
-                      i === currentImageIndex ? 'ring-2 ring-primary' : ''
-                    }`}
-                    onClick={() => setCurrentImageIndex(i)}
-                    aria-label={`Show image ${i + 1}`}
-                  />
+        {images && images.length > 0 && (
+          <div className="flex-1 relative z-10 flex items-center justify-center min-h-[250px] w-full">
+            <Carousel className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl">
+              <CarouselContent>
+                {images.map((img, idx) => (
+                  <CarouselItem key={idx} className="flex items-center justify-center h-80 md:h-96">
+                    <OptimizedImage
+                      src={img}
+                      alt={title}
+                      fill
+                      className="object-cover rounded-lg shadow-card"
+                      priority={idx === 0}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 80vw, 50vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/5 pointer-events-none"></div>
+                  </CarouselItem>
                 ))}
-              </motion.div>
-            </>
-          )}
-        </motion.div>
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+        )}
       </div>
     </section>
   );
