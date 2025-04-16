@@ -4,7 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Badge } from '@/components/ui/Badge'; // Assuming Badge component is in a separate file
+import { Badge } from '@/components/ui/Badge'; 
+import { Dialog, DialogContent } from '@/components/ui/Dialog'; // Assuming Badge component is in a separate file
 
 interface GalleryImage {
   id: number;
@@ -24,6 +25,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
   const [hoveredImage, setHoveredImage] = useState<number | null>(null);
   const [displayedImages, setDisplayedImages] = useState<GalleryImage[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   // Update displayed images when prop changes
   useEffect(() => {
@@ -94,12 +96,12 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
 
   const openLightbox = (image: GalleryImage) => {
     setSelectedImage(image);
-    document.body.style.overflow = 'hidden';
+    setDialogOpen(true);
   };
 
   const closeLightbox = () => {
+    setDialogOpen(false);
     setSelectedImage(null);
-    document.body.style.overflow = 'auto';
   };
 
   const goToPrevious = () => {
@@ -281,55 +283,27 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
       </div>
 
       {/* Lightbox Modal */}
-      <AnimatePresence>
-        {selectedImage && (
-          <motion.div 
-            className="fixed inset-0 z-50 bg-gray-900 bg-opacity-90 flex items-center justify-center p-4"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-          >
-            <div className="relative max-w-4xl w-full max-h-[90vh]">
-              {/* Close Button */}
-              <button
-                onClick={closeLightbox}
-                className="absolute -top-12 right-0 text-white hover:text-gray-300 focus:outline-none"
-                aria-label="Close lightbox"
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-8 w-8"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-
-              {/* Fullscreen Image */}
-              <div className="relative w-full h-[80vh] select-none">
-                <Image
-                  src={selectedImage.src}
-                  alt={selectedImage.alt}
-                  fill
-                  sizes="100vw"
-                  className="object-contain"
-                  priority
-                  draggable={false}
-                />
-                {/* Image Caption */}
-                <div className="absolute bottom-4 left-4 right-4 text-white text-center bg-gray-900/60 p-3 rounded-lg">
-                  <span className="text-white">{selectedImage.alt}</span>
-                </div>
+      <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) setSelectedImage(null); }}>
+        <DialogContent className="max-w-4xl w-full max-h-[90vh] p-0 bg-transparent shadow-none border-none flex flex-col items-center justify-center">
+          {selectedImage && (
+            <div className="relative w-full h-[80vh] select-none">
+              <Image
+                src={selectedImage.src}
+                alt={selectedImage.alt}
+                fill
+                sizes="100vw"
+                className="object-contain"
+                priority
+                draggable={false}
+              />
+              {/* Image Caption */}
+              <div className="absolute bottom-4 left-4 right-4 text-white text-center bg-gray-900/60 p-3 rounded-lg">
+                <span className="text-white">{selectedImage.alt}</span>
               </div>
-
               {/* Navigation Buttons */}
               <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-4 md:-translate-x-8">
                 <button
-                  onClick={goToPrevious}
+                  onClick={(e) => { e.stopPropagation(); goToPrevious(); }}
                   className="p-4 md:p-3 rounded-full bg-gray-900/20 hover:bg-gray-900/30 focus:outline-none transition-all hover:scale-110"
                   aria-label="Previous image"
                 >
@@ -346,7 +320,7 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
               </div>
               <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-4 md:translate-x-8">
                 <button
-                  onClick={goToNext}
+                  onClick={(e) => { e.stopPropagation(); goToNext(); }}
                   className="p-4 md:p-3 rounded-full bg-gray-900/20 hover:bg-gray-900/30 focus:outline-none transition-all hover:scale-110"
                   aria-label="Next image"
                 >
@@ -362,9 +336,9 @@ const GallerySection = ({ images, title }: GallerySectionProps) => {
                 </button>
               </div>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </DialogContent>
+      </Dialog>
     </motion.section>
   );
 };

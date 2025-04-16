@@ -23,8 +23,7 @@ const AboutSection = ({
   buttonLink,
   images,
 }: AboutSectionProps) => {
-  console.log('AboutSection title:', title);
-  console.log('AboutSection description:', description);
+ 
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
