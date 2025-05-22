@@ -126,36 +126,36 @@ graph TD
     A[naadan-sowkhya] --> B[src]
     A --> C[public]
     A --> D[styles]
-    A --> Fdocs[docs]
-    A --> Gscripts[scripts]
-    A --> Hgithub[/.github/workflows]
+    A --> F[docs]
+    A --> G[scripts]
+    A --> H[.github/workflows]
     
     B --> E[app]
-    B --> Fcomp[components]
-    B --> Gdata[data]
+    B --> F[components]
+    B --> G[data]
     
     E --> E1[Pages and Routing]
-    Fcomp --> F1[Reusable Components]
-    Gdata --> G1[JSON Data Files]
+    F --> F1[Reusable Components]
+    G --> G1[JSON Data Files]
     
-    C --> Himg[images]
-    Himg --> H1[products]
-    Himg --> H2[gallery]
-    Himg --> H3[testimonials]
+    C --> H[images]
+    H --> H1[products]
+    H --> H2[gallery]
+    H --> H3[testimonials]
     
     D --> D1[Global Styles]
     D --> D2[CSS Modules]
 
-    Fdocs --> Fdocs1[Administrator Guide]
-    Fdocs --> Fdocs2[Product Updates Guide]
+    F --> F1[Administrator Guide]
+    F --> F2[Product Updates Guide]
     
     style A fill:#f5f5f5,stroke:#333,stroke-width:2px
     style B fill:#e6f7ff,stroke:#333,stroke-width:1px
     style C fill:#e6f7ff,stroke:#333,stroke-width:1px
     style D fill:#e6f7ff,stroke:#333,stroke-width:1px
-    style Fdocs fill:#e6f7ff,stroke:#333,stroke-width:1px
-    style Gscripts fill:#e6f7ff,stroke:#333,stroke-width:1px
-    style Hgithub fill:#e6f7ff,stroke:#333,stroke-width:1px
+    style F fill:#e6f7ff,stroke:#333,stroke-width:1px
+    style G fill:#e6f7ff,stroke:#333,stroke-width:1px
+    style H fill:#e6f7ff,stroke:#333,stroke-width:1px
 ```
 -   `/src/app/*` - Next.js pages and routing
 -   `/src/components/*` - Reusable React components
